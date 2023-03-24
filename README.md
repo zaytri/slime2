@@ -1,2 +1,5 @@
-# stream-chat-bubbles
-Chat Bubbles 3.0 (In Development)
+# SlimeChat
+
+Built with [Create React App](https://create-react-app.dev/)
+
+## [Getting Started](https://forums.slime.chat/resources/getting-started-with-slimechat.3/)

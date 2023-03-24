@@ -1,0 +1,104 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+* {
+  box-sizing: border-box;
+  overflow-wrap: break-word;
+  margin: 0;
+  padding: 0;
+}
+
+slime-chat,
+slime-chat-message,
+slime-chat-message-list {
+  display: block;
+}
+
+slime-chat {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  font-family: Inter, Roobert, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 13px;
+  color: black;
+  line-height: 1.25rem;
+}
+
+slime-chat-message-list {
+  display: flex;
+  flex-direction: column;
+  align-content: start;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
+
+slime-chat-message {
+  margin-top: 0.2rem;
+}
+
+.message-wrapper {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.message {
+  display: inline-block;
+}
+
+.message::first-line {
+}
+
+.content {
+  align-items: center;
+}
+
+.username {
+  font-weight: bold;
+}
+
+.pronouns {
+  text-transform: lowercase;
+}
+
+.pronouns::before {
+  content: ' (';
+}
+
+.pronouns::after {
+  content: ')';
+}
+
+.pronouns:empty {
+  display: none;
+}
+
+.text {
+}
+
+.emote,
+.cheer {
+  height: 1.75rem;
+  display: inline-block;
+  vertical-align: middle;
+  margin-top: -0.25rem;
+  margin-bottom: -0.2rem;
+}
+
+.cheer-amount {
+  font-weight: bold;
+}
+
+.badges {
+  position: relative;
+  vertical-align: middle;
+  display: inline-block;
+}
+
+.badge {
+  height: 1.125rem;
+  margin-right: 0.2rem;
+  display: inline-block;
+  margin-top: -0.25rem;
+  margin-bottom: -0.2rem;
+}
