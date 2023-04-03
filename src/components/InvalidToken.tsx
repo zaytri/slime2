@@ -28,7 +28,11 @@ export default function InvalidToken() {
       >
         <strong>Token Invalid</strong>: You haven't set a token or your token
         expired. Get a new token at{' '}
-        <a href='https://slime.chat/token' style={{ color: '#fecdd3' }}>
+        <a
+          href='https://slime.chat/token'
+          target='_blank'
+          style={{ color: '#fecdd3' }}
+        >
           slime.chat/token
         </a>
       </span>
