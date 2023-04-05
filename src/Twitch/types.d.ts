@@ -63,29 +63,21 @@ export type Message = {
 // every relevant TwitchMessage variation in twurple
 
 export type TwitchMessageType =
+  | { type: 'basic' }
   | { type: 'action' }
-  | { type: 'default' }
   | { type: 'highlight' }
-  | { type: 'cheer'; typeInfo: CheerInfo }
-  | { type: 'redemption'; typeInfo: HelixCustomReward }
-  | { type: 'reply'; typeInfo: ReplyInfo }
-  | { type: 'announcement'; typeInfo: ChatAnnouncementInfo }
-  | { type: 'bits-badge-upgrade'; typeInfo: ChatBitsBadgeUpgradeInfo }
-  | { type: 'community-pay-forward'; typeInfo: ChatCommunityPayForwardInfo }
-  | { type: 'community-sub'; typeInfo: ChatCommunitySubInfo }
-  | { type: 'gift-paid-upgrade'; typeInfo: ChatSubGiftUpgradeInfo }
-  | { type: 'prime-community-gift'; typeInfo: ChatPrimeCommunityGiftInfo }
-  | { type: 'prime-paid-upgrade'; typeInfo: ChatSubUpgradeInfo }
-  | { type: 'raid'; typeInfo: ChatRaidInfo }
-  | { type: 'resub'; typeInfo: ChatSubInfo }
-  | { type: 'reward-gift'; typeInfo: ChatRewardGiftInfo }
-  | { type: 'standard-pay-forward'; typeInfo: ChatStandardPayForwardInfo }
-  | { type: 'sub'; typeInfo: ChatSubInfo }
-  | { type: 'sub-extend'; typeInfo: ChatSubExtendInfo }
-  | { type: 'sub-gift'; typeInfo: ChatSubGiftInfo }
+  | { type: 'cheer'; cheer: CheerInfo }
+  | { type: 'reply'; reply: ReplyInfo }
+  | { type: 'redeem'; redeem: RedeemInfo }
+  | { type: 'resub'; resub: ResubInfo }
+  | { type: 'announcement'; announcement: AnnouncementInfo }
+
+type AnnouncementInfo = {
+  color: string // 'PRIMARY' | 'BLUE' | 'GREEN' | 'ORANGE' | 'PURPLE'
+}
 
 type CheerInfo = {
-  bits: number
+  amount: number // total number of bits cheers in the message
 }
 
 type ReplyInfo = {
@@ -99,11 +91,24 @@ type ReplyInfo = {
   }
 }
 
+type ResubInfo = {
+  months: number
+  tier: string // '1000' | '2000' | '3000' | 'Prime'
+}
+
+type RedeemInfo = {
+  id: string
+  name: string
+  image: string
+  color: string
+  cost: number
+}
+
 // types used for Part
 type PartType =
   | { type: 'text' }
-  | { type: 'cheer'; typeInfo: CheerPartInfo }
-  | { type: 'emote'; typeInfo: EmotePartInfo }
+  | { type: 'cheer'; cheer: CheerPartInfo }
+  | { type: 'emote'; emote: EmotePartInfo }
 
 type Part = { text: string }
 

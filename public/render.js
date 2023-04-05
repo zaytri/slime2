@@ -11,7 +11,7 @@ slimeChat.render = ({ message }) => {
     switch (part.type) {
       case 'emote': // insert in the emote image
         {
-          const { image } = part.typeInfo
+          const { image } = part.emote
 
           const emoteClone = cloneTemplate('emote-template')
           emoteClone.find('.emote').attr('src', image)
@@ -22,7 +22,7 @@ slimeChat.render = ({ message }) => {
 
       case 'cheer': // insert in the cheermote image and cheer amount
         {
-          const { amount, color, image } = part.typeInfo
+          const { amount, color, image } = part.cheer
 
           const cheerClone = cloneTemplate('cheermote-template')
           cheerClone.find('.cheer').attr('src', image)

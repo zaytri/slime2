@@ -1,9 +1,10 @@
 import { useEffect } from 'react'
 import { ChatClient, PrivateMessage } from '@twurple/chat'
+import { UserNotice, ChatUser } from '@twurple/chat'
+import { parseChatMessage } from '@twurple/common'
 
 import type { Listener } from '@d-fischer/typed-event-emitter'
 import type { HelixCheermoteList } from '@twurple/api'
-import { UserNotice, ChatUser } from '@twurple/chat'
 
 import { apiClient, authProvider } from './helpers/authentication'
 import { useMessageListDispatch } from './Context'
@@ -30,9 +31,6 @@ type TwitchChatProps = {
   emotes: Map<string, EmotePartInfo>
 }
 
-// holds data to prevent sub gift spam
-// https://twurple.js.org/docs/examples/chat/sub-gift-spam.html
-const giftCounts = new Map<string, number>()
 const followCache = new Map<string, { date: Date | false; expire: number }>()
 const FOLLOW_CACHE_EXPIRE_TIME = 1000 * 60 * 60 // 1 hour
 
@@ -52,9 +50,13 @@ export default function TwitchChatClient({
   const dispatch = useMessageListDispatch()
 
   function addMessage(message: TwitchMessage) {
-    console.log(`[${message.type}]`, message.text)
-    console.log(message)
-    console.log('---------------------------')
+    console.log(
+      `[${message.type}]`,
+      `${message.user.displayName}:`,
+      message.text,
+      message,
+    )
+    console.log('^---------------------------^')
     dispatch({ type: 'add', payload: message })
   }
 
@@ -84,51 +86,156 @@ export default function TwitchChatClient({
   //  Message Parsing/Processing
   // ----------------------------
 
-  // convert message into an array, separating text, emotes, and cheermotes
-  function messageParse(data: PrivateMessage | UserNotice): TwitchPart[] {
-    const twurpleParts =
-      data instanceof PrivateMessage && data.bits > 0
-        ? data.parseEmotesAndBits(cheermoteList, {
-            background: 'dark',
-            scale: '4',
-            state: 'animated',
-          })
-        : data.parseEmotes()
+  // standardize twurple data and add new TwitchMessage to the chat content
+  async function processMessage(
+    typeData: TwitchMessageType,
+    messageData: PrivateMessage | UserNotice,
+    text?: string,
+  ): Promise<void> {
+    console.log(messageData)
+
+    // user notices don't always have user messages
+    if (messageData instanceof UserNotice) {
+      text = messageData.message?.value // message could be undefined
+    }
+    if (!text || text === '') return
+
+    const { type } = typeData
+
+    let newMessageData: TwitchMessage = {
+      id: messageData.id,
+
+      first: messageData.tags.get('first-msg') === '1',
+      date: messageData.date,
+
+      text,
+      parts: textParse(text, messageData.emoteOffsets, type === 'cheer'),
+
+      user: await transformChatUser(messageData.userInfo),
+
+      tags: messageData.tags,
+      randomSeed: Math.random(),
+      ...typeData,
+    }
+
+    // if type exists (isn't default), we're already done transforming the data
+    if (type !== 'basic') {
+      addMessage(newMessageData)
+      return
+    }
+
+    const updateMessageData = (typeData: TwitchMessageType) => {
+      newMessageData = { ...newMessageData, ...typeData }
+    }
+
+    // rewardId = '' for messages that have been manually approved
+    const rewardId = messageData.tags.get('custom-reward-id')
+
+    const getReplyData = (tagPart: string) =>
+      messageData.tags.get(`reply-parent-${tagPart}`) || ''
+    const replyId = getReplyData('msg-id')
+
+    // these tags will only possibly exist on default messages, because no
+    // combination of these types is possible (other than overriding default)
+    if (messageData.tags.get('msg-id') === 'highlighted-message') {
+      // highlighted message
+
+      updateMessageData({ type: 'highlight' })
+    } else if (rewardId) {
+      // redeem message
+
+      const reward = channelRewards.get(rewardId)
+      if (reward) {
+        const redeem = {
+          id: reward.id,
+          name: reward.title,
+          cost: reward.cost,
+          image: reward.getImageUrl(4),
+          color: reward.backgroundColor,
+        }
+
+        updateMessageData({ type: 'redeem', redeem })
+      }
+    } else if (replyId !== '') {
+      // reply message
+
+      const reply = {
+        id: replyId,
+        text: getReplyData('msg-body'),
+        user: {
+          id: getReplyData('user-id'),
+          userName: getReplyData('user-login'),
+          displayName: getReplyData('display-name'),
+        },
+      }
+
+      updateMessageData({ type: 'reply', reply })
+    }
+
+    addMessage(newMessageData)
+  }
+
+  // convert text content into an array, separating text, emotes, and cheermotes
+  function textParse(
+    text: string,
+    emoteOffsets: Map<string, string[]>,
+    withCheermotes = false,
+  ): TwitchPart[] {
+    if (text === '') return []
+
+    const twurpleParts = parseChatMessage(
+      text,
+      emoteOffsets,
+      withCheermotes ? cheermoteList.getPossibleNames() : undefined,
+    )
 
     const parts: TwitchPart[] = []
     twurpleParts.forEach(part => {
       switch (part.type) {
+        default:
         case 'text':
           parts.push(...emoteParse({ type: part.type, text: part.text }))
           break
         case 'cheer':
+          const cheerInfo = cheermoteList.getCheermoteDisplayInfo(
+            part.name,
+            part.amount,
+            {
+              background: 'dark',
+              scale: '4',
+              state: 'animated',
+            },
+          )
+
           parts.push({
             type: part.type,
-            text: part.name,
-            typeInfo: {
+            text: text.slice(part.position, part.position + part.length),
+            cheer: {
+              color: cheerInfo.color,
+              image: cheerInfo.url,
               name: part.name,
               amount: part.amount,
-              color: part.displayInfo.color,
-              image: part.displayInfo.url,
             },
           })
           break
-        case 'emote': {
+        case 'emote':
+          const image = part.displayInfo.getUrl({
+            backgroundType: 'dark',
+            animationSettings: 'default',
+            size: '3.0',
+          })
+
           parts.push({
             type: part.type,
-            text: part.name,
-            typeInfo: {
+            text: text.slice(part.position, part.position + part.length),
+            emote: {
               id: part.id,
               name: part.name,
-              image: part.displayInfo.getUrl({
-                backgroundType: 'dark',
-                animationSettings: 'default',
-                size: '3.0',
-              }),
+              image,
               source: 'twitch',
             },
           })
-        }
+          break
       }
     })
 
@@ -151,7 +258,7 @@ export default function TwitchChatClient({
         // ignore empty strings
         const emote = emotes.get(text)
         if (emote) {
-          parts.push({ type: 'emote', text, typeInfo: emote })
+          parts.push({ type: 'emote', text, emote })
         } else {
           parts.push({ type: 'text', text })
         }
@@ -212,94 +319,6 @@ export default function TwitchChatClient({
     }
   }
 
-  // returns true if the message was the first message that user has ever
-  // sent to the broadcaster's chat (shows as First Time Chatter)
-  function isFirstMessage(tags: PrivateMessage['tags']) {
-    return tags.get('first-msg') === '1'
-  }
-
-  // fully process UserNotice and add new TwitchMessage to the chat context
-  async function processUserNotice(type: TwitchMessageType, data: UserNotice) {
-    console.log({ UserNotice: data })
-    const user = await transformChatUser(data.userInfo)
-
-    const newMessageData: TwitchMessage = {
-      id: data.id,
-      first: isFirstMessage(data.tags),
-      date: data.date,
-
-      text: data.tags.get('system-msg') || '',
-      parts: [{ type: 'text', text: data.tags.get('system-msg') || '' }],
-
-      user,
-
-      tags: data.tags,
-      randomSeed: Math.random(),
-      ...type,
-    }
-
-    console.log('[Parsed UserNotice message]', messageParse(data))
-
-    addMessage(newMessageData)
-  }
-
-  // fully process PrivateMessage and add new TwitchMessage to the chat context
-  async function processPrivateMessage(
-    baseType: 'default' | 'action',
-    text: string,
-    data: PrivateMessage,
-  ) {
-    console.log({ PrivateMessage: data })
-    const user = await transformChatUser(data.userInfo)
-
-    let newMessageData: TwitchMessage = {
-      id: data.id,
-      first: isFirstMessage(data.tags),
-      date: data.date,
-      type: baseType,
-
-      text,
-      parts: messageParse(data),
-
-      user,
-
-      tags: data.tags,
-      randomSeed: Math.random(),
-    }
-
-    if (data.isHighlight) {
-      newMessageData = { ...newMessageData, type: 'highlight' }
-    } else if (data.isCheer) {
-      newMessageData = {
-        ...newMessageData,
-        type: 'cheer',
-        typeInfo: { bits: data.bits },
-      }
-    } else if (data.isRedemption) {
-      newMessageData = {
-        ...newMessageData,
-        type: 'redemption',
-        typeInfo: channelRewards.get(data.tags.get('custom-reward-id')!)!,
-      }
-    } else if (data.tags.has('reply-parent-msg-id')) {
-      newMessageData = {
-        ...newMessageData,
-        type: 'reply',
-        typeInfo: {
-          id: data.tags.get('reply-parent-msg-id')!,
-          text: data.tags.get('reply-parent-msg-body')!,
-          user: {
-            id: data.tags.get('reply-parent-user-id')!,
-            userName: data.tags.get('reply-parent-user-login')!,
-            displayName: data.tags.get('reply-parent-display-name')!,
-          },
-        },
-      }
-    }
-
-    addMessage(newMessageData)
-  }
-
   // -----------------
   //  Event Listeners
   // -----------------
@@ -311,94 +330,39 @@ export default function TwitchChatClient({
       //  Events Using PrivateMessage
       // -----------------------------
 
-      chatClient.onAction((_, __, text, message) => {
-        processPrivateMessage('action', text, message)
+      chatClient.onMessage((_, __, text, msg) => {
+        const { bits } = msg
+        const typeData: TwitchMessageType = bits
+          ? { type: 'cheer', cheer: { amount: bits } }
+          : { type: 'basic' }
+
+        processMessage(typeData, msg, text)
       }),
 
-      chatClient.onMessage((_, __, text, message) => {
-        processPrivateMessage('default', text, message)
+      chatClient.onAction((_, __, text, msg) => {
+        processMessage({ type: 'action' }, msg, text)
       }),
 
       // -------------------------
       //  Events Using UserNotice
       // -------------------------
 
-      chatClient.onAnnouncement((_, __, info, notice) => {
-        processUserNotice({ type: 'announcement', typeInfo: info }, notice)
-      }),
-
-      chatClient.onCommunityPayForward((_, __, info, notice) => {
-        processUserNotice(
-          { type: 'community-pay-forward', typeInfo: info },
-          notice,
-        )
-      }),
-
-      chatClient.onCommunitySub((_, __, info, notice) => {
-        // count handling related to onSubGift to prevent sub gift spam
-        // empty string for anonymous gifter
-        const { gifter = '', count } = info
-        const previousCount = giftCounts.get(gifter) ?? 0
-        giftCounts.set(gifter, previousCount + count)
-
-        processUserNotice({ type: 'community-sub', typeInfo: info }, notice)
-      }),
-
-      chatClient.onGiftPaidUpgrade((_, __, info, notice) => {
-        processUserNotice({ type: 'gift-paid-upgrade', typeInfo: info }, notice)
-      }),
-
-      chatClient.onPrimeCommunityGift((_, __, info, notice) => {
-        processUserNotice(
-          { type: 'prime-community-gift', typeInfo: info },
-          notice,
-        )
-      }),
-
-      chatClient.onPrimePaidUpgrade((_, __, info, notice) => {
-        processUserNotice(
-          { type: 'prime-paid-upgrade', typeInfo: info },
-          notice,
-        )
-      }),
-
-      chatClient.onRaid((_, __, info, notice) => {
-        processUserNotice({ type: 'raid', typeInfo: info }, notice)
-      }),
-
-      chatClient.onResub((_, __, info, notice) => {
-        processUserNotice({ type: 'resub', typeInfo: info }, notice)
-      }),
-
-      chatClient.onRewardGift((_, __, info, notice) => {
-        processUserNotice({ type: 'reward-gift', typeInfo: info }, notice)
-      }),
-
-      chatClient.onStandardPayForward((_, __, info, notice) => {
-        processUserNotice(
-          { type: 'standard-pay-forward', typeInfo: info },
-          notice,
-        )
-      }),
-
-      chatClient.onSub((_, __, info, notice) => {
-        processUserNotice({ type: 'sub', typeInfo: info }, notice)
-      }),
-
-      chatClient.onSubExtend((_, __, info, notice) => {
-        processUserNotice({ type: 'sub-extend', typeInfo: info }, notice)
-      }),
-
-      chatClient.onSubGift((_, __, info, notice) => {
-        // count handling related to onCommunityGift to prevent sub gift spam
-        // empty string for anonymous gifter
-        const { gifter = '' } = info
-        const previousCount = giftCounts.get(gifter) ?? 0
-        if (previousCount > 0) {
-          giftCounts.set(gifter, previousCount - 1)
-        } else {
-          processUserNotice({ type: 'sub-gift', typeInfo: info }, notice)
+      chatClient.onResub(async (_, __, info, msg) => {
+        const typeData: TwitchMessageType = {
+          type: 'resub',
+          resub: { months: info.months, tier: info.plan },
         }
+
+        processMessage(typeData, msg)
+      }),
+
+      chatClient.onAnnouncement(async (_, __, info, msg) => {
+        const typeData: TwitchMessageType = {
+          type: 'announcement',
+          announcement: { color: info.color },
+        }
+
+        processMessage(typeData, msg)
       }),
 
       // -----------------------
