@@ -34,6 +34,12 @@ type TwitchChatProps = {
 const followCache = new Map<string, { date: Date | false; expire: number }>()
 const FOLLOW_CACHE_EXPIRE_TIME = 1000 * 60 * 60 // 1 hour
 
+function log(...data: any[]) {
+  if (process.env.NODE_ENV !== 'production') {
+    console.log(...data)
+  }
+}
+
 export default function TwitchChatClient({
   badgeImages,
   channelRewards,
@@ -50,13 +56,15 @@ export default function TwitchChatClient({
   const dispatch = useMessageListDispatch()
 
   function addMessage(message: TwitchMessage) {
-    console.log(
-      `[${message.type}]`,
-      `${message.user.displayName}:`,
-      message.text,
-      message,
+    log(
+      `%c[${message.type}] ${message.user.displayName}: ${message.text}`,
+      'background-color: black; color: white; padding: 5px 10px; border-radius: 100px; border: 2px solid white',
     )
-    console.log('^---------------------------^')
+    log(message)
+    log(
+      `%cMessage ${message.id}`,
+      'background-color: white; color: black; padding: 5px 10px; border-radius: 0 0 10px 10px; font-weight: bold; display: inline-block; margin-bottom: 10px',
+    )
     dispatch({ type: 'add', payload: message })
   }
 
@@ -92,7 +100,11 @@ export default function TwitchChatClient({
     messageData: PrivateMessage | UserNotice,
     text?: string,
   ): Promise<void> {
-    console.log(messageData)
+    log(
+      `%cMessage ${messageData.id}`,
+      'background-color: white; color: black; padding: 5px 10px; border-radius: 10px 10px 0 0; font-weight: bold; display: inline-block; margin-top: 10px',
+    )
+    log(messageData)
 
     // user notices don't always have user messages
     if (messageData instanceof UserNotice) {
@@ -118,7 +130,7 @@ export default function TwitchChatClient({
       ...typeData,
     }
 
-    // if type exists (isn't default), we're already done transforming the data
+    // if type isn't basic, we're already done transforming the data
     if (type !== 'basic') {
       addMessage(newMessageData)
       return
@@ -135,8 +147,8 @@ export default function TwitchChatClient({
       messageData.tags.get(`reply-parent-${tagPart}`) || ''
     const replyId = getReplyData('msg-id')
 
-    // these tags will only possibly exist on default messages, because no
-    // combination of these types is possible (other than overriding default)
+    // these tags will only possibly exist on basic messages, because no
+    // combination of these types is possible (other than overriding basic)
     if (messageData.tags.get('msg-id') === 'highlighted-message') {
       // highlighted message
 
