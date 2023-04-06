@@ -35,7 +35,7 @@ export default function TwitchChatClient() {
 
       console.log(
         `%cMessage ${message.id}`,
-        'background-color: white; color: black; padding: 5px 10px; border-radius: 0 0 10px 10px; font-weight: bold; display: inline-block; margin-bottom: 10px',
+        'background-color: black; color: white; padding: 5px 10px; border-radius: 0 0 10px 10px; display: inline-block; margin-bottom: 10px; border: 1px solid gray;',
       )
     }
     dispatch({ type: 'add', payload: message })

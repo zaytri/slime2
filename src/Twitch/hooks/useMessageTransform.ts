@@ -27,7 +27,7 @@ export default function useMessageTransform() {
     if (process.env.NODE_ENV !== 'production') {
       console.log(
         `%cMessage ${twurpleMessage.id}`,
-        'background-color: white; color: black; padding: 5px 10px; border-radius: 10px 10px 0 0; font-weight: bold; display: inline-block; margin-top: 10px',
+        'background-color: black; color: white; padding: 5px 10px; border-radius: 10px 10px 0 0; display: inline-block; margin-top: 10px; border: 1px solid gray;',
       )
 
       console.log('Twurple Data', twurpleMessage)
