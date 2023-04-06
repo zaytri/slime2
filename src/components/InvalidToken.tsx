@@ -31,6 +31,7 @@ export default function InvalidToken() {
         <a
           href='https://slime.chat/token'
           target='_blank'
+          rel='noreferrer'
           style={{ color: '#fecdd3' }}
         >
           slime.chat/token

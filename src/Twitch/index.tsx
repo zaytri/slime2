@@ -1,21 +1,20 @@
 import { useEffect, useState } from 'react'
 import { getTokenInfo } from '@twurple/auth'
-
-import type { HelixCheermoteList } from '@twurple/api'
-
+import { MessageListProvider } from './contexts/MessageList'
+import { TwitchProvider } from './contexts/Twitch'
+import ChatHandler from './ChatHandler'
+import { CLIENT_ID, ACCESS_TOKEN, apiClient } from './helpers/authentication'
 import BadgeImages from './helpers/BadgeImages'
 import ChannelRewards from './helpers/ChannelRewards'
-import { CLIENT_ID, ACCESS_TOKEN, apiClient } from './helpers/authentication'
-import ChatHandler from './ChatHandler'
-import { MessageListProvider } from './Context'
 import Pronouns from './helpers/Pronouns'
 import BetterTTV from './helpers/BetterTTV'
 import FrankerFaceZ from './helpers/FrankerFaceZ'
-
-import type { EmotePartInfo } from './types'
 import InvalidToken from '../components/InvalidToken'
 import Loading from '../components/Loading'
 import Connected from '../components/Connected'
+
+import type { HelixCheermoteList } from '@twurple/api'
+import type { Broadcaster, EmotePartInfo, OtherEmotes } from './types'
 
 export default function Twitch() {
   const [isTokenValid, setIsTokenValid] = useState(true)
@@ -23,10 +22,9 @@ export default function Twitch() {
   const [badgeImages, setBadgeImages] = useState<BadgeImages>()
   const [channelRewards, setChannelRewards] = useState<ChannelRewards>()
   const [cheermoteList, setCheermoteList] = useState<HelixCheermoteList>()
-  const [broadcasterUserName, setBroadcasterUserName] = useState('')
-  const [broadcasterUserId, setBroadcasterUserId] = useState('')
+  const [broadcaster, setBroadcaster] = useState<Broadcaster>()
   const [pronouns, setPronouns] = useState<Pronouns>()
-  const [emotes, setEmotes] = useState<Map<string, EmotePartInfo>>()
+  const [otherEmotes, setOtherEmotes] = useState<OtherEmotes>()
 
   useEffect(() => {
     async function load() {
@@ -41,8 +39,11 @@ export default function Twitch() {
 
       // get user ID and username from token
       const { userId, userName } = tokenInfo
-      setBroadcasterUserId(userId!)
-      setBroadcasterUserName(userName!)
+      const user: Broadcaster = {
+        id: userId!,
+        userName: userName!,
+      }
+      setBroadcaster(user)
 
       // get Twitch API and 3rd party data asynchronously
       const [
@@ -54,13 +55,13 @@ export default function Twitch() {
         bttvEmotes,
         ffzEmotes,
       ] = await Promise.all([
-        apiClient.chat.getChannelBadges(userId!),
+        apiClient.chat.getChannelBadges(user.id),
         apiClient.chat.getGlobalBadges(),
-        apiClient.channelPoints.getCustomRewards(userId!),
-        apiClient.bits.getCheermotes(userId!),
+        apiClient.channelPoints.getCustomRewards(user.id),
+        apiClient.bits.getCheermotes(user.id),
         Pronouns.create(),
-        BetterTTV.getEmotes('twitch', userId!),
-        FrankerFaceZ.getEmotes('twitch', userId!),
+        BetterTTV.getEmotes('twitch', user.id),
+        FrankerFaceZ.getEmotes('twitch', user.id),
       ])
 
       setBadgeImages(new BadgeImages(globalBadgeData, channelBadgeData))
@@ -80,7 +81,7 @@ export default function Twitch() {
           emoteMap.set(name, emote)
         })
       }
-      setEmotes(emoteMap)
+      setOtherEmotes(emoteMap)
 
       // finished loading everything
       setLoaded(true)
@@ -100,17 +101,18 @@ export default function Twitch() {
   return (
     <>
       <Connected />
-      <MessageListProvider>
-        <ChatHandler
-          broadcasterUserName={broadcasterUserName}
-          broadcasterUserId={broadcasterUserId}
-          channelRewards={channelRewards!}
-          cheermoteList={cheermoteList!}
-          badgeImages={badgeImages!}
-          pronouns={pronouns!}
-          emotes={emotes!}
-        />
-      </MessageListProvider>
+      <TwitchProvider
+        broadcaster={broadcaster!}
+        rewards={channelRewards!}
+        cheermotes={cheermoteList!}
+        badgeImages={badgeImages!}
+        pronouns={pronouns!}
+        otherEmotes={otherEmotes!}
+      >
+        <MessageListProvider>
+          <ChatHandler />
+        </MessageListProvider>
+      </TwitchProvider>
     </>
   )
 }

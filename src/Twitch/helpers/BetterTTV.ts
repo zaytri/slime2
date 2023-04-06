@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { EmotePartInfo } from '../types'
+import type { EmotePartInfo } from '../types'
 
 const bttvInstance = axios.create({
   baseURL: 'https://api.betterttv.net/3/cached',

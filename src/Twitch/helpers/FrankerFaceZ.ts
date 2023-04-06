@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { EmotePartInfo } from '../types'
+import type { EmotePartInfo } from '../types'
 
 const ffzInstance = axios.create({
   baseURL: 'https://api.frankerfacez.com/v1',

@@ -14,10 +14,16 @@ import type {
   ChatSubInfo,
   ChatSubUpgradeInfo,
 } from '@twurple/chat'
-
 import type { Badge } from './helpers/BadgeImages'
 
-export type User = {
+export type OtherEmotes = Map<string, EmotePartInfo>
+
+export type Broadcaster = {
+  id: string
+  userName: string
+}
+
+export type TwitchUser = {
   // identifiers
   id: string
   userName: string
@@ -36,7 +42,7 @@ export type User = {
     vip: boolean
     founder: boolean
     subscriber: boolean
-    follower: Date | false
+    followDate?: Date
   }
 }
 
@@ -51,7 +57,7 @@ export type Message = {
   first: boolean
   date: Date
 
-  user: User
+  user: TwitchUser
 
   text: string
   parts: TwitchPart[]

@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useReducer } from 'react'
 
-import type { TwitchMessage } from './types'
+import type { TwitchMessage } from '../types'
 
 const initialState: TwitchMessage[] = []
 const MessageListContext = createContext<TwitchMessage[]>(initialState)
@@ -8,15 +8,11 @@ const MessageListDispatchContext = createContext<
   React.Dispatch<MessageListAction>
 >(() => null)
 
-type MessageListProviderProps = {
-  children?: React.ReactNode
-}
-
 // lets all children have easy access to the message list and message list reducer
-export function MessageListProvider({ children }: MessageListProviderProps) {
-  const [chat, dispatch] = useReducer(messageListReducer, initialState)
+export function MessageListProvider({ children }: React.PropsWithChildren) {
+  const [messageList, dispatch] = useReducer(messageListReducer, initialState)
   return (
-    <MessageListContext.Provider value={chat}>
+    <MessageListContext.Provider value={messageList}>
       <MessageListDispatchContext.Provider value={dispatch}>
         {children}
       </MessageListDispatchContext.Provider>

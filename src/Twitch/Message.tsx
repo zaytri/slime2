@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
 import { AfterRenderCallback } from '../global'
+import { useMessageListDispatch } from './contexts/MessageList'
 
 import type { TwitchMessage } from './types'
-import { useMessageListDispatch } from './Context'
 
 type MessageProps = {
   data: TwitchMessage
