@@ -28,10 +28,9 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "npm run no-minify && react-scripts build",
+    "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "no-minify": "set \"INLINE_RUNTIME_CHUNK=false\""
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": [
