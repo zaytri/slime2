@@ -3,7 +3,6 @@ import { getTokenInfo } from '@twurple/auth'
 import { MessageListProvider } from './contexts/MessageList'
 import { TwitchProvider } from './contexts/Twitch'
 import ChatHandler from './ChatHandler'
-import { CLIENT_ID, ACCESS_TOKEN, apiClient } from './helpers/authentication'
 import BadgeImages from './helpers/BadgeImages'
 import ChannelRewards from './helpers/ChannelRewards'
 import BetterTTV from './helpers/BetterTTV'
@@ -15,6 +14,7 @@ import usePronouns from './hooks/usePronouns'
 
 import type { HelixCheermoteList } from '@twurple/api'
 import type { Broadcaster, EmotePartInfo, OtherEmotes } from './types'
+import useTwitchAuthentication from './hooks/useTwitchAuthentication'
 
 export default function Twitch() {
   const [isTokenValid, setIsTokenValid] = useState(true)
@@ -26,11 +26,12 @@ export default function Twitch() {
   const [otherEmotes, setOtherEmotes] = useState<OtherEmotes>()
 
   const { loadPronounsMap } = usePronouns()
+  const { accessToken, clientId, apiClient } = useTwitchAuthentication()
 
   useEffect(() => {
     async function load() {
       // check if the token is valid
-      const tokenInfo = await getTokenInfo(ACCESS_TOKEN, CLIENT_ID).catch(
+      const tokenInfo = await getTokenInfo(accessToken, clientId).catch(
         _ => null,
       )
       if (!tokenInfo) {
@@ -52,7 +53,7 @@ export default function Twitch() {
         globalBadgeData,
         rewardData,
         cheermoteData,
-        _voidPronouns,
+        _,
         bttvEmotes,
         ffzEmotes,
       ] = await Promise.all([

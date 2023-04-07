@@ -1,19 +1,20 @@
 import { useEffect } from 'react'
 import { ChatClient } from '@twurple/chat'
-import { authProvider } from './helpers/authentication'
 import { useMessageListDispatch } from './contexts/MessageList'
 import TwitchChat from './MessageList'
+import { useBroadcaster } from './contexts/Twitch'
+import useMessageTransform from './hooks/useMessageTransform'
+import useTwitchAuthentication from './hooks/useTwitchAuthentication'
 
 import type { Listener } from '@d-fischer/typed-event-emitter'
 import type { TwitchMessage, TwitchMessageType } from './types'
-import { useBroadcaster } from './contexts/Twitch'
-import useMessageTransform from './hooks/useMessageTransform'
 
 /**
  * Uses the {@link ChatClient} to transform and save chat messages
  * into `MessageListContext`, which the user has access to
  */
 export default function TwitchChatClient() {
+  const { authProvider } = useTwitchAuthentication()
   const dispatch = useMessageListDispatch()
   const broadcaster = useBroadcaster()!
   const messageTransform = useMessageTransform()

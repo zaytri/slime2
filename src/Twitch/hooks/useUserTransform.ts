@@ -1,9 +1,9 @@
-import { apiClient } from '../helpers/authentication'
 import { useBadgeImages, useBroadcaster } from '../contexts/Twitch'
 
 import type { ChatUser } from '@twurple/chat'
 import type { TwitchUser } from '../types'
 import usePronouns from './usePronouns'
+import useTwitchAuthentication from './useTwitchAuthentication'
 
 const followCache = new Map<string, { date?: Date; expire: number }>()
 const FOLLOW_CACHE_EXPIRE_TIME = 1000 * 60 * 60 // 1 hour
@@ -12,6 +12,7 @@ const FOLLOW_CACHE_EXPIRE_TIME = 1000 * 60 * 60 // 1 hour
  * Hook that returns the function {@link userTransform}
  */
 export default function useUserTransform() {
+  const { apiClient } = useTwitchAuthentication()
   const { getPronouns } = usePronouns()
   const broadcaster = useBroadcaster()!
   const badgeImages = useBadgeImages()!

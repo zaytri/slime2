@@ -4,7 +4,7 @@ import type { TwitchMessage } from './Twitch/types'
 
 declare global {
   var slimeChat: {
-    token?: string
+    twitchToken?: string
     render: (data?: {
       message: TwitchMessage
       deleteMessage: () => void
