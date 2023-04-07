@@ -1,8 +1,9 @@
 import { apiClient } from '../helpers/authentication'
-import { useBadgeImages, useBroadcaster, usePronouns } from '../contexts/Twitch'
+import { useBadgeImages, useBroadcaster } from '../contexts/Twitch'
 
 import type { ChatUser } from '@twurple/chat'
 import type { TwitchUser } from '../types'
+import usePronouns from './usePronouns'
 
 const followCache = new Map<string, { date?: Date; expire: number }>()
 const FOLLOW_CACHE_EXPIRE_TIME = 1000 * 60 * 60 // 1 hour
@@ -11,8 +12,8 @@ const FOLLOW_CACHE_EXPIRE_TIME = 1000 * 60 * 60 // 1 hour
  * Hook that returns the function {@link userTransform}
  */
 export default function useUserTransform() {
+  const { getPronouns } = usePronouns()
   const broadcaster = useBroadcaster()!
-  const pronouns = usePronouns()!
   const badgeImages = useBadgeImages()!
 
   /**
@@ -38,7 +39,7 @@ export default function useUserTransform() {
       id: userId,
       userName,
       displayName,
-      pronouns: await pronouns.get(userName),
+      pronouns: await getPronouns(userName),
       badges: badgeImages.parse(badges),
       color,
       roles: {
@@ -67,9 +68,9 @@ export default function useUserTransform() {
   async function getFollowDate(userId: string): Promise<Date | undefined> {
     if (userId === broadcaster.id) return new Date(0)
 
-    let cached = followCache.get(userId)
+    let cachedData = followCache.get(userId)
 
-    if (!cached || cached.expire < Date.now()) {
+    if (!cachedData || cachedData.expire < Date.now()) {
       const followers = await apiClient.channels.getChannelFollowers(
         broadcaster.id,
         broadcaster.id,
@@ -78,11 +79,11 @@ export default function useUserTransform() {
 
       const [follower] = followers.data
       const date = follower?.followDate // follower could be undefined
-      cached = { date, expire: Date.now() + FOLLOW_CACHE_EXPIRE_TIME }
-      followCache.set(userId, cached)
+      cachedData = { date, expire: Date.now() + FOLLOW_CACHE_EXPIRE_TIME }
+      followCache.set(userId, cachedData)
     }
 
-    return cached.date
+    return cachedData.date
   }
 
   return userTransform

@@ -28,7 +28,7 @@ export type TwitchUser = {
   id: string
   userName: string
   displayName: string
-  pronouns: string | null
+  pronouns?: string
 
   // cosmetics
   badges: Badge[]

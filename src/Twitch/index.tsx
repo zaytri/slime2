@@ -6,12 +6,12 @@ import ChatHandler from './ChatHandler'
 import { CLIENT_ID, ACCESS_TOKEN, apiClient } from './helpers/authentication'
 import BadgeImages from './helpers/BadgeImages'
 import ChannelRewards from './helpers/ChannelRewards'
-import Pronouns from './helpers/Pronouns'
 import BetterTTV from './helpers/BetterTTV'
 import FrankerFaceZ from './helpers/FrankerFaceZ'
 import InvalidToken from '../components/InvalidToken'
 import Loading from '../components/Loading'
 import Connected from '../components/Connected'
+import usePronouns from './hooks/usePronouns'
 
 import type { HelixCheermoteList } from '@twurple/api'
 import type { Broadcaster, EmotePartInfo, OtherEmotes } from './types'
@@ -23,8 +23,9 @@ export default function Twitch() {
   const [channelRewards, setChannelRewards] = useState<ChannelRewards>()
   const [cheermoteList, setCheermoteList] = useState<HelixCheermoteList>()
   const [broadcaster, setBroadcaster] = useState<Broadcaster>()
-  const [pronouns, setPronouns] = useState<Pronouns>()
   const [otherEmotes, setOtherEmotes] = useState<OtherEmotes>()
+
+  const { loadPronounsMap } = usePronouns()
 
   useEffect(() => {
     async function load() {
@@ -51,7 +52,7 @@ export default function Twitch() {
         globalBadgeData,
         rewardData,
         cheermoteData,
-        pronounsInstance,
+        _voidPronouns,
         bttvEmotes,
         ffzEmotes,
       ] = await Promise.all([
@@ -59,7 +60,7 @@ export default function Twitch() {
         apiClient.chat.getGlobalBadges(),
         apiClient.channelPoints.getCustomRewards(user.id),
         apiClient.bits.getCheermotes(user.id),
-        Pronouns.create(),
+        loadPronounsMap(),
         BetterTTV.getEmotes('twitch', user.id),
         FrankerFaceZ.getEmotes('twitch', user.id),
       ])
@@ -67,7 +68,6 @@ export default function Twitch() {
       setBadgeImages(new BadgeImages(globalBadgeData, channelBadgeData))
       setChannelRewards(new ChannelRewards(rewardData))
       setCheermoteList(cheermoteData)
-      setPronouns(pronounsInstance)
 
       const emoteMap = new Map<string, EmotePartInfo>()
       if (bttvEmotes) {
@@ -106,7 +106,6 @@ export default function Twitch() {
         rewards={channelRewards!}
         cheermotes={cheermoteList!}
         badgeImages={badgeImages!}
-        pronouns={pronouns!}
         otherEmotes={otherEmotes!}
       >
         <MessageListProvider>
