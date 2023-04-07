@@ -10,7 +10,15 @@ const cache = new Map<string, CachedPronouns>()
 const pronounsMap = new Map<string, string>()
 let loaded = false
 
+/**
+ * Hook that returns the functions {@link loadPronounsMap}
+ * and {@link getPronouns}
+ */
 export default function usePronouns() {
+  /**
+   * Takes the array of all pronouns from {@link getAllPronouns} and inserts
+   * them into {@link pronounsMap} for easy read access
+   */
   async function loadPronounsMap() {
     if (loaded) return // pronouns map already loaded
 
@@ -24,6 +32,11 @@ export default function usePronouns() {
     loaded = true
   }
 
+  /**
+   * Returns the user's pronouns, or `undefined` if they have no pronouns set
+   *
+   * Result is cached for 5 minutes per user
+   */
   async function getPronouns(userName: string) {
     if (!loaded) return // pronouns map failed to load
 
@@ -42,20 +55,32 @@ export default function usePronouns() {
   return { loadPronounsMap, getPronouns }
 }
 
+/**
+ * Fetch the pronoun ID of the user
+ */
 async function getUserPronounId(userName: string) {
   const data = await get<User[]>(`/users/${userName}`)
-  if (!data) return null // if Alejo's server is down
+  if (!data) return // if Alejo's server is down
 
+  // pronouns API returns either
+  // an array that contains a single User
+  // or an empty array if that user hasn't set pronouns
   const [user] = data
-  if (!user) return null // user hasn't set pronouns
+  if (!user) return // no pronouns set
 
   return user.pronoun_id
 }
 
+/**
+ * Fetch the full array of {@link PronounsData}
+ */
 async function getAllPronouns() {
   return get<PronounsData[]>('/pronouns')
 }
 
+/**
+ * Fetch data from the pronouns API, returning null on any error
+ */
 async function get<T>(url: string) {
   return await pronounsInstance
     .get<T>(url)
