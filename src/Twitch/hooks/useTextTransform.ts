@@ -13,7 +13,7 @@ export default function useTextTransform() {
   const cheermotes = useCheermotes()!
 
   /**
-   * Transform a string into `TwitchPart[]`, given `emoteOffsets`
+   * Transform a string into {@link TwitchPart}[], given `emoteOffsets`
    *
    * Cheermotes will also be parsed if `cheer = true`
    */

@@ -17,7 +17,7 @@ export default function useUserTransform() {
   const badgeImages = useBadgeImages()!
 
   /**
-   * Transform `ChatUser` into `TwitchUser`,
+   * Transform {@link ChatUser} into {@link TwitchUser},
    * adding in pronouns, follow date, and a badge array
    */
   async function userTransform(user: ChatUser): Promise<TwitchUser> {
@@ -55,7 +55,7 @@ export default function useUserTransform() {
   }
 
   /**
-   * Returns the `Date` at which the user with the given `userId`
+   * Returns the {@link Date} at which the user with the given `userId`
    * followed the broadcaster's channel
    *
    * If the user ID matches the broadcaster, `new Date(0)` is returned to

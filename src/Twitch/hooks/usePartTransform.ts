@@ -16,7 +16,7 @@ export function usePartTransform() {
   const cheermotes = useCheermotes()!
 
   /**
-   * Transforms `ParsedMessageEmotePart` into `TwitchPart` with `type: 'emote'`
+   * Transforms {@link ParsedMessageEmotePart} into {@link TwitchPart} with `type: 'emote'`
    *
    * Emotes from 3rd party emote services override Twitch emotes
    */
@@ -56,7 +56,7 @@ export function usePartTransform() {
   }
 
   /**
-   * Transforms `BasicMessageCheermote` into `TwitchPart` with `type: 'cheer'`
+   * Transforms {@link BasicMessageCheermote} into {@link TwitchPart} with `type: 'cheer'`
    */
   function cheerPartTransform(
     basicMessageCheermote: BasicMessageCheermote,
@@ -88,11 +88,11 @@ export function usePartTransform() {
   }
 
   /**
-   * Transforms `ParsedMessageTextPart` into `TwitchPart[]`
+   * Transforms {@link ParsedMessageTextPart} into {@link TwitchPart}[]
    *
    * The text is split into an array between instances of 3rd party emotes,
-   * with the text parts being `TwitchPart`s with `type: 'text'` and the
-   * emote parts being `TwitchPart`s with `type: 'emote'`
+   * with the text parts being {@link TwitchPart}s with `type: 'text'` and the
+   * emote parts being {@link TwitchPart}s with `type: 'emote'`
    */
   function textPartTransform(
     parsedMessageTextPart: ParsedMessageTextPart,
@@ -119,7 +119,7 @@ export function usePartTransform() {
 }
 
 /**
- * When this regex is used in `String.prototype.split`, it will result in
+ * When this regex is used in {@link String.prototype.split}, it will result in
  * an array of strings split up by the emote names, with the emote names
  * included. If an emote name is at the beginning or end of the string,
  * then the array will include an empty string at the beginning or end.

@@ -14,10 +14,11 @@ export default function useMessageTransform() {
   const userTransform = useUserTransform()
 
   /**
-   * Transforms `PrivateMessage`/`UserNotice` from Twurple into `TwitchMessage`
+   * Transforms {@link PrivateMessage}/{@link UserNotice} from Twurple into
+   * {@link TwitchMessage}
    *
-   * Returns `undefined` if `UserNotice` doesn't contain a message
-   * `PrivateMessage` always contains a message
+   * Returns `undefined` if {@link UserNotice} doesn't contain a message
+   * {@link PrivateMessage} always contains a message
    */
   async function messageTransform(
     typeData: TwitchMessageType,
@@ -33,7 +34,7 @@ export default function useMessageTransform() {
       console.log('Twurple Data', twurpleMessage)
     }
 
-    // user notices don't always have user messages
+    // UserNotices don't always have user messages
     if (twurpleMessage instanceof UserNotice) {
       text = twurpleMessage.message?.value // message could be undefined
     }
