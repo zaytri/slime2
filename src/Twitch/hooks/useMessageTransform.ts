@@ -38,7 +38,7 @@ export default function useMessageTransform() {
     if (twurpleMessage instanceof UserNotice) {
       text = twurpleMessage.params.message
     }
-    if (!text || text === '') return
+    if (!text) return
 
     const { type } = typeData
 
@@ -89,7 +89,7 @@ export default function useMessageTransform() {
     const getReplyData = (tagPart: string) =>
       twurpleMessage.tags.get(`reply-parent-${tagPart}`) || ''
     const replyId = getReplyData('msg-id')
-    if (replyId !== '') {
+    if (replyId) {
       const reply = {
         id: replyId,
         text: getReplyData('msg-body'),

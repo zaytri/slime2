@@ -22,7 +22,7 @@ export default function useTextTransform() {
     emoteOffsets: Map<string, string[]>,
     cheer = false,
   ): TwitchPart[] {
-    if (messageText === '') return []
+    if (!messageText) return []
 
     const twurpleParts = parseChatMessage(
       messageText,
