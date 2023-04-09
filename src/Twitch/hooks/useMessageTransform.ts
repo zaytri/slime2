@@ -36,7 +36,7 @@ export default function useMessageTransform() {
 
     // UserNotices don't always have user messages
     if (twurpleMessage instanceof UserNotice) {
-      text = twurpleMessage.message?.value // message could be undefined
+      text = twurpleMessage.params.message
     }
     if (!text || text === '') return
 
