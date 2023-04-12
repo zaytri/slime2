@@ -20,7 +20,7 @@ slime-chat {
   font-family: Inter, Roobert, 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-size: 13px;
   color: black;
-  line-height: 1.25rem;
+  line-height: 1.25em;
 }
 
 slime-chat-message-list {
@@ -33,7 +33,7 @@ slime-chat-message-list {
 }
 
 slime-chat-message {
-  margin-top: 0.2rem;
+  margin-top: 0.2em;
 }
 
 .message-wrapper {
@@ -78,11 +78,11 @@ slime-chat-message {
 
 .emote,
 .cheer {
-  height: 1.75rem;
+  height: 1.75em;
   display: inline-block;
   vertical-align: middle;
-  margin-top: -0.25rem;
-  margin-bottom: -0.2rem;
+  margin-top: -0.25em;
+  margin-bottom: -0.2em;
 }
 
 .cheer-amount {
@@ -96,9 +96,10 @@ slime-chat-message {
 }
 
 .badge {
-  height: 1.125rem;
-  margin-right: 0.2rem;
+  height: 1.125em;
+  margin-right: 0.2em;
   display: inline-block;
-  margin-top: -0.25rem;
-  margin-bottom: -0.2rem;
+  margin-top: -0.25em;
+  margin-bottom: -0.2em;
+}
 }
