@@ -1,11 +1,14 @@
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
+import { useBroadcaster } from '../Twitch/contexts/Twitch'
 
 //* show this when the app is ready to read messages
 // use inline styles and absolute positioning to ensure that
 // the user doesn't accidentally override or hide them
 export default function Connected() {
   const [hidden, setHidden] = useState(false)
+  const broadcaster = useBroadcaster()
+
   useEffect(() => {
     setTimeout(() => {
       setHidden(true)
@@ -42,7 +45,7 @@ export default function Connected() {
           fontFamily: 'sans-serif',
         }}
       >
-        Connected!
+        Connected to <strong>{broadcaster?.userName}</strong>'s channel!
       </span>
     </motion.div>
   )

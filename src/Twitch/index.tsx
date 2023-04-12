@@ -100,19 +100,17 @@ export default function Twitch() {
   }
 
   return (
-    <>
+    <TwitchProvider
+      broadcaster={broadcaster!}
+      rewards={channelRewards!}
+      cheermotes={cheermoteList!}
+      badgeImages={badgeImages!}
+      otherEmotes={otherEmotes!}
+    >
       <Connected />
-      <TwitchProvider
-        broadcaster={broadcaster!}
-        rewards={channelRewards!}
-        cheermotes={cheermoteList!}
-        badgeImages={badgeImages!}
-        otherEmotes={otherEmotes!}
-      >
-        <MessageListProvider>
-          <ChatHandler />
-        </MessageListProvider>
-      </TwitchProvider>
-    </>
+      <MessageListProvider>
+        <ChatHandler />
+      </MessageListProvider>
+    </TwitchProvider>
   )
 }
