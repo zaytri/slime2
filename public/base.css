@@ -27,9 +27,27 @@ html {
   font-family: Nunito, Helvetica, Arial, sans-serif;
   font-size: 0.8125rem;
   color: white;
-  text-shadow: 0 0 1px black, 0 0 2px black, 0 0 1px black, 0 0 2px black,
-    0 0 1px black, 0 0 2px black, 0 0 1px black, 0 0 2px black, 0 0 1px black,
-    0 0 2px black, 0 0 1px black, 0 0 2px black;
+  --outlineColor: rgb(0, 0, 0);
+  --outlineColorLowOpacity: rgba(0, 0, 0, 0.25);
+  text-shadow:
+    /* 1px offset top **********/ 0 -1px var(--outlineColor),
+    /* 1px offset bottom *******/ 0 1px var(--outlineColor),
+    /* 1px offset left *********/ -1px 0 var(--outlineColor),
+    /* 1px offset right ********/ 1px 0 var(--outlineColor),
+    /* 2px offset top **********/ 0 -2px var(--outlineColor),
+    /* 2px offset bottom *******/ 0 2px var(--outlineColor),
+    /* 2px offset left *********/ -2px 0 var(--outlineColor),
+    /* 2px offset right ********/ 2px 0 var(--outlineColor),
+    /* 1px offset top left *****/ -1px -1px var(--outlineColor),
+    /* 1px offset top right ****/ 1px -1px var(--outlineColor),
+    /* 1px offset bottom left **/ -1px 1px var(--outlineColor),
+    /* 1px offset bottom right */ 1px 1px var(--outlineColor),
+    /* 2px offset top left *****/ -2px -2px var(--outlineColorLowOpacity),
+    /* 2px offset top right ****/ 2px -2px var(--outlineColorLowOpacity),
+    /* 2px offset bottom left **/ -2px 2px var(--outlineColorLowOpacity),
+    /* 2px offset bottom right */ 2px 2px var(--outlineColorLowOpacity),
+    /* 1px blur ****************/ 0 0 1px var(--outlineColor),
+    /* 2px blur ****************/ 0 0 2px var(--outlineColor);
   line-height: 1.25rem;
   font-weight: 800;
 }
