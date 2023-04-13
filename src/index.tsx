@@ -6,7 +6,9 @@ import App from './App'
 slime2.onMessage ||= () => {}
 slime2.ready ||= () => {}
 
-const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
+const root = ReactDOM.createRoot(
+  document.getElementById('slime2-root') as HTMLElement,
+)
 root.render(
   <React.StrictMode>
     <App />

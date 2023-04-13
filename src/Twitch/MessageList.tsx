@@ -10,5 +10,5 @@ export default function MessageList() {
     })
   }
 
-  return <slime-chat-message-list>{renderMessages()}</slime-chat-message-list>
+  return <div id='slime2-chat-list'>{renderMessages()}</div>
 }

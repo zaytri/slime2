@@ -17,14 +17,6 @@ declare global {
       | undefined
     ready: (data?: { test: (message: TwitchMessage) => void }) => void
   }
-
-  namespace JSX {
-    interface IntrinsicElements {
-      ['slime-chat']: CustomElement
-      ['slime-chat-message-list']: CustomElement
-      ['slime-chat-message']: CustomElement
-    }
-  }
 }
 
 type CustomElement = React.DetailedHTMLProps<

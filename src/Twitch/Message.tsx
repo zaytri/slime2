@@ -63,9 +63,10 @@ export default function Message({ data }: MessageProps) {
   if (!userRender) return null
 
   return (
-    <slime-chat-message
+    <div
+      id='slime2-chat-message'
       dangerouslySetInnerHTML={{ __html: innerHTML }}
       ref={ref}
-    ></slime-chat-message>
+    ></div>
   )
 }

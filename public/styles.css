@@ -7,13 +7,7 @@
   padding: 0;
 }
 
-slime-chat,
-slime-chat-message,
-slime-chat-message-list {
-  display: block;
-}
-
-slime-chat {
+#slime2-root {
   position: absolute;
   inset: 0;
   overflow: hidden;
@@ -23,7 +17,7 @@ slime-chat {
   line-height: 1.25em;
 }
 
-slime-chat-message-list {
+#slime2-chat-list {
   display: flex;
   flex-direction: column;
   align-content: start;
@@ -32,7 +26,7 @@ slime-chat-message-list {
   width: 100%;
 }
 
-slime-chat-message {
+#slime2-chat-message {
   margin-top: 0.2em;
 }
 
@@ -102,4 +96,14 @@ slime-chat-message {
   margin-top: -0.25em;
   margin-bottom: -0.2em;
 }
+
+#slime2-chat-message {
+  color: white;
+  text-shadow: 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black,
+    0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black,
+    0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black,
+    0 0 2px black, 0 0 2px black;
+  font-size: 20px;
+  font-family: 'Nice Sugar';
+  margin-top: 0.5em;
 }
