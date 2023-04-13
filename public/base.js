@@ -56,9 +56,20 @@ var slime2Chat = {
     messageClone.find('.badges').append(badgeClone)
   })
 
+    let name = user.displayName
+
+    // handle localized display names
+    // https://blog.twitch.tv/en/2016/08/22/localized-display-names-e00ee8d3250a/
+    if (user.displayName.toLowerCase() !== user.userName.toLowerCase()) {
+      name = `${user.displayName} (${user.userName})`
+    }
+
   // insert in the user's pronouns, display name, and name color
   messageClone.find('.pronouns').text(user.pronouns).css('color', user.color)
-  messageClone.find('.username').text(user.displayName).css('color', user.color)
+    messageClone
+      .find('.username')
+      .text(user.displayName)
+      .css('color', user.color)
 
   return [messageClone]
   },
