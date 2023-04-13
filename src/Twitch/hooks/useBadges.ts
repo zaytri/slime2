@@ -34,8 +34,9 @@ export function useBadgesLoader() {
           apiClient.chat.getGlobalBadges(),
         ])
 
-        setBadges(channelBadges)
+        // channelBadges needs to be after globalBadges to override sub badge
         setBadges(globalBadges)
+        setBadges(channelBadges)
       }
 
       setLoading(false)
@@ -48,15 +49,15 @@ export function useBadgesLoader() {
   return { loading }
 }
 
-function setBadges(badgeSets: HelixChatBadgeSet[]) {
-  badgeSets.forEach(badgeSet => {
+function setBadges(badges: HelixChatBadgeSet[]) {
+  badges.forEach(badge => {
     const versionMap = new Map<string, HelixChatBadgeVersion>()
 
-    badgeSet.versions.forEach(version => {
+    badge.versions.forEach(version => {
       versionMap.set(version.id, version)
     })
 
-    badgeMap.set(badgeSet.id, versionMap)
+    badgeMap.set(badge.id, versionMap)
   })
 }
 
