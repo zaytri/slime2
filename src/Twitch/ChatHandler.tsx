@@ -31,7 +31,9 @@ export default function TwitchChatClient() {
 
   const chatClient = chatClientRef.current
 
-  chatClient.connect()
+  if (!chatClient.isConnected) {
+    chatClient.connect()
+  }
 
   // -------------------------
   //  Chat Dispatch Functions
