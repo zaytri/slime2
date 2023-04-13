@@ -52,7 +52,7 @@ export default function TwitchChatClient() {
         'background-color: black; color: white; padding: 5px 10px; border-radius: 100px; border: 2px solid white',
       )
 
-      console.log('SlimeChat Data', message)
+      console.log('Slime2 Message Data', message)
 
       console.log(
         `%cMessage ${message.id}`,

@@ -31,7 +31,7 @@ export default function useTransformMessage() {
         'background-color: black; color: white; padding: 5px 10px; border-radius: 10px 10px 0 0; display: inline-block; margin-top: 10px; border: 1px solid gray;',
       )
 
-      console.log('Twurple Data', twurpleMessage)
+      console.log('Twurple Message Data', twurpleMessage)
     }
 
     // UserNotices don't always have user messages
