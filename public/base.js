@@ -1,8 +1,9 @@
-slime2Setup = {
+var slime2Setup = {
   permissions: ['chat'],
 }
 
-slime2Chat.onMessage = ({ message }) => {
+var slime2Chat = {
+  onMessage: ({ message }) => {
   // get useful data from message
   const { parts, user } = message
 
@@ -60,6 +61,7 @@ slime2Chat.onMessage = ({ message }) => {
   messageClone.find('.username').text(user.displayName).css('color', user.color)
 
   return [messageClone]
+  },
 }
 
 // given an ID, clone the template and wrap it with jQuery
