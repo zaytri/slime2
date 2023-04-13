@@ -1,4 +1,8 @@
-slime2.onMessage = ({ message }) => {
+slime2Setup = {
+  permissions: ['chat'],
+}
+
+slime2Chat.onMessage = ({ message }) => {
   // get useful data from message
   const { parts, user } = message
 

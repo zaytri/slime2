@@ -40,6 +40,10 @@ export default function TwitchChatClient() {
   // -------------------------
 
   function addMessage(message?: TwitchMessage) {
+    if (!slime2Setup.permissions.includes('chat')) {
+      throw new Error("This overlay doesn't have permission to read chat!")
+    }
+
     if (!message) return
 
     if (process.env.NODE_ENV !== 'production') {
@@ -59,7 +63,7 @@ export default function TwitchChatClient() {
   }
 
   // lets the user send test messages
-  slime2.ready({ test: addMessage })
+  slime2Chat.ready({ test: addMessage })
 
   function clearMessages(userId: string | null = null) {
     dispatch({ type: 'clear', payload: userId })

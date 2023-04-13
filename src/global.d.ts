@@ -3,10 +3,13 @@ import type JQuery from 'jquery'
 import type { TwitchMessage } from './Twitch/types'
 
 declare global {
-  var slime2: {
+  var slime2Login: {
     twitch: {
       chat?: string
     }
+  }
+
+  var slime2Chat: {
     onMessage: (data?: {
       message: TwitchMessage
       deleteMessage: () => void
@@ -16,6 +19,10 @@ declare global {
       | void
       | undefined
     ready: (data?: { test: (message: TwitchMessage) => void }) => void
+  }
+
+  var slime2Setup: {
+    permissions: string[]
   }
 }
 
