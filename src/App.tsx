@@ -1,7 +1,7 @@
-import Twitch from './Twitch'
+import TokenCheck from './Twitch/TokenCheck'
 
 function App() {
-  return <Twitch />
+  return <TokenCheck />
 }
 
 export default App

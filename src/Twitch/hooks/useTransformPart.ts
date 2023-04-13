@@ -3,24 +3,25 @@ import type {
   ParsedMessageEmotePart,
   BasicMessageCheermote,
 } from '@twurple/common'
-import { useCheermotes, useOtherEmotes } from '../contexts/Twitch'
 
 import type { TwitchPart } from '../types'
+import useCheermotes from './useCheermotes'
+import useOtherEmotes from './useOtherEmotes'
 
 /**
- * Hook that returns the functions {@link textPartTransform},
- * {@link emotePartTransform}, and {@link cheerPartTransform}
+ * Hook that returns the functions {@link transfromTextPart},
+ * {@link transformEmotePart}, and {@link transformCheerPart}
  */
-export function usePartTransform() {
-  const otherEmotes = useOtherEmotes()!
-  const cheermotes = useCheermotes()!
+export function useTransformPart() {
+  const { getOtherEmote, getOtherEmoteNames } = useOtherEmotes()
+  const { getCheermote } = useCheermotes()
 
   /**
    * Transforms {@link ParsedMessageEmotePart} into {@link TwitchPart} with `type: 'emote'`
    *
    * Emotes from 3rd party emote services override Twitch emotes
    */
-  function emotePartTransform(
+  function transformEmotePart(
     parsedMessageEmotePart: ParsedMessageEmotePart,
     fullMessageText: string,
   ): TwitchPart {
@@ -29,7 +30,7 @@ export function usePartTransform() {
     const text = fullMessageText.slice(position, position + length)
 
     // check if a 3rd party emote can override this Twitch emote
-    const otherEmote = otherEmotes.get(text)
+    const otherEmote = getOtherEmote(text)
     if (otherEmote)
       return {
         type: 'emote',
@@ -58,20 +59,15 @@ export function usePartTransform() {
   /**
    * Transforms {@link BasicMessageCheermote} into {@link TwitchPart} with `type: 'cheer'`
    */
-  function cheerPartTransform(
+  function transformCheerPart(
     basicMessageCheermote: BasicMessageCheermote,
     fullMessageText: string,
   ): TwitchPart {
     const { name, amount, position, length } = basicMessageCheermote
 
-    const cheerInfo = cheermotes.getCheermoteDisplayInfo(
+    const cheerInfo = getCheermote(
       basicMessageCheermote.name,
       basicMessageCheermote.amount,
-      {
-        background: 'light',
-        scale: '4',
-        state: 'animated',
-      },
     )
     const { color, url } = cheerInfo
 
@@ -94,12 +90,12 @@ export function usePartTransform() {
    * with the text parts being {@link TwitchPart}s with `type: 'text'` and the
    * emote parts being {@link TwitchPart}s with `type: 'emote'`
    */
-  function textPartTransform(
+  function transformTextPart(
     parsedMessageTextPart: ParsedMessageTextPart,
   ): TwitchPart[] {
     const { text } = parsedMessageTextPart
 
-    const regex = createEmoteRegex(Array.from(otherEmotes.keys()))
+    const regex = createEmoteRegex(getOtherEmoteNames())
     const textParts = text.split(regex).filter(part => {
       // filter out empty strings due to emotes being
       // at the beginning or end of of the text
@@ -107,7 +103,7 @@ export function usePartTransform() {
     })
 
     return textParts.map(part => {
-      const emote = otherEmotes.get(part)
+      const emote = getOtherEmote(part)
       if (emote) {
         return { type: 'emote', text: part, emote }
       }
@@ -115,7 +111,7 @@ export function usePartTransform() {
     })
   }
 
-  return { textPartTransform, emotePartTransform, cheerPartTransform }
+  return { transformTextPart, transformEmotePart, transformCheerPart }
 }
 
 /**

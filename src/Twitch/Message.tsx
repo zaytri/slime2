@@ -26,7 +26,7 @@ export default function Message({ data }: MessageProps) {
   let fragment: DocumentFragment | undefined = undefined
   let callback: AfterRenderCallback | undefined = undefined
 
-  const userRender = slimeChat.render({
+  const userRender = slime2.onMessage({
     message: data,
     deleteMessage: userRemoveMessage,
   })

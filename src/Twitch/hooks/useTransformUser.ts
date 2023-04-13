@@ -1,9 +1,9 @@
-import { useBadgeImages, useBroadcaster } from '../contexts/Twitch'
-
 import type { ChatUser } from '@twurple/chat'
 import type { TwitchUser } from '../types'
 import usePronouns from './usePronouns'
-import useTwitchAuthentication from './useTwitchAuthentication'
+import { apiClient } from '../helpers/twitchAuthentication'
+import { useTokenInfo } from './useTokenInfo'
+import useBadges from './useBadges'
 
 const followCache = new Map<string, { date?: Date; expire: number }>()
 const FOLLOW_CACHE_EXPIRE_TIME = 1000 * 60 * 60 // 1 hour
@@ -11,17 +11,16 @@ const FOLLOW_CACHE_EXPIRE_TIME = 1000 * 60 * 60 // 1 hour
 /**
  * Hook that returns the function {@link userTransform}
  */
-export default function useUserTransform() {
-  const { apiClient } = useTwitchAuthentication()
+export default function useTransformUser() {
   const { getPronouns } = usePronouns()
-  const broadcaster = useBroadcaster()!
-  const badgeImages = useBadgeImages()!
+  const { broadcaster } = useTokenInfo()
+  const { transformBadges } = useBadges()
 
   /**
    * Transform {@link ChatUser} into {@link TwitchUser},
    * adding in pronouns, follow date, and a badge array
    */
-  async function userTransform(user: ChatUser): Promise<TwitchUser> {
+  async function transformUser(user: ChatUser): Promise<TwitchUser> {
     const {
       userId,
       userName,
@@ -41,7 +40,7 @@ export default function useUserTransform() {
       userName,
       displayName,
       pronouns: await getPronouns(userName),
-      badges: badgeImages.parse(badges),
+      badges: transformBadges(badges),
       color,
       roles: {
         broadcaster: isBroadcaster,
@@ -87,5 +86,5 @@ export default function useUserTransform() {
     return cachedData.date
   }
 
-  return userTransform
+  return { transformUser }
 }

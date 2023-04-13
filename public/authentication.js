@@ -1,6 +1,8 @@
-var slimeChat = {
+var slime2 = {
   //! Do not share your token with anyone!
   //! Theme Developers: Remember to remove your token before release!
   // Go to https://slime.chat/token to get your token
-  twitchToken: 'your token here',
+  twitch: {
+    chat: 'your token here',
+  },
 }

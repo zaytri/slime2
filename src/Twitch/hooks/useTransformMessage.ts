@@ -1,17 +1,17 @@
 import { PrivateMessage, UserNotice } from '@twurple/chat'
 
 import type { TwitchMessage, TwitchMessageType } from '../types'
-import useTextTransform from './useTextTransform'
-import useUserTransform from './useUserTransform'
-import { useRewards } from '../contexts/Twitch'
+import useTransformText from './useTransformText'
+import useTransformUser from './useTransformUser'
+import useRewards from './useRewards'
 
 /**
- * Hook that returns the function {@link messageTransform}
+ * Hook that returns the function {@link transformMessage}
  */
-export default function useMessageTransform() {
-  const rewards = useRewards()!
-  const textTransform = useTextTransform()
-  const userTransform = useUserTransform()
+export default function useTransformMessage() {
+  const { getReward } = useRewards()
+  const { transformText } = useTransformText()
+  const { transformUser } = useTransformUser()
 
   /**
    * Transforms {@link PrivateMessage}/{@link UserNotice} from Twurple into
@@ -20,7 +20,7 @@ export default function useMessageTransform() {
    * Returns `undefined` if {@link UserNotice} doesn't contain a message
    * {@link PrivateMessage} always contains a message
    */
-  async function messageTransform(
+  async function transformMessage(
     typeData: TwitchMessageType,
     twurpleMessage: PrivateMessage | UserNotice,
     text?: string,
@@ -49,9 +49,9 @@ export default function useMessageTransform() {
       date: twurpleMessage.date,
 
       text,
-      parts: textTransform(text, twurpleMessage.emoteOffsets, type === 'cheer'),
+      parts: transformText(text, twurpleMessage.emoteOffsets, type === 'cheer'),
 
-      user: await userTransform(twurpleMessage.userInfo),
+      user: await transformUser(twurpleMessage.userInfo),
 
       tags: twurpleMessage.tags,
       randomSeed: Math.random(),
@@ -71,7 +71,7 @@ export default function useMessageTransform() {
     // channel point redemption message
     const rewardId = twurpleMessage.tags.get('custom-reward-id')
     if (rewardId) {
-      const reward = rewards.get(rewardId)
+      const reward = getReward(rewardId)
       if (reward) {
         const redeem = {
           id: reward.id,
@@ -107,5 +107,5 @@ export default function useMessageTransform() {
     return twitchMessage
   }
 
-  return messageTransform
+  return { transformMessage }
 }

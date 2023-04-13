@@ -1,9 +1,13 @@
 import { ScaleLoader } from 'react-spinners'
 
+type LoadingProps = {
+  message: string
+}
+
 //* show this while the app is initially loading data
 // use inline styles and absolute positioning to ensure that
 // the user doesn't accidentally override or hide them
-export default function Loading() {
+export default function Loading({ message }: LoadingProps) {
   const loader = (
     <ScaleLoader
       color='rgb(190, 242, 100)'
@@ -40,7 +44,7 @@ export default function Loading() {
           fontFamily: 'sans-serif',
         }}
       >
-        Connecting to Chat...
+        {message}
       </span>
       {loader}
     </div>

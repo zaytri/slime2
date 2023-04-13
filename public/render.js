@@ -1,4 +1,4 @@
-slimeChat.render = ({ message }) => {
+slime2.onMessage = ({ message }) => {
   // get useful data from message
   const { parts, user } = message
 

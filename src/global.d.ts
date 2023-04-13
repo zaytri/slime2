@@ -3,9 +3,11 @@ import type JQuery from 'jquery'
 import type { TwitchMessage } from './Twitch/types'
 
 declare global {
-  var slimeChat: {
-    twitchToken?: string
-    render: (data?: {
+  var slime2: {
+    twitch: {
+      chat?: string
+    }
+    onMessage: (data?: {
       message: TwitchMessage
       deleteMessage: () => void
     }) =>

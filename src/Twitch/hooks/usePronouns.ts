@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { useEffect, useState } from 'react'
 
 const pronounsInstance = axios.create({
   baseURL: 'https://pronouns.alejo.io/api',
@@ -11,27 +12,9 @@ const pronounsMap = new Map<string, string>()
 let loaded = false
 
 /**
- * Hook that returns the functions {@link loadPronounsMap}
- * and {@link getPronouns}
+ * Hook that returns the function {@link getPronouns}
  */
 export default function usePronouns() {
-  /**
-   * Takes the array of all pronouns from {@link getAllPronouns} and inserts
-   * them into {@link pronounsMap} for easy read access
-   */
-  async function loadPronounsMap() {
-    if (loaded) return // pronouns map already loaded
-
-    const allPronouns = await getAllPronouns()
-    if (!allPronouns) return // if Alejo's server is down
-
-    allPronouns.forEach(({ name: prounounId, display: pronouns }) => {
-      pronounsMap.set(prounounId, pronouns)
-    })
-
-    loaded = true
-  }
-
   /**
    * Returns the user's pronouns, or `undefined` if they have no pronouns set
    *
@@ -52,7 +35,40 @@ export default function usePronouns() {
     return cachedData.pronouns
   }
 
-  return { loadPronounsMap, getPronouns }
+  return { getPronouns }
+}
+
+/**
+ * Hook that returns if the pronouns map is loading or not
+ */
+export function usePronounsLoader() {
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    /**
+     * Takes the array of all pronouns from {@link getAllPronouns} and inserts
+     * them into {@link pronounsMap} for easy read access
+     */
+    async function loadPronounsMap() {
+      if (!loaded) {
+        const allPronouns = await getAllPronouns()
+
+        if (allPronouns) {
+          // null if pronouns API is down
+          allPronouns.forEach(({ name: prounounId, display: pronouns }) => {
+            pronounsMap.set(prounounId, pronouns)
+          })
+        }
+      }
+
+      setLoading(false)
+      loaded = true
+    }
+
+    loadPronounsMap()
+  }, [])
+
+  return { loading }
 }
 
 /**

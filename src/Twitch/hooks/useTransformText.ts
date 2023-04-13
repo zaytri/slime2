@@ -1,23 +1,23 @@
 import { parseChatMessage } from '@twurple/common'
-import { useCheermotes } from '../contexts/Twitch'
-import { usePartTransform } from './usePartTransform'
+import { useTransformPart } from './useTransformPart'
 
 import type { TwitchPart } from '../types'
+import useCheermotes from './useCheermotes'
 
 /**
- * Hook that returns the function {@link textTransform}
+ * Hook that returns the function {@link transformText}
  */
-export default function useTextTransform() {
-  const { textPartTransform, cheerPartTransform, emotePartTransform } =
-    usePartTransform()
-  const cheermotes = useCheermotes()!
+export default function useTransformText() {
+  const { transformTextPart, transformCheerPart, transformEmotePart } =
+    useTransformPart()
+  const { getCheermoteNames } = useCheermotes()
 
   /**
    * Transform a string into {@link TwitchPart}[], given `emoteOffsets`
    *
    * Cheermotes will also be parsed if `cheer = true`
    */
-  function textTransform(
+  function transformText(
     messageText: string,
     emoteOffsets: Map<string, string[]>,
     cheer = false,
@@ -27,7 +27,7 @@ export default function useTextTransform() {
     const twurpleParts = parseChatMessage(
       messageText,
       emoteOffsets,
-      cheer ? cheermotes.getPossibleNames() : undefined,
+      cheer ? getCheermoteNames() : undefined,
     )
 
     const parts: TwitchPart[] = []
@@ -35,13 +35,13 @@ export default function useTextTransform() {
       switch (part.type) {
         default:
         case 'text':
-          parts.push(...textPartTransform(part))
+          parts.push(...transformTextPart(part))
           break
         case 'cheer':
-          parts.push(cheerPartTransform(part, messageText))
+          parts.push(transformCheerPart(part, messageText))
           break
         case 'emote':
-          parts.push(emotePartTransform(part, messageText))
+          parts.push(transformEmotePart(part, messageText))
           break
       }
     })
@@ -49,5 +49,5 @@ export default function useTextTransform() {
     return parts
   }
 
-  return textTransform
+  return { transformText }
 }

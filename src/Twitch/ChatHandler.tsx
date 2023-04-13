@@ -1,23 +1,37 @@
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { ChatClient } from '@twurple/chat'
 import { useMessageListDispatch } from './contexts/MessageList'
 import TwitchChat from './MessageList'
-import { useBroadcaster } from './contexts/Twitch'
-import useMessageTransform from './hooks/useMessageTransform'
-import useTwitchAuthentication from './hooks/useTwitchAuthentication'
+import useTransformMessage from './hooks/useTransformMessage'
+import { authProvider } from './helpers/twitchAuthentication'
 
 import type { Listener } from '@d-fischer/typed-event-emitter'
 import type { TwitchMessage, TwitchMessageType } from './types'
+import { useTokenInfo } from './hooks/useTokenInfo'
 
 /**
  * Uses the {@link ChatClient} to transform and save chat messages
  * into `MessageListContext`, which the user has access to
  */
 export default function TwitchChatClient() {
-  const { authProvider } = useTwitchAuthentication()
   const dispatch = useMessageListDispatch()
-  const broadcaster = useBroadcaster()!
-  const messageTransform = useMessageTransform()
+  const { broadcaster } = useTokenInfo()
+  const { transformMessage } = useTransformMessage()
+
+  // ----------------------------
+  //  Chat Client Initialization
+  // ----------------------------
+
+  const chatClientRef = useRef(
+    new ChatClient({
+      authProvider: authProvider,
+      channels: [broadcaster.userName],
+    }),
+  )
+
+  const chatClient = chatClientRef.current
+
+  chatClient.connect()
 
   // -------------------------
   //  Chat Dispatch Functions
@@ -43,7 +57,7 @@ export default function TwitchChatClient() {
   }
 
   // lets the user send test messages
-  slimeChat.ready({ test: addMessage })
+  slime2.ready({ test: addMessage })
 
   function clearMessages(userId: string | null = null) {
     dispatch({ type: 'clear', payload: userId })
@@ -52,17 +66,6 @@ export default function TwitchChatClient() {
   function removeMessage(messageId: string) {
     dispatch({ type: 'remove', payload: messageId })
   }
-
-  // ----------------------------
-  //  Chat Client Initialization
-  // ----------------------------
-
-  const chatClient = new ChatClient({
-    authProvider: authProvider,
-    channels: [broadcaster.userName],
-  })
-
-  chatClient.connect()
 
   // -----------------
   //  Event Listeners
@@ -81,12 +84,12 @@ export default function TwitchChatClient() {
           ? { type: 'cheer', cheer: { amount: bits } }
           : { type: 'basic' }
 
-        const message = await messageTransform(typeData, msg, text)
+        const message = await transformMessage(typeData, msg, text)
         addMessage(message)
       }),
 
       chatClient.onAction(async (_, __, text, msg) => {
-        const message = await messageTransform({ type: 'action' }, msg, text)
+        const message = await transformMessage({ type: 'action' }, msg, text)
         addMessage(message)
       }),
 
@@ -100,7 +103,7 @@ export default function TwitchChatClient() {
           resub: { months: info.months, tier: info.plan },
         }
 
-        const message = await messageTransform(typeData, msg)
+        const message = await transformMessage(typeData, msg)
         addMessage(message)
       }),
 
@@ -110,7 +113,7 @@ export default function TwitchChatClient() {
           announcement: { color: info.color },
         }
 
-        const message = await messageTransform(typeData, msg)
+        const message = await transformMessage(typeData, msg)
         addMessage(message)
       }),
 
@@ -139,7 +142,6 @@ export default function TwitchChatClient() {
       listeners.forEach(listener => {
         if (listener) chatClient.removeListener(listener)
       })
-      chatClient.quit()
     }
   })
 
