@@ -1,66 +1,66 @@
-import { useEffect, useRef, useState } from 'react'
-import { AfterRenderCallback } from '../global'
+import { memo, useEffect, useRef, useState } from 'react'
 import { useMessageListDispatch } from './contexts/MessageList'
+import imagesLoaded from 'imagesloaded'
 
 import type { TwitchMessage } from './types'
 
-type MessageProps = {
-  data: TwitchMessage
-}
-
-export default function Message({ data }: MessageProps) {
+function Message(props: TwitchMessage) {
   const [rendered, setRendered] = useState(false)
   const dispatch = useMessageListDispatch()
+  const ref = useRef<HTMLDivElement>(null)
+
+  // render twice, running the callback function on the second render
+  useEffect(() => {
+    setRendered(true)
+  }, [])
 
   // allows the user to manually remove messages
   function userRemoveMessage() {
-    dispatch({ type: 'remove', payload: data.id })
+    dispatch({ type: 'remove', payload: props.id })
   }
 
-  // create a temporary element
-  // necessary because it's not possible to directly get the
-  // innerHTML string of a DocumentFragment
-  const tempRoot = document.createElement('div')
-
-  // get the user-defined fragment and after render callback
-  let fragment: DocumentFragment | undefined = undefined
-  let callback: AfterRenderCallback | undefined = undefined
-
+  // send message data and deleteMessage function to the user,
+  // getting [userFragment, userCallback] in return
   const userRender = slime2Chat.onMessage({
-    message: data,
+    message: props,
     deleteMessage: userRemoveMessage,
   })
+
+  // if user returned a falsey value, render nothing
+  if (!userRender) return null
+
+  let innerHTML = ''
   if (userRender) {
     const [userFragment, userCallback] = userRender
-    if (userFragment instanceof DocumentFragment) {
-      fragment = userFragment
-    } else if (userFragment) {
-      fragment = userFragment[0]
-    }
-    callback = userCallback
-  }
 
-  // append the fragment to the temporary element, get the innerHTML of it as
-  // a string, then remove the temporary element
-  let innerHTML = ''
-  if (fragment) {
+    // if user returned a falsey value, render nothing
+    if (!userFragment) {
+      return null
+    }
+
+    const fragment =
+      userFragment instanceof DocumentFragment
+        ? userFragment // DocumentFragment
+        : userFragment[0] // JQuery<DocumentFragment>
+
+    // create a temporary element to get the innerHTML of the fragment,
+    // because it's not possible to directly get that from a DocumentFragment
+    const tempRoot = document.createElement('div')
     tempRoot.appendChild(fragment)
     innerHTML = tempRoot.innerHTML
     tempRoot.remove()
-  }
 
-  // runs the callback function and passes the outer container of the message
-  // as a HTMLDivElement to the user so that they can use that chat message
-  // element specifically without needing to query it themselves
-  const ref = useRef<HTMLDivElement>(null)
-  useEffect(() => {
-    setRendered(true)
-    if (rendered && callback) {
-      callback(ref.current!.firstElementChild as HTMLElement)
+    // runs the user-defined callback function once all the images of the
+    // message have been loaded, allowing the user to accurately get the
+    // dimensions of the message
+    if (rendered && userCallback && ref.current) {
+      // use the element that the user defined
+      const element = ref.current.firstElementChild as HTMLElement
+      imagesLoaded(element, () => {
+        userCallback(element)
+      })
     }
-  }, [rendered, callback])
-
-  if (!userRender) return null
+  }
 
   return (
     <div
@@ -70,3 +70,7 @@ export default function Message({ data }: MessageProps) {
     ></div>
   )
 }
+
+// memo necessary so that messages don't get re-rendered
+// when the message list is updated
+export default memo(Message)

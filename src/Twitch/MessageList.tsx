@@ -6,7 +6,7 @@ export default function MessageList() {
 
   function renderMessages() {
     return chat.map(messageData => {
-      return <Message key={messageData.id} data={messageData} />
+      return <Message key={messageData.id} {...messageData} />
     })
   }
 
