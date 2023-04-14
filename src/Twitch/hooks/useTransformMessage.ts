@@ -54,7 +54,6 @@ export default function useTransformMessage() {
       user: await transformUser(twurpleMessage.userInfo),
 
       tags: twurpleMessage.tags,
-      randomSeed: Math.random(),
       ...typeData,
     }
 

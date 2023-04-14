@@ -63,7 +63,6 @@ export type Message = {
   parts: TwitchPart[]
 
   tags: Map<string, string>
-  randomSeed: number
 }
 
 // every relevant TwitchMessage variation in twurple
