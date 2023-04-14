@@ -4,7 +4,7 @@ import type { TwitchMessage } from './Twitch/types'
 
 declare global {
   var slime2Login: {
-    twitch: {
+    twitch?: {
       chat?: string
     }
   }
