@@ -66,10 +66,7 @@ var slime2Chat = {
 
     // insert in the user's pronouns, display name, and name color
     messageClone.find('.pronouns').text(user.pronouns).css('color', user.color)
-    messageClone
-      .find('.username')
-      .text(user.displayName)
-      .css('color', user.color)
+    messageClone.find('.username').text(name).css('color', user.color)
 
     return [messageClone]
   },
