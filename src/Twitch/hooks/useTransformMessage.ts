@@ -25,7 +25,10 @@ export default function useTransformMessage() {
     twurpleMessage: PrivateMessage | UserNotice,
     text?: string,
   ): Promise<TwitchMessage | undefined> {
-    if (process.env.NODE_ENV !== 'production') {
+    if (
+      process.env.NODE_ENV !== 'production' &&
+      process.env.REACT_APP_DEBUG_MODE
+    ) {
       console.log(
         `%cMessage ${twurpleMessage.id}`,
         'background-color: black; color: white; padding: 5px 10px; border-radius: 10px 10px 0 0; display: inline-block; margin-top: 10px; border: 1px solid gray;',

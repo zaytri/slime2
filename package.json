@@ -29,6 +29,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "debug": "cross-env REACT_APP_DEBUG_MODE=true npm start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -52,6 +53,7 @@
     ]
   },
   "devDependencies": {
-    "@types/imagesloaded": "^4.1.2"
+    "@types/imagesloaded": "^4.1.2",
+    "cross-env": "^7.0.3"
   }
 }

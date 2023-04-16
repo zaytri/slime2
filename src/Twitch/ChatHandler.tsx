@@ -46,7 +46,10 @@ export default function TwitchChatClient() {
 
     if (!message) return
 
-    if (process.env.NODE_ENV !== 'production') {
+    if (
+      process.env.NODE_ENV !== 'production' &&
+      process.env.REACT_APP_DEBUG_MODE
+    ) {
       console.log(
         `%c[${message.type}] ${message.user.displayName}: ${message.text}`,
         'background-color: black; color: white; padding: 5px 10px; border-radius: 100px; border: 2px solid white',
