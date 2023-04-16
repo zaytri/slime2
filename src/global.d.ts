@@ -18,6 +18,9 @@ declare global {
       | null
       | void
       | undefined
+
+    onDelete: (deleteMessage: DeleteMessage) => void
+
     ready: (data?: { test: (message: TwitchMessage) => void }) => void
   }
 
@@ -32,5 +35,10 @@ type CustomElement = React.DetailedHTMLProps<
 >
 
 type AfterRenderCallback = (div: HTMLElement) => void
+
+type DeleteMessage =
+  | { type: 'one'; id: string }
+  | { type: 'user'; id: string }
+  | { type: 'all' }
 
 export { AfterRenderCallback }

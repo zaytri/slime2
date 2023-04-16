@@ -38,12 +38,16 @@ function messageListReducer(state: TwitchMessage[], action: MessageListAction) {
 
     // a user was banned or timed out, or clear chat was used if payload is null
     case 'clear':
+      slime2Chat.onDelete(
+        action.payload ? { type: 'user', id: action.payload } : { type: 'all' },
+      )
       return action.payload
         ? state.filter(message => message.user.id !== action.payload)
         : initialState
 
     // a single message was removed by a moderator
     case 'remove':
+      slime2Chat.onDelete({ type: 'one', id: action.payload })
       return state.filter(message => message.id !== action.payload)
   }
 }
