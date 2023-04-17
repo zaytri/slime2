@@ -13,11 +13,7 @@ declare global {
     onMessage: (data?: {
       message: TwitchMessage
       deleteMessage: () => void
-    }) =>
-      | [(DocumentFragment | JQuery<DocumentFragment>)?, AfterRenderCallback?]
-      | null
-      | void
-      | undefined
+    }) => [Fragment?, AfterRenderCallback?] | null | void | undefined
 
     onDelete: (deleteMessage: DeleteMessage) => void
 
@@ -29,10 +25,7 @@ declare global {
   }
 }
 
-type CustomElement = React.DetailedHTMLProps<
-  React.HTMLAttributes<HTMLElement>,
-  HTMLElement
->
+type Fragment = DocumentFragment | JQuery<DocumentFragment>
 
 type AfterRenderCallback = (div: HTMLElement) => void
 

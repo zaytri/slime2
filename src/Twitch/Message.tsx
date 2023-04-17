@@ -5,15 +5,9 @@ import imagesLoaded from 'imagesloaded'
 import type { TwitchMessage } from './types'
 
 function Message(props: TwitchMessage) {
-  const [rendered, setRendered] = useState(false)
   const dispatch = useMessageListDispatch()
   const ref = useRef<HTMLDivElement>(null)
   const hasCalledCallback = useRef(false)
-
-  // render twice, running the callback function on the second render
-  useEffect(() => {
-    setRendered(true)
-  }, [])
 
   // allows the user to manually remove messages
   function userRemoveMessage() {
@@ -27,18 +21,10 @@ function Message(props: TwitchMessage) {
     deleteMessage: userRemoveMessage,
   })
 
-  // if user returned a falsey value, render nothing
-  if (!userRender) return null
+  const [userFragment, userCallback] = userRender || []
 
   let innerHTML = ''
-  if (userRender) {
-    const [userFragment, userCallback] = userRender
-
-    // if user returned a falsey value, render nothing
-    if (!userFragment) {
-      return null
-    }
-
+  if (userFragment) {
     const fragment =
       userFragment instanceof DocumentFragment
         ? userFragment // DocumentFragment
@@ -50,11 +36,18 @@ function Message(props: TwitchMessage) {
     tempRoot.appendChild(fragment)
     innerHTML = tempRoot.innerHTML
     tempRoot.remove()
+  }
 
+  useEffect(() => {
     // runs the user-defined callback function once all the images of the
     // message have been loaded, allowing the user to accurately get the
     // dimensions of the message
-    if (rendered && userCallback && ref.current && !hasCalledCallback.current) {
+    if (
+      userFragment &&
+      userCallback &&
+      ref.current &&
+      !hasCalledCallback.current
+    ) {
       hasCalledCallback.current = true
       // use the element that the user defined
       const element = ref.current.firstElementChild as HTMLElement
@@ -62,6 +55,10 @@ function Message(props: TwitchMessage) {
         userCallback(element)
       })
     }
+  }, [])
+
+  if (!userFragment) {
+    return null
   }
 
   return (
