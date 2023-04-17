@@ -1,4 +1,4 @@
-import { memo, useEffect, useRef, useState } from 'react'
+import { memo, useEffect, useRef } from 'react'
 import { useMessageListDispatch } from './contexts/MessageList'
 import imagesLoaded from 'imagesloaded'
 
@@ -55,6 +55,8 @@ function Message(props: TwitchMessage) {
         userCallback(element)
       })
     }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   if (!userFragment) {
