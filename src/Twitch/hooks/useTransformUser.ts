@@ -9,7 +9,7 @@ const followCache = new Map<string, { date?: Date; expire: number }>()
 const FOLLOW_CACHE_EXPIRE_TIME = 1000 * 60 * 60 // 1 hour
 
 /**
- * Hook that returns the function {@link userTransform}
+ * Hook that returns the function {@link transformUser}
  */
 export default function useTransformUser() {
   const { getPronouns } = usePronouns()
