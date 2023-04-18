@@ -2,10 +2,25 @@ var slime2Setup = {
   permissions: ['chat'],
 }
 
+const DEFAULT_USER_COLORS = [
+  '#FFADAD', // pastel red
+  '#FFD6A5', // pastel orange
+  '#FDFFB6', // pastel yellow
+  '#CAFFBF', // pastel green
+  '#9BF6FF', // pastel blue
+  '#A0C4FF', // pastel indigo
+  '#BDB2FF', // pastel purple
+  '#FFC6FF', // pastel pink
+]
+
 var slime2Chat = {
   onMessage: ({ message }) => {
     // get useful data from message
     const { parts, user } = message
+
+    // if the user hasn't set a name color,
+    // generate a color for them from the DEFAULT_USER_COLORS list
+    user.color ||= generateUserColor(user.displayName)
 
     // clone the main message template to insert the message data into
     const messageClone = cloneTemplate('message-template')
@@ -72,7 +87,33 @@ var slime2Chat = {
   },
 }
 
+// generates a color from DEFAULT_USER_COLORS based on the name given,
+// so that the same user will always be given the same color
+function generateUserColor(name) {
+  // take the first color if name somehow doesn't exist
+  if (!name) return DEFAULT_USER_COLORS[0]
+
+  // separate out each character of the string, covert each one into a
+  // number, then sum all of those together
+  const nameValue = name
+    .split('')
+    .reduce((sum, character) => sum + character.charCodeAt(0), 0)
+
+  // index the
+  return DEFAULT_USER_COLORS[nameValue % DEFAULT_USER_COLORS.length]
+}
+
 // given an ID, clone the template and wrap it with jQuery
 function cloneTemplate(id) {
   return $(document.getElementById(id).content.cloneNode(true))
+}
+
+// generated a random integer between min (included) and max (included)
+function randomInteger(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min
+}
+
+// generate a random number between min (included) and max (excluded)
+function random(min, max) {
+  return Math.random() * (max - min) + min
 }
