@@ -3,10 +3,11 @@ import type {
   ParsedMessageEmotePart,
   BasicMessageCheermote,
 } from '@twurple/common'
-
-import type { TwitchPart } from '../types'
 import useCheermotes from './useCheermotes'
 import useOtherEmotes from './useOtherEmotes'
+
+import type { ChatEmote } from '@twurple/api'
+import type { EmoteUrls, TwitchPart } from '../types'
 
 /**
  * Hook that returns the functions {@link transfromTextPart},
@@ -14,7 +15,7 @@ import useOtherEmotes from './useOtherEmotes'
  */
 export function useTransformPart() {
   const { getOtherEmote, getOtherEmoteNames } = useOtherEmotes()
-  const { getCheermote } = useCheermotes()
+  const { getCheerColor, getCheermoteUrls } = useCheermotes()
 
   /**
    * Transforms {@link ParsedMessageEmotePart} into {@link TwitchPart} with `type: 'emote'`
@@ -38,19 +39,16 @@ export function useTransformPart() {
         emote: otherEmote,
       }
 
-    const image = displayInfo.getUrl({
-      backgroundType: 'dark',
-      animationSettings: 'default',
-      size: '3.0',
-    })
-
     return {
       type: 'emote',
       text: fullMessageText.slice(position, position + length),
       emote: {
         id,
         name,
-        image,
+        images: {
+          default: getEmoteUrls(displayInfo),
+          static: getEmoteUrls(displayInfo, true),
+        },
         source: 'twitch',
       },
     }
@@ -65,18 +63,15 @@ export function useTransformPart() {
   ): TwitchPart {
     const { name, amount, position, length } = basicMessageCheermote
 
-    const cheerInfo = getCheermote(
-      basicMessageCheermote.name,
-      basicMessageCheermote.amount,
-    )
-    const { color, url } = cheerInfo
-
     return {
       type: 'cheer',
       text: fullMessageText.slice(position, position + length),
       cheer: {
-        color,
-        image: url,
+        color: getCheerColor(name, amount),
+        images: {
+          default: getCheermoteUrls(name, amount),
+          static: getCheermoteUrls(name, amount, true),
+        },
         name,
         amount,
       },
@@ -112,6 +107,25 @@ export function useTransformPart() {
   }
 
   return { transformTextPart, transformEmotePart, transformCheerPart }
+}
+
+function getEmoteUrls(
+  emote: ChatEmote,
+  staticEmote: boolean = false,
+): EmoteUrls {
+  function getEmoteUrl(size: '1.0' | '2.0' | '3.0' = '3.0') {
+    return emote.getUrl({
+      backgroundType: 'light',
+      animationSettings: staticEmote ? 'static' : 'default',
+      size,
+    })
+  }
+
+  return {
+    x1: getEmoteUrl('1.0'),
+    x2: getEmoteUrl('2.0'),
+    x4: getEmoteUrl('3.0'),
+  }
 }
 
 /**

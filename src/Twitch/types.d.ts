@@ -121,12 +121,23 @@ type CheerPartInfo = {
   name: string
   amount: number
   color: string
-  image: string
+  images: EmoteImages
 }
 
 export type EmotePartInfo = {
   id: string
   name: string
-  image: string
+  images: EmoteImages
   source: 'twitch' | 'betterTTV' | 'frankerFaceZ' | 'slimeMote'
+}
+
+export type EmoteImages = {
+  default: EmoteUrls
+  static: EmoteUrls
+}
+
+export type EmoteUrls = {
+  x1: string
+  x2: string
+  x4: string
 }

@@ -1,5 +1,5 @@
 import axios from 'axios'
-import type { EmotePartInfo } from '../types'
+import type { EmotePartInfo, EmoteUrls } from '../types'
 
 const bttvInstance = axios.create({
   baseURL: 'https://api.betterttv.net/3/cached',
@@ -20,7 +20,10 @@ export default class BetterTTV {
       emoteMap.set(emote.code, {
         id: emote.id,
         name: emote.code,
-        image: getEmoteUrl(emote.id),
+        images: {
+          default: getEmoteUrls(emote.id),
+          static: getEmoteUrls(emote.id, true),
+        },
         source: 'betterTTV',
       })
     })
@@ -29,8 +32,17 @@ export default class BetterTTV {
   }
 }
 
-function getEmoteUrl(id: string, size: 1 | 2 | 3 = 3) {
-  return `https://cdn.betterttv.net/emote/${id}/${size}x`
+function getEmoteUrls(id: string, staticEmote: boolean = false): EmoteUrls {
+  function getEmoteUrl(size: 1 | 2 | 3 = 3) {
+    const baseURL = 'https://cdn.betterttv.net/emote'
+    return `${baseURL}/${id}${staticEmote ? '/static' : ''}/${size}x`
+  }
+
+  return {
+    x1: getEmoteUrl(1),
+    x2: getEmoteUrl(2),
+    x4: getEmoteUrl(3),
+  }
 }
 
 async function getUserEmotes(platform: BTTVPlatform, userId: string) {

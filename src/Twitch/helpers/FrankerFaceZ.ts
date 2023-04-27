@@ -1,5 +1,5 @@
 import axios from 'axios'
-import type { EmotePartInfo } from '../types'
+import type { EmotePartInfo, EmoteUrls } from '../types'
 
 const ffzInstance = axios.create({
   baseURL: 'https://api.frankerfacez.com/v1',
@@ -20,13 +20,31 @@ export default class FrankerFaceZ {
       emoteMap.set(emote.name, {
         id: emote.id.toString(),
         name: emote.name,
-        image: emote.urls[4] || emote.urls[2] || emote.urls[1],
+        images: {
+          default: getEmoteUrls(emote),
+          static: getEmoteUrls(emote, true),
+        },
         source: 'frankerFaceZ',
       })
     })
 
     return emoteMap
   }
+}
+
+function getEmoteUrls(emote: Emote, staticEmote: boolean = false): EmoteUrls {
+  // size 1 is guaranteed, so it's used as a fallback for all other sizes
+  let x1 = emote.urls[1]
+  let x2 = emote.urls[2] || x1
+  let x4 = emote.urls[4] || x2
+
+  if (!staticEmote && emote.animated) {
+    x1 = emote.animated[1]
+    x2 = emote.animated[2] || x1
+    x4 = emote.animated[4] || x2
+  }
+
+  return { x1, x2, x4 }
 }
 
 async function getUserEmotes(platform: FFZPlatform, userId: string) {
