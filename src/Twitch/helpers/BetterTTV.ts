@@ -52,7 +52,7 @@ async function get<T>(url: string) {
   return await bttvInstance
     .get<T>(url)
     .then(response => response.data)
-    .catch(error => null)
+    .catch(() => null)
 }
 
 type BTTVPlatform = 'twitch' | 'youtube'

@@ -101,7 +101,7 @@ async function get<T>(url: string) {
   return await pronounsInstance
     .get<T>(url)
     .then(response => response.data)
-    .catch(error => null)
+    .catch(() => null)
 }
 
 type PronounsData = {
