@@ -16,6 +16,7 @@
 !/public/base.css
 !/public/base.js
 !/public/index.html
+!/public/TOKEN.js
 
 # misc
 .DS_Store
