@@ -18,19 +18,23 @@
   </body>
 
   <template id="message-template">
-    <div class="message">
-      <span class="badges"></span><span class="username"></span
-      ><span class="pronouns"></span>: <span class="content"></span>
+    <div class="message text-outline-2">
+      <span class="user"></span>: <span class="content"></span>
     </div>
   </template>
 
-  <template id="badge-template"><img class="badge" /></template>
-
-  <template id="emote-template"><img class="emote" /></template>
-
-  <template id="cheermote-template"
-    ><img class="cheer" /><span class="cheer-amount"></span
+  <template id="user-template"
+    ><span class="badges"></span><span class="name"></span
+    ><span class="pronouns"></span
   ></template>
 
-  <template id="text-template"><span class="text"></span></template>
+  <template id="badge-template"><img class="badge" /></template>
+
+  <template id="content-emote-template"><img class="emote" /></template>
+
+  <template id="content-cheer-template"
+    ><img class="emote" /><span class="cheer-amount"></span
+  ></template>
+
+  <template id="content-text-template"><span class="text"></span></template>
 </html>
