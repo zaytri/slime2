@@ -19,7 +19,16 @@ export default function useBadges() {
     return badgeArray
   }
 
-  return { transformBadges }
+  function getBadge(badgeId: string): Badge | undefined {
+    const image = badgeMap
+      .get(badgeId)
+      ?.get(badgeId === 'subscriber' || badgeId === 'founder' ? '0' : '1')
+      ?.getImageUrl(4)
+
+    if (image) return { id: badgeId, image }
+  }
+
+  return { transformBadges, getBadge }
 }
 
 export function useBadgesLoader() {

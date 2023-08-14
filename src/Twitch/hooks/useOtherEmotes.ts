@@ -16,7 +16,11 @@ export default function useOtherEmotes() {
     return Array.from(emoteMap.keys())
   }
 
-  return { getOtherEmote, getOtherEmoteNames }
+  function getAllOtherEmotes() {
+    return Array.from(emoteMap.values())
+  }
+
+  return { getOtherEmote, getOtherEmoteNames, getAllOtherEmotes }
 }
 
 export function useOtherEmotesLoader() {

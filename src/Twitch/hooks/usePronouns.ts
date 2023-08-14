@@ -35,7 +35,11 @@ export default function usePronouns() {
     return cachedData.pronouns
   }
 
-  return { getPronouns }
+  function getAllPronouns() {
+    return Array.from(pronounsMap.values())
+  }
+
+  return { getPronouns, getAllPronouns }
 }
 
 /**
