@@ -7,6 +7,7 @@ import { useRewardsLoader } from './hooks/useRewards'
 import { useCheermotesLoader } from './hooks/useCheermotes'
 import { useOtherEmotesLoader } from './hooks/useOtherEmotes'
 import { useBadgesLoader } from './hooks/useBadges'
+import { useChannelEmotesLoader } from './hooks/useChannelEmotes'
 
 export default function Twitch() {
   const { loading: loadingPronouns } = usePronounsLoader()
@@ -14,13 +15,15 @@ export default function Twitch() {
   const { loading: loadingCheermotes } = useCheermotesLoader()
   const { loading: loadingOtherEmotes } = useOtherEmotesLoader()
   const { loading: loadingBadges } = useBadgesLoader()
+  const { loading: loadingChannelEmotes } = useChannelEmotesLoader()
 
   if (
     loadingPronouns ||
     loadingRewards ||
     loadingCheermotes ||
     loadingOtherEmotes ||
-    loadingBadges
+    loadingBadges ||
+    loadingChannelEmotes
   ) {
     return <Loading message='Connecting to Chat...' />
   }
