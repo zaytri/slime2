@@ -7,6 +7,7 @@ import { useRewardsLoader } from './hooks/useRewards'
 import { useCheermotesLoader } from './hooks/useCheermotes'
 import { useOtherEmotesLoader } from './hooks/useOtherEmotes'
 import { useBadgesLoader } from './hooks/useBadges'
+import CursorControls from '../components/CursorControls'
 import { useChannelEmotesLoader } from './hooks/useChannelEmotes'
 
 export default function Twitch() {
@@ -30,9 +31,10 @@ export default function Twitch() {
 
   return (
     <>
-      <Connected />
       <MessageListProvider>
+        <Connected />
         <ChatHandler />
+        <CursorControls />
       </MessageListProvider>
     </>
   )
