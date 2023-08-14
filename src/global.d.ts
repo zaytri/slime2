@@ -3,10 +3,8 @@ import type JQuery from 'jquery'
 import type { TwitchMessage } from './Twitch/types'
 
 declare global {
-  var slime2Login: {
-    twitch?: {
-      chat?: string
-    }
+  var slime2Tokens: {
+    twitch?: string
   }
 
   var slime2Chat: {

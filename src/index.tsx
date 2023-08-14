@@ -13,7 +13,7 @@ slime2Chat.onMessage ||= emptyFunction
 slime2Chat.onDelete ||= emptyFunction
 slime2Chat.ready ||= emptyFunction
 
-slime2Login ||= {}
+slime2Tokens ||= {}
 
 slime2Setup ||= {
   permissions: [],
