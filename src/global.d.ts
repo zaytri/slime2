@@ -17,10 +17,6 @@ declare global {
 
     ready: (data?: { test: (message: TwitchMessage) => void }) => void
   }
-
-  var slime2Setup: {
-    permissions: string[]
-  }
 }
 
 type Fragment = DocumentFragment | JQuery<DocumentFragment>

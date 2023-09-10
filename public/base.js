@@ -1,11 +1,3 @@
-/**
- * Define the permissions that this has overlay has access to,
- * so that users know what this
- */
-var slime2Setup = {
-  permissions: ['chat'],
-}
-
 const DEFAULT_USER_COLORS = [
   '#FFADAD', // pastel red
   '#FFD6A5', // pastel orange

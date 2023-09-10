@@ -40,10 +40,6 @@ export default function TwitchChatClient() {
   // -------------------------
 
   function addMessage(message?: TwitchMessage) {
-    if (!slime2Setup.permissions.includes('chat')) {
-      throw new Error("This overlay doesn't have permission to read chat!")
-    }
-
     if (!message) return
 
     if (

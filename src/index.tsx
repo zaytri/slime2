@@ -15,11 +15,6 @@ slime2Chat.ready ||= emptyFunction
 
 slime2Tokens ||= {}
 
-slime2Setup ||= {
-  permissions: [],
-}
-slime2Setup.permissions ||= []
-
 const root = ReactDOM.createRoot(
   document.getElementById('slime2-root') as HTMLElement,
 )
