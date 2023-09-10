@@ -6,11 +6,11 @@ function emptyFunction() {}
 // define slime2 defaults in case the user didn't define them
 slime2Chat ||= {
   onMessage: emptyFunction,
-  onDelete: emptyFunction,
+  onModDelete: emptyFunction,
   ready: emptyFunction,
 }
 slime2Chat.onMessage ||= emptyFunction
-slime2Chat.onDelete ||= emptyFunction
+slime2Chat.onModDelete ||= emptyFunction
 slime2Chat.ready ||= emptyFunction
 
 slime2Tokens ||= {}

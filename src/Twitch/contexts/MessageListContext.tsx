@@ -31,24 +31,39 @@ export function useMessageListDispatch() {
 function messageListReducer(state: TwitchMessage[], action: MessageListAction) {
   switch (action.type) {
     // new message
-    case 'add':
+    case 'add': {
       const newState = [...state]
       newState.push(action.payload)
       return newState
+    }
 
     // a user was banned or timed out, or clear chat was used if payload is null
-    case 'clear':
-      slime2Chat.onDelete(
-        action.payload ? { type: 'user', id: action.payload } : { type: 'all' },
-      )
-      return action.payload
+    case 'clear': {
+      const newState = action.payload
         ? state.filter(message => message.user.id !== action.payload)
         : initialState
 
-    // a single message was removed by a moderator
-    case 'remove':
-      slime2Chat.onDelete({ type: 'one', id: action.payload })
-      return state.filter(message => message.id !== action.payload)
+      slime2Chat.onModDelete(
+        action.payload
+          ? { type: 'user', id: action.payload }
+          : { type: 'all', id: null },
+      )
+
+      return newState
+    }
+
+    // a single message was removed by a moderator or user client JS
+    case 'remove': {
+      const newState = state.filter(message => message.id !== action.payload)
+
+      if (action.moderator) {
+        slime2Chat.onModDelete({
+          type: 'single',
+          id: action.payload,
+        })
+      }
+      return newState
+    }
   }
 }
 
@@ -65,6 +80,7 @@ type MessageListClearAction = {
 type MessageListRemoveAction = {
   type: 'remove'
   payload: string // message ID
+  moderator: boolean // whether or not this was deleted by a moderator
 }
 
 type MessageListAction =

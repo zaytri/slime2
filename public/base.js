@@ -17,25 +17,69 @@ const DEFAULT_USER_COLORS = [
   '#FFC6FF', // pastel pink
 ]
 
+let messages = []
+
 var slime2Chat = {
-  onMessage: ({ message }) => {
+  onMessage: ({ message, deleteMessage }) => {
     // get useful data from message
     const { parts, user } = message
 
     // clone the main message template to insert the message data into
     const messageClone = cloneTemplate('message-template')
 
+    // create the user and content elements within the clone
     messageClone.find('.user').append(buildUser(user))
     messageClone.find('.content').append(buildContent(parts))
 
-    return [messageClone]
+    // defines what happens after the message has been fully rendered
+    // can be used to delete messages over time, get message dimensions, etc.
+    function callback(messageElement) {
+      /*******************
+       * Delete Handling *
+       *******************/
+
+      // keeping track of messages
+      messages.push({ ...message, delete: deleteMessage })
+
+      // when there's over 100 messages, delete the oldest one
+      // doing this keeps the memory usage low, by removing offscreen messages
+      if (messages.length > 100) {
+        const oldestMessage = messages.shift()
+        oldestMessage.delete()
+      }
+    }
+
+    // return the message and the callback,
+    // which renders the messages and runs the callback function
+    return [messageClone, callback]
+  },
+
+  // handles when a message or messages have been deleted by a mod
+  onModDelete: ({ type, id }) => {
+    switch (type) {
+      case 'all': {
+        messages = []
+        break
+      }
+
+      case 'user': {
+        messages = messages.filter(message => message.user.id !== id)
+        break
+      }
+
+      case 'single': {
+        messages = messages.filter(message => message.id !== id)
+        break
+      }
+    }
   },
 }
 
-/********************\
+/********************
  * Element Builders *
-\********************/
+ ********************/
 
+// insert in the user data
 function buildUser(user) {
   const { color, displayName, userName, badges, pronouns } = user
 
@@ -78,6 +122,7 @@ function buildContent(parts) {
   })
 }
 
+// insert in the badge images
 function buildBadges(badges) {
   return badges.map(badge => {
     const { image } = badge
@@ -123,7 +168,7 @@ function buildText(part) {
 // generates a color from DEFAULT_USER_COLORS based on the name given,
 // so that the same user will always be given the same color
 function generateUserColor(name) {
-  // take the first color if name somehow doesn't exist
+  // take the first color as a fallback if name somehow doesn't exist
   if (!name) return DEFAULT_USER_COLORS[0]
 
   // separate out each character of the string, covert each one into a

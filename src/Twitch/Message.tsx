@@ -1,5 +1,5 @@
 import { memo, useEffect, useRef } from 'react'
-import { useMessageListDispatch } from './contexts/MessageList'
+import { useMessageListDispatch } from './contexts/MessageListContext'
 import imagesLoaded from 'imagesloaded'
 
 import type { TwitchMessage } from './types'
@@ -9,16 +9,16 @@ function Message(props: TwitchMessage) {
   const ref = useRef<HTMLDivElement>(null)
   const hasCalledCallback = useRef(false)
 
-  // allows the user to manually remove messages
-  function userRemoveMessage() {
-    dispatch({ type: 'remove', payload: props.id })
+  // allows the user client JS to manually remove messages
+  function clientRemoveMessage() {
+    dispatch({ type: 'remove', payload: props.id, moderator: false })
   }
 
   // send message data and deleteMessage function to the user,
   // getting [userFragment, userCallback] in return
   const userRender = slime2Chat.onMessage({
     message: props,
-    deleteMessage: userRemoveMessage,
+    deleteMessage: clientRemoveMessage,
   })
 
   const [userFragment, userCallback] = userRender || []
@@ -59,7 +59,9 @@ function Message(props: TwitchMessage) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  // delete message and show nothing if the client doesn't return a fragment
   if (!userFragment) {
+    clientRemoveMessage()
     return null
   }
 

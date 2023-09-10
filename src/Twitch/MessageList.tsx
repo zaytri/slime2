@@ -1,4 +1,4 @@
-import { useMessageList } from './contexts/MessageList'
+import { useMessageList } from './contexts/MessageListContext'
 import Message from './Message'
 
 export default function MessageList() {

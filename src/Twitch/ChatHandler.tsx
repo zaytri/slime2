@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { ChatClient } from '@twurple/chat'
-import { useMessageListDispatch } from './contexts/MessageList'
+import { useMessageListDispatch } from './contexts/MessageListContext'
 import TwitchChat from './MessageList'
 import useTransformMessage from './hooks/useTransformMessage'
 import { authProvider } from './helpers/twitchAuthentication'
@@ -73,7 +73,7 @@ export default function TwitchChatClient() {
   }
 
   function removeMessage(messageId: string) {
-    dispatch({ type: 'remove', payload: messageId })
+    dispatch({ type: 'remove', payload: messageId, moderator: true })
   }
 
   // -----------------

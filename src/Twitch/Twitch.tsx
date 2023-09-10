@@ -1,4 +1,4 @@
-import { MessageListProvider } from './contexts/MessageList'
+import { MessageListProvider } from './contexts/MessageListContext'
 import ChatHandler from './ChatHandler'
 import Loading from '../components/Loading'
 import Connected from '../components/Connected'

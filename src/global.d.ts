@@ -13,7 +13,7 @@ declare global {
       deleteMessage: () => void
     }) => [Fragment?, AfterRenderCallback?] | null | void | undefined
 
-    onDelete: (deleteMessage: DeleteMessage) => void
+    onModDelete: (deleteMessage: DeleteMessage) => void
 
     ready: (data?: { test: (message: TwitchMessage) => void }) => void
   }
@@ -28,8 +28,8 @@ type Fragment = DocumentFragment | JQuery<DocumentFragment>
 type AfterRenderCallback = (div: HTMLElement) => void
 
 type DeleteMessage =
-  | { type: 'one'; id: string }
+  | { type: 'single'; id: string }
   | { type: 'user'; id: string }
-  | { type: 'all' }
+  | { type: 'all'; id: null }
 
 export { AfterRenderCallback }
