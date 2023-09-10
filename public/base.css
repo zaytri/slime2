@@ -77,17 +77,8 @@ html {
   margin-top: 0.2rem;
 }
 
-.message-wrapper {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-}
-
 .message {
   display: inline-block;
-}
-
-.message::first-line {
 }
 
 .content {
