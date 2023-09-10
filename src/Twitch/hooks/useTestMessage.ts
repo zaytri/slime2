@@ -117,7 +117,9 @@ export default function useTestMessage() {
             },
           }
           const cheerText = `${name}${amount}`
-          text = `${cheerText} ${text} (cheer message)`
+          textPart = `${text} (cheer message)`
+          text = `${cheerText} ${textPart}`
+
           parts.unshift({ type: 'text', text: ' ' })
           parts.unshift({
             type: 'cheer',
