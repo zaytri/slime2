@@ -4,6 +4,7 @@ import usePronouns from './usePronouns'
 import { apiClient } from '../helpers/twitchAuthentication'
 import { useTokenInfo } from './useTokenInfo'
 import useBadges from './useBadges'
+import { HelixUser } from '@twurple/api'
 
 const followCache = new Map<string, { date?: Date; expire: number }>()
 const FOLLOW_CACHE_EXPIRE_TIME = 1000 * 60 * 60 // 1 hour
@@ -72,7 +73,6 @@ export default function useTransformUser() {
 
     if (!cachedData || cachedData.expire < Date.now()) {
       const followers = await apiClient.channels.getChannelFollowers(
-        broadcaster.id,
         broadcaster.id,
         userId,
       )

@@ -5,7 +5,7 @@ import TwitchChat from './MessageList'
 import useTransformMessage from './hooks/useTransformMessage'
 import { authProvider } from './helpers/twitchAuthentication'
 
-import type { Listener } from '@d-fischer/typed-event-emitter'
+import { Listener } from '@d-fischer/typed-event-emitter'
 import type { TwitchMessage, TwitchMessageType } from './types'
 import { useTokenInfo } from './hooks/useTokenInfo'
 
@@ -80,7 +80,7 @@ export default function TwitchChatClient() {
     const listeners: Listener[] = []
     listeners.push(
       // -----------------------------
-      //  Events Using PrivateMessage
+      //  Events Using ChatMessage
       // -----------------------------
 
       chatClient.onMessage(async (_, __, text, msg) => {

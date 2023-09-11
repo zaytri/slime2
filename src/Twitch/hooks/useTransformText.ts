@@ -1,4 +1,4 @@
-import { parseChatMessage } from '@twurple/common'
+import { parseChatMessage } from '@twurple/chat'
 import { useTransformPart } from './useTransformPart'
 
 import type { TwitchPart } from '../types'

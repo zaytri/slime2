@@ -1,12 +1,11 @@
 import type {
   ParsedMessageTextPart,
   ParsedMessageEmotePart,
-  BasicMessageCheermote,
-} from '@twurple/common'
+  ParsedMessageCheerPart,
+} from '@twurple/chat'
 import useCheermotes from './useCheermotes'
 import useOtherEmotes from './useOtherEmotes'
 
-import type { ChatEmote } from '@twurple/api'
 import type { EmoteUrls, TwitchPart } from '../types'
 
 /**
@@ -26,7 +25,7 @@ export function useTransformPart() {
     parsedMessageEmotePart: ParsedMessageEmotePart,
     fullMessageText: string,
   ): TwitchPart {
-    const { displayInfo, position, length, id, name } = parsedMessageEmotePart
+    const { position, length, id, name } = parsedMessageEmotePart
 
     const text = fullMessageText.slice(position, position + length)
 
@@ -46,8 +45,8 @@ export function useTransformPart() {
         id,
         name,
         images: {
-          default: getEmoteUrls(displayInfo),
-          static: getEmoteUrls(displayInfo, true),
+          default: getEmoteUrls(id),
+          static: getEmoteUrls(id, true),
         },
         source: 'twitch',
       },
@@ -55,13 +54,13 @@ export function useTransformPart() {
   }
 
   /**
-   * Transforms {@link BasicMessageCheermote} into {@link TwitchPart} with `type: 'cheer'`
+   * Transforms {@link ParsedMessageCheerPart} into {@link TwitchPart} with `type: 'cheer'`
    */
   function transformCheerPart(
-    basicMessageCheermote: BasicMessageCheermote,
+    parsedMessageCheerPart: ParsedMessageCheerPart,
     fullMessageText: string,
   ): TwitchPart {
-    const { name, amount, position, length } = basicMessageCheermote
+    const { name, amount, position, length } = parsedMessageCheerPart
 
     return {
       type: 'cheer',
@@ -109,16 +108,11 @@ export function useTransformPart() {
   return { transformTextPart, transformEmotePart, transformCheerPart }
 }
 
-function getEmoteUrls(
-  emote: ChatEmote,
-  staticEmote: boolean = false,
-): EmoteUrls {
+function getEmoteUrls(id: string, staticEmote: boolean = false): EmoteUrls {
   function getEmoteUrl(size: '1.0' | '2.0' | '3.0' = '3.0') {
-    return emote.getUrl({
-      backgroundType: 'light',
-      animationSettings: staticEmote ? 'static' : 'default',
-      size,
-    })
+    const format = staticEmote ? 'static' : 'default'
+    const themeMode = 'light'
+    return `https://static-cdn.jtvnw.net/emoticons/v2/${id}/${format}/${themeMode}/${size}`
   }
 
   return {

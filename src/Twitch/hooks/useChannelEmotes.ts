@@ -51,17 +51,9 @@ function getEmoteUrls(
   staticEmote: boolean = false,
 ): EmoteUrls {
   function getEmoteUrl(size: '1.0' | '2.0' | '3.0' = '3.0') {
-    const staticUrl = emote.getStaticImageUrl(size, 'light')
-    const animatedUrl = emote.getAnimatedImageUrl(size, 'light')
-    if (staticEmote && staticUrl) {
-      return staticUrl
-    }
-    if (animatedUrl) {
-      return animatedUrl
-    }
-
-    // fallback
-    return emote.getImageUrl(size === '1.0' ? 1 : size === '2.0' ? 2 : 4)
+    const format = staticEmote ? 'static' : 'default'
+    const themeMode = 'light'
+    return `https://static-cdn.jtvnw.net/emoticons/v2/${emote.id}/${format}/${themeMode}/${size}`
   }
 
   return {

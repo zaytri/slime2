@@ -1,4 +1,4 @@
-import { PrivateMessage, UserNotice } from '@twurple/chat'
+import { ChatMessage, UserNotice } from '@twurple/chat'
 
 import type { TwitchMessage, TwitchMessageType } from '../types'
 import useTransformText from './useTransformText'
@@ -14,15 +14,15 @@ export default function useTransformMessage() {
   const { transformUser } = useTransformUser()
 
   /**
-   * Transforms {@link PrivateMessage}/{@link UserNotice} from Twurple into
+   * Transforms {@link ChatMessage}/{@link UserNotice} from Twurple into
    * {@link TwitchMessage}
    *
    * Returns `undefined` if {@link UserNotice} doesn't contain a message
-   * {@link PrivateMessage} always contains a message
+   * {@link ChatMessage} always contains a message
    */
   async function transformMessage(
     typeData: TwitchMessageType,
-    twurpleMessage: PrivateMessage | UserNotice,
+    twurpleMessage: ChatMessage | UserNotice,
     text?: string,
   ): Promise<TwitchMessage | undefined> {
     if (
@@ -39,7 +39,7 @@ export default function useTransformMessage() {
 
     // UserNotices don't always have user messages
     if (twurpleMessage instanceof UserNotice) {
-      text = twurpleMessage.params.message
+      text = twurpleMessage.text
     }
     if (!text) return
 
