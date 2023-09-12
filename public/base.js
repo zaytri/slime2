@@ -11,15 +11,22 @@ const DEFAULT_USER_COLORS = [
 
 let messages = []
 
+/****************
+ * Chat Handler *
+ ****************/
+
 var slime2Chat = {
+  // gives you the data of a chat message and the function to delete it
   onMessage: ({ message, deleteMessage }) => {
-    // get useful data from message
+    // extract the necessary data from the message
     const { parts, user } = message
 
     // clone the main message template to insert the message data into
+    // the templates are all defined in the HTML file
     const messageClone = cloneTemplate('message-template')
 
-    // create the user and content elements within the clone
+    // create the elements for the user and message content within the clone
+    // this uses the element builder functions defined below
     messageClone.find('.user').append(buildUser(user))
     messageClone.find('.content').append(buildContent(parts))
 
@@ -157,19 +164,23 @@ function buildText(part) {
   return textClone
 }
 
+/********************
+ * Helper Functions *
+ ********************/
+
 // generates a color from DEFAULT_USER_COLORS based on the name given,
 // so that the same user will always be given the same color
 function generateUserColor(name) {
   // take the first color as a fallback if name somehow doesn't exist
   if (!name) return DEFAULT_USER_COLORS[0]
 
-  // separate out each character of the string, covert each one into a
+  // separate out each character of the string, convert each one into a
   // number, then sum all of those together
   const nameValue = name
     .split('')
     .reduce((sum, character) => sum + character.charCodeAt(0), 0)
 
-  // index the
+  // use that value to index the DEFAULT_USER_COLORS array
   return DEFAULT_USER_COLORS[nameValue % DEFAULT_USER_COLORS.length]
 }
 

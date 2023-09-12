@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;0,1000;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900;1,1000&display=swap');
 
+/* Global Styles */
 * {
   box-sizing: border-box;
   overflow-wrap: break-word;
@@ -11,12 +12,18 @@ html {
   font-size: 24px;
 }
 
+/*********************
+ * slime2 containers *
+ *********************/
+
+/* Container for the slime2 system */
 #slime2-root {
   position: absolute;
   inset: 0;
   overflow: hidden;
 }
 
+/* Container for the chat message list from slime2 */
 #slime2-chat-list {
   display: flex;
   flex-direction: column;
@@ -31,6 +38,91 @@ html {
   color: white;
   padding: 20px;
 }
+
+/* Container for each chat message from slime2 */
+#slime2-chat-message {
+  margin-top: 0.2rem;
+}
+
+/* Message container */
+.message {
+  display: inline-block;
+}
+
+/**************************
+ * Message Content Styles *
+ **************************/
+
+/* Content container */
+.content {
+  align-items: center;
+}
+
+.text {
+}
+
+.emote,
+.cheer {
+  height: 1.75rem;
+  display: inline-block;
+  vertical-align: middle;
+  margin-top: -0.25rem;
+  margin-bottom: -0.2rem;
+}
+
+.cheer-amount {
+}
+
+/***************
+ * User Styles *
+ ***************/
+
+/* Container for all user details (name, badges, pronouns) */
+.user {
+
+}
+
+/* Display name of the user */
+.name {
+
+}
+
+/* Badges container */
+.badges {
+  position: relative;
+  vertical-align: middle;
+  display: inline-block;
+}
+
+/* Badge style */
+.badge {
+  height: 1.125rem;
+  margin-right: 0.2rem;
+  display: inline-block;
+  margin-top: -0.25rem;
+  margin-bottom: -0.2rem;
+}
+
+/* Pronoun styles */
+.pronouns {
+  text-transform: lowercase;
+}
+
+.pronouns::before {
+  content: ' (';
+}
+
+.pronouns::after {
+  content: ')';
+}
+
+.pronouns:empty {
+  display: none;
+}
+
+/****************
+ * Extra Styles *
+ ****************/
 
 /* Smooth 1px text outline */
 .text-outline-1 {
@@ -71,64 +163,4 @@ html {
     /* 2px offset bottom right */ 2px 2px var(--outlineColorLowOpacity),
     /* 1px blur                */ 0 0 1px var(--outlineColor),
     /* 2px blur                */ 0 0 2px var(--outlineColor);
-}
-
-#slime2-chat-message {
-  margin-top: 0.2rem;
-}
-
-.message {
-  display: inline-block;
-}
-
-.content {
-  align-items: center;
-}
-
-.username {
-}
-
-.pronouns {
-  text-transform: lowercase;
-}
-
-.pronouns::before {
-  content: ' (';
-}
-
-.pronouns::after {
-  content: ')';
-}
-
-.pronouns:empty {
-  display: none;
-}
-
-.text {
-}
-
-.emote,
-.cheer {
-  height: 1.75rem;
-  display: inline-block;
-  vertical-align: middle;
-  margin-top: -0.25rem;
-  margin-bottom: -0.2rem;
-}
-
-.cheer-amount {
-}
-
-.badges {
-  position: relative;
-  vertical-align: middle;
-  display: inline-block;
-}
-
-.badge {
-  height: 1.125rem;
-  margin-right: 0.2rem;
-  display: inline-block;
-  margin-top: -0.25rem;
-  margin-bottom: -0.2rem;
 }
