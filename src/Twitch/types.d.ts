@@ -14,7 +14,7 @@ import type {
   ChatSubInfo,
   ChatSubUpgradeInfo,
 } from '@twurple/chat'
-import type { Badge } from './helpers/BadgeImages'
+import { Badge } from './hooks/useBadges'
 
 export type OtherEmotes = Map<string, EmotePartInfo>
 

@@ -70,7 +70,7 @@ function setBadges(badges: HelixChatBadgeSet[]) {
   })
 }
 
-type Badge = {
+export type Badge = {
   id: string
   image: string
 }
