@@ -12,6 +12,8 @@ module.exports = {
     extend: {
       fontFamily: {
         grandstander: ['Grandstander', ...fontFamily.sans],
+        fredoka: ['Fredoka', ...fontFamily.sans],
+        radiocanada: ['Radio Canada', ...fontFamily.sans]
       },
     },
   },

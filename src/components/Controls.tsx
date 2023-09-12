@@ -11,7 +11,7 @@ type Style = {
 
 const POSITION_MARGIN = 20
 
-export default function CursorControls() {
+export default function Controls() {
   const [style, setStyle] = useState<Style>({
     bottom: POSITION_MARGIN,
     right: POSITION_MARGIN,

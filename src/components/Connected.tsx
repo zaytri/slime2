@@ -23,29 +23,10 @@ export default function Connected() {
       initial={{ opacity: 1 }}
       animate={{ opacity: 0 }}
       transition={{ duration: 0.3, delay: 1 }}
-      style={{
-        backgroundColor: 'rgb(6, 95, 70)',
-        position: 'absolute',
-        top: 10,
-        left: 10,
-        right: 10,
-        borderRadius: 10,
-        padding: 20,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}
+      className='bg-emerald-800 absolute top-3 inset-x-3 rounded-xl p-3 flex items-center justify-center'
     >
-      <span
-        style={{
-          color: 'rgb(236, 252, 203)',
-          fontSize: 24,
-          marginLeft: 10,
-          marginRight: 10,
-          fontFamily: 'sans-serif',
-        }}
-      >
-        Connected to <strong>{broadcaster.userName}</strong>'s channel!
+      <span className='text-lime-100 text-md mx-3 font-grandstander'>
+        Connected to [<strong className='text-lime-200'>{broadcaster.userName}</strong>]
       </span>
     </motion.div>
   )

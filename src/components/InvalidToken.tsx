@@ -4,38 +4,19 @@
 export default function InvalidToken() {
   return (
     <div
-      style={{
-        backgroundColor: '#881337',
-        position: 'absolute',
-        top: 10,
-        left: 10,
-        right: 10,
-        borderRadius: 10,
-        padding: 20,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}
+      className='bg-rose-900 absolute top-3 inset-x-3 rounded-xl p-3 flex items-center justify-center'
     >
-      <span
-        style={{
-          color: 'white',
-          fontSize: 24,
-          marginLeft: 10,
-          marginRight: 10,
-          fontFamily: 'sans-serif',
-        }}
-      >
-        <strong>Token Invalid</strong>: You haven't set a token or your token
+      <span className='text-white text-md mx-3 font-radiocanada'>
+        <strong className='font-semibold'>Token Invalid</strong>: You haven't set a token or your token
         expired. Get a new token at{' '}
-        <a
-          href='https://slime.chat/token'
+        [<a
+          href='https://slime2.stream/token'
           target='_blank'
           rel='noreferrer'
-          style={{ color: '#fecdd3' }}
+          className='text-rose-200 underline'
         >
-          slime.chat/token
-        </a>
+          slime2.stream/token
+        </a>]
       </span>
     </div>
   )

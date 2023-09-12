@@ -10,7 +10,7 @@ type LoadingProps = {
 export default function Loading({ message }: LoadingProps) {
   const loader = (
     <ScaleLoader
-      color='rgb(190, 242, 100)'
+      color='#ecfccb'
       loading={true}
       speedMultiplier={0.5}
       height={16}
@@ -21,29 +21,10 @@ export default function Loading({ message }: LoadingProps) {
 
   return (
     <div
-      style={{
-        backgroundColor: 'rgb(6, 95, 70)',
-        position: 'absolute',
-        top: 10,
-        left: 10,
-        right: 10,
-        borderRadius: 10,
-        padding: 20,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}
+      className='bg-emerald-800 absolute top-3 inset-x-3 rounded-xl p-3 flex items-center justify-center'
     >
       {loader}
-      <span
-        style={{
-          color: 'rgb(236, 252, 203)',
-          fontSize: 24,
-          marginLeft: 10,
-          marginRight: 10,
-          fontFamily: 'sans-serif',
-        }}
-      >
+      <span className='text-lime-100 text-md mx-3 font-grandstander'>
         {message}
       </span>
       {loader}
