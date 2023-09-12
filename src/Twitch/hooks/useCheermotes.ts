@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useTokenInfo } from './useTokenInfo'
 import { apiClient } from '../helpers/twitchAuthentication'
-import { HelixCheermoteList } from '@twurple/api/lib'
+import { HelixCheermoteList } from '@twurple/api'
 import { EmoteUrls } from '../types'
 
 let cheermotes: HelixCheermoteList
