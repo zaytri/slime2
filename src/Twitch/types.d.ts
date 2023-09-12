@@ -82,7 +82,7 @@ type AnnouncementInfo = {
 }
 
 type CheerInfo = {
-  amount: number // total number of bits cheers in the message
+  amount: number // total number of bits cheered in the message
 }
 
 type ReplyInfo = {
