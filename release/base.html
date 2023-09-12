@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>slime2 overlay</title>
+    
+    <script
+      src="https://code.jquery.com/jquery-3.7.1.slim.min.js"
+      integrity="sha256-kmHvs0B+OpCW5GVHUNjv9rOmY0IvSIRcf7zGUDTDQM8="
+      crossorigin="anonymous"
+    ></script>
+    <script src="TOKEN.js"></script>
+    <script src="base.js"></script>
+    <link href="base.css" rel="stylesheet" />
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="https://slime2.stream/favicon.ico"
+    />
+    <script type="module" crossorigin src="https://cdn.jsdelivr.net/gh/zaytri/slime2@0.1.1/release/slime2.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/zaytri/slime2@0.1.1/release/slime2.css">
+  </head>
+  <body>
+    <main id="slime2-root"></main>
+  </body>
+
+  <template id="message-template">
+    <div class="message text-outline-2">
+      <span class="user"></span>: <span class="content"></span>
+    </div>
+  </template>
+
+  <template id="user-template"
+    ><span class="badges"></span><span class="name"></span
+    ><span class="pronouns"></span
+  ></template>
+
+  <template id="badge-template"><img class="badge" /></template>
+
+  <template id="content-emote-template"><img class="emote" /></template>
+
+  <template id="content-cheer-template"
+    ><img class="emote" /><span class="cheer-amount"></span
+  ></template>
+
+  <template id="content-text-template"><span class="text"></span></template>
+</html>
