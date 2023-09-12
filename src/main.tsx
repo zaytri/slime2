@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App'
+import './main.css'
 
 function emptyFunction() {}
 // define slime2 defaults in case the user didn't define them
