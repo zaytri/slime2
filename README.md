@@ -1,5 +1,5 @@
-# SlimeChat
+# Slime2
 
-Built with [Create React App](https://create-react-app.dev/)
+Built with [Vite](https://vitejs.dev/) using [React](https://react.dev/)
 
-## [Getting Started](https://forums.slime.chat/resources/getting-started-with-slimechat.3/)
+## [Getting Started](https://forums.slime2.stream/resources/getting-started-with-slime2.3/)
