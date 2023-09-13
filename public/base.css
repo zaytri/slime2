@@ -79,12 +79,20 @@ html {
 
 /* Container for all user details (name, badges, pronouns) */
 .user {
-
 }
 
 /* Display name of the user */
 .name {
+}
 
+/* Added when the user's name color is dark */
+.name-dark {
+  --outlineColor: rgb(255, 255, 255) !important;
+  --outlineColorLowOpacity: rgba(255, 255, 255, 0.25) !important;
+}
+
+/* Added when the user's name color is light */
+.name-light {
 }
 
 /* Badges container */
