@@ -30,6 +30,16 @@ var slime2Chat = {
     messageClone.find('.user').append(buildUser(user))
     messageClone.find('.content').append(buildContent(parts))
 
+    // if the user hasn't set a name color,
+    // generate a color for them from the DEFAULT_USER_COLORS list
+    const nameColor = user.color || generateUserColor(user.displayName)
+
+    // add user's name color and add class to determine name color brightness
+    messageClone
+      .find('.user')
+      .css('color', nameColor)
+      .addClass(user.colorBrightness === 'dark' ? 'name-dark' : 'name-light')
+
     // defines what happens after the message has been fully rendered
     // can be used to delete messages over time, get message dimensions, etc.
     function callback(messageElement) {
@@ -80,14 +90,10 @@ var slime2Chat = {
 
 // insert in the user data
 function buildUser(user) {
-  const { color, displayName, userName, badges, pronouns } = user
+  const { displayName, userName, badges, pronouns } = user
 
   const userClone = cloneTemplate('user-template')
   userClone.find('.badges').append(buildBadges(badges))
-
-  // if the user hasn't set a name color,
-  // generate a color for them from the DEFAULT_USER_COLORS list
-  const nameColor = color || generateUserColor(displayName)
 
   let name = displayName
 
@@ -97,9 +103,9 @@ function buildUser(user) {
     name = `${displayName} (${userName})`
   }
 
-  // insert in the user's pronouns, display name, and name color
-  userClone.find('.pronouns').text(pronouns).css('color', nameColor)
-  userClone.find('.name').text(name).css('color', nameColor)
+  // insert in the user's pronouns and display name
+  userClone.find('.pronouns').text(pronouns)
+  userClone.find('.name').text(name)
 
   return userClone
 }

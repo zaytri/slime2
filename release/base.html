@@ -18,23 +18,24 @@
       type="image/x-icon"
       href="https://slime2.stream/favicon.ico"
     />
-    <script type="module" crossorigin src="https://cdn.jsdelivr.net/gh/zaytri/slime2@0.1.1/release/slime2.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/zaytri/slime2@0.1.1/release/slime2.css">
+    <script type="module" crossorigin src="https://cdn.jsdelivr.net/gh/zaytri/slime2@0.1.2/release/slime2.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/zaytri/slime2@0.1.2/release/slime2.css">
   </head>
   <body>
     <main id="slime2-root"></main>
   </body>
 
   <template id="message-template">
-    <div class="message text-outline-2">
-      <span class="user"></span>: <span class="content"></span>
+    <div class="message">
+      <span class="user text-outline-2"></span>
+      <span class="content text-outline-2"></span>
     </div>
   </template>
 
   <template id="user-template"
     ><span class="badges"></span><span class="name"></span
-    ><span class="pronouns"></span
-  ></template>
+    ><span class="pronouns"></span>:</template
+  >
 
   <template id="badge-template"><img class="badge" /></template>
 
