@@ -13,9 +13,8 @@
 
 # custom public
 /public/*
-!/public/base.css
-!/public/base.js
-!/public/index.html
+!/public/client.css
+!/public/client.js
 !/public/TOKEN.js
 
 # misc
