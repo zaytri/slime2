@@ -3,6 +3,7 @@ import { apiClient } from '../helpers/twitchAuthentication'
 import { useTokenInfo } from './useTokenInfo'
 import type { HelixChannelEmote } from '@twurple/api'
 import type { EmotePartInfo, EmoteUrls } from '../types'
+import { buildEmoteImageUrl } from '@twurple/chat'
 
 const channelEmotes = new Map<string, EmotePartInfo>()
 let loaded = false
@@ -51,9 +52,9 @@ function getEmoteUrls(
   staticEmote: boolean = false,
 ): EmoteUrls {
   function getEmoteUrl(size: '1.0' | '2.0' | '3.0' = '3.0') {
-    const format = staticEmote ? 'static' : 'default'
-    const themeMode = 'light'
-    return `https://static-cdn.jtvnw.net/emoticons/v2/${emote.id}/${format}/${themeMode}/${size}`
+    const animationSettings = staticEmote ? 'static' : 'default'
+    const backgroundType = 'light'
+    return buildEmoteImageUrl(emote.id, { animationSettings, backgroundType, size })
   }
 
   return {

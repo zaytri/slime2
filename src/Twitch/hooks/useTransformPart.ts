@@ -1,7 +1,8 @@
-import type {
-  ParsedMessageTextPart,
-  ParsedMessageEmotePart,
-  ParsedMessageCheerPart,
+import {
+  type ParsedMessageTextPart,
+  type ParsedMessageEmotePart,
+  type ParsedMessageCheerPart,
+  buildEmoteImageUrl,
 } from '@twurple/chat'
 import useCheermotes from './useCheermotes'
 import useOtherEmotes from './useOtherEmotes'
@@ -110,9 +111,9 @@ export function useTransformPart() {
 
 function getEmoteUrls(id: string, staticEmote: boolean = false): EmoteUrls {
   function getEmoteUrl(size: '1.0' | '2.0' | '3.0' = '3.0') {
-    const format = staticEmote ? 'static' : 'default'
-    const themeMode = 'light'
-    return `https://static-cdn.jtvnw.net/emoticons/v2/${id}/${format}/${themeMode}/${size}`
+    const animationSettings = staticEmote ? 'static' : 'default'
+    const backgroundType = 'light'
+    return buildEmoteImageUrl(id, { animationSettings, backgroundType, size })
   }
 
   return {

@@ -11,9 +11,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@twurple/api": "^7.0.1",
-    "@twurple/auth": "^7.0.1",
-    "@twurple/chat": "^7.0.1",
+    "@twurple/api": "^7.0.2",
+    "@twurple/auth": "^7.0.2",
+    "@twurple/chat": "^7.0.2",
     "axios": "^1.5.0",
     "framer-motion": "^10.16.4",
     "imagesloaded": "^5.0.0",
