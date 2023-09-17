@@ -84,6 +84,12 @@ export default function useTestMessage() {
     if (role !== 'user' && badge) {
       user.badges = [badge]
       user.roles[role] = true
+
+      // ensure that testFounder is also a subscriber
+      if (role === 'founder') {
+        user.roles.subscriber = true
+      }
+
       user.userName = `test${role}`
       user.displayName = `test${role.charAt(0).toUpperCase()}${role.slice(1)}`
     }
