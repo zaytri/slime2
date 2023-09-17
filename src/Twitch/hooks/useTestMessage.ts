@@ -79,7 +79,7 @@ export default function useTestMessage() {
     const role = randomInteger(0, 1) // 50% chance of having a special role
       ? 'user'
       : TEST_ROLES[randomInteger(0, TEST_ROLES.length - 1)]
-    const badge = getBadge(role)
+    const badge = getBadge(role === 'artist' ? 'artist-badge' : role)
 
     if (role !== 'user' && badge) {
       user.badges = [badge]
