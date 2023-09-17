@@ -78,7 +78,7 @@ export default function Controls() {
   return (
     <button
       onClick={sendTestMessage}
-      className='px-3 py-1 !fixed btn-shadow-i flex justify-center gap-2 overflow-hidden rounded-2xl border-2 border-emerald-800 bg-gradient-to-b from-lime-600 to-emerald-700 text-center hover:from-lime-500 hover:to-emerald-600 focus:outline-offset-8'
+      className='btn-shadow-i !fixed z-[999] flex justify-center gap-2 overflow-hidden rounded-2xl border-2 border-emerald-800 bg-gradient-to-b from-lime-600 to-emerald-700 px-3 py-1 text-center hover:from-lime-500 hover:to-emerald-600 focus:outline-offset-8'
       style={{ ...style }}
     >
       <span className='font-grandstander font-semibold text-lime-100 text-shadow text-shadow-c-black/75 text-shadow-y-px'>
