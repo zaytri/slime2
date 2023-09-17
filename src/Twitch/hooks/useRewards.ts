@@ -21,9 +21,13 @@ export function useRewardsLoader() {
   useEffect(() => {
     async function loadRewards() {
       if (!loaded) {
-        const rewards = await apiClient.channelPoints.getCustomRewards(
-          broadcaster.id,
-        )
+        const rewards = await apiClient.channelPoints
+          .getCustomRewards(broadcaster.id)
+          .catch(_ => {
+            // if the broadcaster isn't affiliate/partner, there's a 403 error
+            // to fix this, return an empty array on any error
+            return []
+          })
 
         rewards.forEach(reward => {
           rewardMap.set(reward.id, reward)
