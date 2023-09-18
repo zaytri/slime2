@@ -56,6 +56,19 @@ var slime2Chat = {
         const oldestMessage = messages.shift()
         oldestMessage.delete()
       }
+
+      // delete messages after X seconds
+      function deleteMessageAfter(seconds) {
+        setTimeout(() => {
+          messages = messages.filter(
+            messageItem => messageItem.id !== message.id,
+          )
+          deleteMessage()
+        }, seconds * 1000) // time in milliseconds
+      }
+
+      // remove the comment slashes below to delete messages after 10 seconds
+      // deleteMessageAfter(10)
     }
 
     // return the message and the callback,
