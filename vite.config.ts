@@ -12,8 +12,8 @@ export default defineConfig({
         return html
           .replaceAll('{version}', version)
           .replaceAll(
-            '/slime2',
-            `https://cdn.jsdelivr.net/gh/zaytri/slime2@${version}/release/slime2`,
+            '="/slime2',
+            `="https://cdn.jsdelivr.net/gh/zaytri/slime2@${version}/release/slime2`,
           )
       },
     },
