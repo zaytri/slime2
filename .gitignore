@@ -12,10 +12,7 @@
 /build
 
 # custom public
-/public/*
-!/public/client.css
-!/public/client.js
-!/public/TOKEN.js
+/public_test
 
 # misc
 .DS_Store
