@@ -10,7 +10,7 @@ export default defineConfig({
       name: 'slime2-custom-index-transform',
       transformIndexHtml: html => {
         return html
-          .replace('<version>', version)
+          .replaceAll('{version}', version)
           .replaceAll(
             '/slime2',
             `https://cdn.jsdelivr.net/gh/zaytri/slime2@${version}/release/slime2`,
