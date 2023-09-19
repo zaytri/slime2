@@ -10,6 +10,8 @@ export default defineConfig(({ command, mode }) => {
   let entry = 'base.html'
   let publicDir = 'client'
   let outDir = 'release'
+  let assetFileNames = 'slime2[extname]'
+  let entryFileNames = 'slime2.js'
 
   const plugins: PluginOption[] = [
     react(),
@@ -23,15 +25,17 @@ export default defineConfig(({ command, mode }) => {
 
   const theme = mode.startsWith('theme.') ? mode.split('.')[1] : undefined
   if (theme) {
-    entry = `./themes/${theme}/${theme}.html`
     publicDir = `themes/${theme}`
-    outDir = 'release-theme'
+    entry = `./themes/${theme}/${theme}.html`
+    outDir = `release-theme-${theme}`
+    assetFileNames = `${publicDir}/discard[extname]`
+    entryFileNames = `${publicDir}/discard.js`
 
     plugins.push(
       viteStaticCopy({
         targets: [
           {
-            src: `release-theme/themes/${theme}/${theme}.html`,
+            src: `${outDir}/themes/${theme}/${theme}.html`,
             dest: '.',
           },
         ],
@@ -41,7 +45,7 @@ export default defineConfig(({ command, mode }) => {
     plugins.push({
       name: 'slime2-clean-theme-build',
       closeBundle: async () => {
-        await rm(resolve(__dirname, 'release-theme/themes'), {
+        await rm(resolve(__dirname, `${outDir}/themes`), {
           recursive: true,
         })
       },
@@ -57,14 +61,13 @@ export default defineConfig(({ command, mode }) => {
         : '/',
     build: {
       outDir,
-      assetsDir: '.',
       rollupOptions: {
         input: {
           app: entry,
         },
         output: {
-          assetFileNames: 'slime2[extname]',
-          entryFileNames: 'slime2.js',
+          assetFileNames,
+          entryFileNames,
         },
       },
     },
