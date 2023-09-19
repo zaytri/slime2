@@ -1,3 +1,4 @@
+/client/*.css
 /release/*.css
 /themes/**/*.css
-*/TOKEN.js
+**/TOKEN.js
