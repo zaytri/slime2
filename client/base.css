@@ -28,7 +28,7 @@ html {
 #slime2-chat-list {
   display: flex;
   flex-direction: column;
-  align-content: start;
+  align-content: flex-start;
   position: absolute;
   bottom: 0;
   width: 100%;
