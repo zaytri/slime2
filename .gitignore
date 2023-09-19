@@ -11,8 +11,9 @@
 # production
 /build
 
-# custom public
-/public_test
+# themes
+/themes
+/release-theme
 
 # misc
 .DS_Store
