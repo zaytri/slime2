@@ -37,14 +37,14 @@ export default defineConfig(({ command, mode }) => {
     entryFileNames = `${publicDir}/discard.js`
   }
 
-  const transformIndexPlugin = {
+  const transformIndexPlugin: PluginOption = {
     name: 'slime2-transform-index',
     transformIndexHtml: html => {
       return html.replaceAll('{version}', version)
     },
   }
 
-  const staticCopyPlugin = viteStaticCopy({
+  const staticCopyPlugin: PluginOption = viteStaticCopy({
     targets: [
       {
         src: `${outDir}/${entry}`,
@@ -53,12 +53,20 @@ export default defineConfig(({ command, mode }) => {
     ],
   })
 
-  const cleanBuildPlugin = {
+  const cleanBuildPlugin: PluginOption = {
     name: 'slime2-clean-build',
     closeBundle: async () => {
       await rm(resolve(__dirname, `${outDir}/${publicRoot}`), {
         recursive: true,
       })
+    },
+  }
+
+  const removeBuildInDevPlugin: PluginOption = {
+    name: 'slime2-remove-build-in-dev',
+    apply: 'serve',
+    configureServer: async () => {
+      await rm(resolve(__dirname, outDir), { recursive: true })
     },
   }
 
@@ -68,6 +76,7 @@ export default defineConfig(({ command, mode }) => {
       transformIndexPlugin,
       staticCopyPlugin,
       cleanBuildPlugin,
+      removeBuildInDevPlugin,
     ],
     publicDir,
     base:
