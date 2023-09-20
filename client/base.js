@@ -1,6 +1,6 @@
 // these colors are randomly assigned to a user if they don't have a chat color,
 // and are used by by the test messages
-const DEFAULT_USER_COLORS = [
+const FALLBACK_USER_COLORS = [
   '#FFFFFF', // white
   '#FFC6FF', // light pink
   '#FFADAD', // light red
@@ -215,7 +215,7 @@ function getUserColor(user) {
     storedUserData = {
       color:
         user.color ||
-        DEFAULT_USER_COLORS[randomInteger(0, DEFAULT_USER_COLORS.length - 1)],
+        FALLBACK_USER_COLORS[randomInteger(0, FALLBACK_USER_COLORS.length - 1)],
     }
 
     // store the user data so that the user will always have the same color
