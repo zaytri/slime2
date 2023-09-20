@@ -1,3 +1,5 @@
+// these colors are randomly assigned to a user if they don't have a chat color,
+// and are used by by the test messages
 const DEFAULT_USER_COLORS = [
   '#FFADAD', // pastel red
   '#FFD6A5', // pastel orange
@@ -10,6 +12,7 @@ const DEFAULT_USER_COLORS = [
 ]
 
 let messages = []
+const userData = {}
 
 /****************
  * Chat Handler *
@@ -30,14 +33,10 @@ var slime2Chat = {
     messageClone.find('.user').append(buildUser(user))
     messageClone.find('.content').append(buildContent(parts))
 
-    // if the user hasn't set a name color,
-    // generate a color for them from the DEFAULT_USER_COLORS list
-    const nameColor = user.color || generateUserColor(user.displayName)
-
     // add user's name color and add class to determine name color brightness
     messageClone
       .find('.user')
-      .css('color', nameColor)
+      .css('color', getUserColor(user))
       .addClass(user.colorBrightness === 'dark' ? 'name-dark' : 'name-light')
 
     // defines what happens after the message has been fully rendered
@@ -187,20 +186,30 @@ function buildText(part) {
  * Helper Functions *
  ********************/
 
-// generates a color from DEFAULT_USER_COLORS based on the name given,
-// so that the same user will always be given the same color
-function generateUserColor(name) {
-  // take the first color as a fallback if name somehow doesn't exist
-  if (!name) return DEFAULT_USER_COLORS[0]
+// gets the user's name color, if they chose a color
+// if they never chose one, assign a random color from DEFAULT_USER_COLORS
+function getUserColor(user) {
+  const { userName } = user
 
-  // separate out each character of the string, convert each one into a
-  // number, then sum all of those together
-  const nameValue = name
-    .split('')
-    .reduce((sum, character) => sum + character.charCodeAt(0), 0)
+  // get the stored user data from this session
+  const storedUserData = userData[userName]
 
-  // use that value to index the DEFAULT_USER_COLORS array
-  return DEFAULT_USER_COLORS[nameValue % DEFAULT_USER_COLORS.length]
+  // if this was the first chat from the user during this session, they
+  // don't have any stored data, so create new stored data for them
+  if (!storedUserData) {
+    // if user.color exists, use that
+    // otherwise get a random color from DEFAULT_USER_COLORS
+    storedUserData = {
+      color:
+        user.color ||
+        DEFAULT_USER_COLORS[randomInteger(0, DEFAULT_USER_COLORS.length - 1)],
+    }
+
+    // store the user data so that the user will always have the same color
+    userData[userName] = storedUserData
+  }
+
+  return storedUserData.color
 }
 
 // given an ID, clone the template and wrap it with jQuery
