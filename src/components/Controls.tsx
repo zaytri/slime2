@@ -28,27 +28,57 @@ export default function Controls() {
       const mouseX = event.clientX
       const mouseY = event.clientY
 
-      if (
-        mouseX > windowWidth * 0.3 &&
-        mouseX < windowWidth * 0.7 &&
-        mouseY > windowHeight * 0.3 &&
-        mouseY < windowHeight * 0.7
-      ) {
-        setStyle({
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-        })
-      } else if (mouseX < windowWidth / 2) {
-        if (mouseY < windowHeight / 2) {
+      if (mouseY < windowHeight * 0.34) {
+        if (mouseX < windowWidth * 0.34) {
+          // top left
           setStyle({ top: POSITION_MARGIN, left: POSITION_MARGIN })
+        } else if (mouseX < windowWidth * 0.67) {
+          // top center
+          setStyle({
+            top: POSITION_MARGIN,
+            left: '50%',
+            transform: 'translateX(-50%)',
+          })
         } else {
-          setStyle({ bottom: POSITION_MARGIN, left: POSITION_MARGIN })
+          // top right
+          setStyle({ top: POSITION_MARGIN, right: POSITION_MARGIN })
+        }
+      } else if (mouseY < windowHeight * 0.67) {
+        if (mouseX < windowWidth * 0.34) {
+          // center left
+          setStyle({
+            top: '50%',
+            left: POSITION_MARGIN,
+            transform: 'translateY(-50%)',
+          })
+        } else if (mouseX < windowWidth * 0.67) {
+          // center
+          setStyle({
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+          })
+        } else {
+          // center right
+          setStyle({
+            top: '50%',
+            right: POSITION_MARGIN,
+            transform: 'translateY(-50%)',
+          })
         }
       } else {
-        if (mouseY < windowHeight / 2) {
-          setStyle({ top: POSITION_MARGIN, right: POSITION_MARGIN })
+        if (mouseX < windowWidth * 0.34) {
+          // bottom left
+          setStyle({ bottom: POSITION_MARGIN, left: POSITION_MARGIN })
+        } else if (mouseX < windowWidth * 0.67) {
+          // bottom center
+          setStyle({
+            bottom: POSITION_MARGIN,
+            left: '50%',
+            transform: 'translateX(-50%)',
+          })
         } else {
+          // bottom right
           setStyle({ bottom: POSITION_MARGIN, right: POSITION_MARGIN })
         }
       }
