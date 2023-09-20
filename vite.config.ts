@@ -1,59 +1,74 @@
-import { type PluginOption, defineConfig } from 'vite'
+import { type PluginOption, defineConfig, createLogger } from 'vite'
 import react from '@vitejs/plugin-react-swc'
 import { version } from './package.json'
 import { viteStaticCopy } from 'vite-plugin-static-copy'
 import { rm } from 'fs/promises'
 import { resolve } from 'path'
 
+const logger = createLogger()
+const originalWarning = logger.warn
+
+logger.warn = (message, options) => {
+  const uselessWarningMessage =
+    'files in the public directory are served at the root path.'
+
+  if (message.includes(uselessWarningMessage)) return
+
+  originalWarning(message, options)
+}
+
 // https://vitejs.dev/config/
 export default defineConfig(({ command, mode }) => {
-  let entry = 'base.html'
-  let publicDir = 'client'
+  let publicRoot = 'client'
+  let publicDir = publicRoot
+  let entry = `${publicDir}/base.html`
   let outDir = 'release'
   let assetFileNames = 'slime2[extname]'
   let entryFileNames = 'slime2.js'
 
-  const plugins: PluginOption[] = [
-    react(),
-    {
-      name: 'slime2-index-transform',
-      transformIndexHtml: html => {
-        return html.replaceAll('{version}', version)
-      },
-    },
-  ]
-
   const theme = mode.startsWith('theme.') ? mode.split('.')[1] : undefined
+
   if (theme) {
-    publicDir = `themes/${theme}`
-    entry = `./themes/${theme}/${theme}.html`
+    publicRoot = 'themes'
+    publicDir = `${publicRoot}/${theme}`
+    entry = `${publicDir}/${theme}.html`
     outDir = `release-theme-${theme}`
     assetFileNames = `${publicDir}/discard[extname]`
     entryFileNames = `${publicDir}/discard.js`
+  }
 
-    plugins.push(
-      viteStaticCopy({
-        targets: [
-          {
-            src: `${outDir}/themes/${theme}/${theme}.html`,
-            dest: '.',
-          },
-        ],
-      }),
-    )
+  const transformIndexPlugin = {
+    name: 'slime2-transform-index',
+    transformIndexHtml: html => {
+      return html.replaceAll('{version}', version)
+    },
+  }
 
-    plugins.push({
-      name: 'slime2-clean-theme-build',
-      closeBundle: async () => {
-        await rm(resolve(__dirname, `${outDir}/themes`), {
-          recursive: true,
-        })
+  const staticCopyPlugin = viteStaticCopy({
+    targets: [
+      {
+        src: `${outDir}/${entry}`,
+        dest: '.',
       },
-    })
+    ],
+  })
+
+  const cleanBuildPlugin = {
+    name: 'slime2-clean-build',
+    closeBundle: async () => {
+      await rm(resolve(__dirname, `${outDir}/${publicRoot}`), {
+        recursive: true,
+      })
+    },
   }
 
   return {
-    plugins,
+    plugins: [
+      react(),
+      transformIndexPlugin,
+      staticCopyPlugin,
+      cleanBuildPlugin,
+    ],
     publicDir,
     base:
       command === 'build'
@@ -71,6 +86,7 @@ export default defineConfig(({ command, mode }) => {
         },
       },
     },
+    customLogger: logger,
     server: {
       open: entry,
     },

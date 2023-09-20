@@ -34,6 +34,7 @@ It's not necessary to build themes using this, but if you do then you get the ad
    ```
    📁 client
      \_📄 base.css
+     \_📄 base.html
      \_📄 base.js
      \_📄 TOKEN.js
    📁 release
@@ -41,11 +42,9 @@ It's not necessary to build themes using this, but if you do then you get the ad
    📁 themes
      \_📁 custom
    ...
-   📄 base.html
-   ...
    ```
 
-6. Copy `base.css`, `base.js`, `base.html`, and `TOKEN.js` into your custom theme folder. Rename the `base.*` files to use the name of your custom theme instead of `base`. It should now look like this:
+6. Copy `base.css`, `base.js`, `base.html`, and `TOKEN.js` from the `client` folder into your custom theme folder. Rename the `base.*` files to use the name of your custom theme instead of `base`. It should now look like this:
 
    ```
    ...
