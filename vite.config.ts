@@ -2,7 +2,7 @@ import { type PluginOption, defineConfig, createLogger } from 'vite'
 import react from '@vitejs/plugin-react-swc'
 import { version } from './package.json'
 import { viteStaticCopy } from 'vite-plugin-static-copy'
-import { rm } from 'fs/promises'
+import fileSystem from 'fs/promises'
 import { resolve } from 'path'
 
 const logger = createLogger()
@@ -56,7 +56,7 @@ export default defineConfig(({ command, mode }) => {
   const cleanBuildPlugin: PluginOption = {
     name: 'slime2-clean-build',
     closeBundle: async () => {
-      await rm(resolve(__dirname, `${outDir}/${publicRoot}`), {
+      await fileSystem.rm(resolve(__dirname, `${outDir}/${publicRoot}`), {
         recursive: true,
       })
     },
@@ -66,7 +66,15 @@ export default defineConfig(({ command, mode }) => {
     name: 'slime2-remove-build-in-dev',
     apply: 'serve',
     configureServer: async () => {
-      await rm(resolve(__dirname, outDir), { recursive: true })
+      const buildFolder = resolve(__dirname, outDir)
+      const buildFolderExists = await fileSystem
+        .access(buildFolder)
+        .then(_ => true)
+        .catch(_ => false)
+
+      if (buildFolderExists) {
+        await fileSystem.rm(buildFolder, { recursive: true })
+      }
     },
   }
 
