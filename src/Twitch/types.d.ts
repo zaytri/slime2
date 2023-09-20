@@ -33,7 +33,6 @@ export type TwitchUser = {
   // cosmetics
   badges: Badge[]
   color?: string
-  colorBrightness?: 'light' | 'dark'
 
   // roles
   roles: {

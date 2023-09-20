@@ -4,13 +4,9 @@ import usePronouns from './usePronouns'
 import { apiClient } from '../helpers/twitchAuthentication'
 import { useTokenInfo } from './useTokenInfo'
 import useBadges from './useBadges'
-import Color from 'colorjs.io'
 
 const followCache = new Map<string, { date?: Date; expire: number }>()
 const FOLLOW_CACHE_EXPIRE_TIME = 1000 * 60 * 60 // 1 hour
-
-const blackColor = new Color('black')
-const whiteColor = new Color('white')
 
 /**
  * Hook that returns the function {@link transformUser}
@@ -46,7 +42,6 @@ export default function useTransformUser() {
       pronouns: await getPronouns(userName),
       badges: transformBadges(badges),
       color,
-      colorBrightness: color ? calculateColorBrightness(color) : undefined,
       roles: {
         broadcaster: isBroadcaster,
         moderator: isMod,
@@ -91,15 +86,4 @@ export default function useTransformUser() {
   }
 
   return { transformUser }
-}
-
-function calculateColorBrightness(color: string) {
-  const nameColor = new Color(color)
-  const lightContrast = Math.abs(whiteColor.contrastAPCA(nameColor))
-  const darkContrast = Math.abs(blackColor.contrastAPCA(nameColor))
-  if (lightContrast > darkContrast) {
-    return 'dark'
-  } else {
-    return 'light'
-  }
 }
