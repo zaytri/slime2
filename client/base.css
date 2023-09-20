@@ -21,8 +21,8 @@
   bottom: 0;
   width: 100%;
   font-family: Nunito, Helvetica, Arial, sans-serif;
-  font-size: 0.8125rem;
-  line-height: 1.25rem;
+  line-height: 30px;
+  font-size: 16px;
   font-weight: 800;
   color: white;
   padding: 20px;
@@ -38,28 +38,13 @@
   display: inline-block;
 }
 
-/**************************
- * Message Content Styles *
- **************************/
 
-/* Content container */
-.content {
-  align-items: center;
 }
 
-.text {
 }
 
-.emote,
-.cheer {
-  height: 1.75rem;
-  display: inline-block;
-  vertical-align: middle;
-  margin-top: -0.25rem;
-  margin-bottom: -0.2rem;
 }
 
-.cheer-amount {
 }
 
 /***************
@@ -68,41 +53,44 @@
 
 /* Container for all user details (name, badges, pronouns) */
 .user {
+  padding: 5px;
+  border-radius: 6px;
+  font-weight: 700;
+  background-color: var(--userColor);
+}
+
+/* Added when the user's color is dark */
+.user-dark {
+}
+
+/* Added when the user's color is light */
+.user-light {
+  color: black;
 }
 
 /* Display name of the user */
 .name {
 }
 
-/* Added when the user's name color is dark */
-.name-dark {
-  --outlineColor: rgb(255, 255, 255) !important;
-  --outlineColorLowOpacity: rgba(255, 255, 255, 0.25) !important;
-}
-
-/* Added when the user's name color is light */
-.name-light {
-}
-
 /* Badges container */
 .badges {
-  position: relative;
-  vertical-align: middle;
   display: inline-block;
 }
 
 /* Badge style */
 .badge {
-  height: 1.125rem;
-  margin-right: 0.2rem;
+  height: 24px;
+  margin-right: 5px;
   display: inline-block;
-  margin-top: -0.25rem;
-  margin-bottom: -0.2rem;
+  margin-top: -2px;
 }
 
 /* Pronoun styles */
 .pronouns {
   text-transform: lowercase;
+  font-size: 14px;
+  display: inline-block;
+  margin-left: 4px;
 }
 
 .pronouns::before {
@@ -115,6 +103,30 @@
 
 .pronouns:empty {
   display: none;
+}
+
+/**************************
+ * Message Content Styles *
+ **************************/
+
+/* Content container */
+.content {
+}
+
+.text {
+}
+
+.emote,
+.cheer {
+  height: 1.75em;
+  max-height: 112px;
+  display: inline-block;
+  vertical-align: middle;
+  margin-top: -0.25em;
+  margin-bottom: -0.2em;
+}
+
+.cheer-amount {
 }
 
 /****************

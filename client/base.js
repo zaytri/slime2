@@ -43,14 +43,14 @@ var slime2Chat = {
     messageClone.find('.user').append(buildUser(user))
     messageClone.find('.content').append(buildContent(parts))
 
-    const nameColor = getUserColor(user)
-    const nameColorBrightness = textBrightness(nameColor)
+    const userColor = getUserColor(user)
+    const userColorBrightness = textBrightness(userColor)
 
     // add user's name color and add class to determine name color brightness
     messageClone
       .find('.user')
-      .css('background-color', nameColor)
-      .addClass(nameColorBrightness === 'dark' ? 'name-dark' : 'name-light')
+      .css('--userColor', userColor)
+      .addClass(userColorBrightness === 'dark' ? 'user-dark' : 'user-light')
 
     // defines what happens after the message has been fully rendered
     // can be used to delete messages over time, get message dimensions, etc.
