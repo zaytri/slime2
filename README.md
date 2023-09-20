@@ -94,7 +94,7 @@ It's not necessary to build themes using this, but if you do then you get the ad
     ...
     ```
 
-    - This will automatically update the HTML file to include the JS and CSS of the repo's version of slime2, and insert the version number at the top.
+    - This will automatically update the HTML file to include the JS and CSS of the repo's version of slime2, replaces all instances of `{version}` with the slime2 version number, and replaces all instances of `{theme}` with your theme name.
 
 12. Zip all of the `release-theme-*` files, naming the `.zip` whatever you want, but I would recommend something like `custom-chat-1.0.0.zip`, and whenever you make a new update, update that version number accordingly!
 

@@ -21,14 +21,15 @@ logger.warn = (message, options) => {
 export default defineConfig(({ command, mode }) => {
   let publicRoot = 'client'
   let publicDir = publicRoot
-  let entry = `${publicDir}/base.html`
+  let theme = 'base'
+  let entry = `${publicDir}/${theme}.html`
   let outDir = 'release'
   let assetFileNames = 'slime2[extname]'
   let entryFileNames = 'slime2.js'
 
-  const theme = mode.startsWith('theme.') ? mode.split('.')[1] : undefined
+  theme = mode.startsWith('theme.') ? mode.split('.')[1] : theme
 
-  if (theme) {
+  if (theme !== 'base') {
     publicRoot = 'themes'
     publicDir = `${publicRoot}/${theme}`
     entry = `${publicDir}/${theme}.html`
@@ -40,7 +41,7 @@ export default defineConfig(({ command, mode }) => {
   const transformIndexPlugin: PluginOption = {
     name: 'slime2-transform-index',
     transformIndexHtml: html => {
-      return html.replaceAll('{version}', version)
+      return html.replaceAll('{version}', version).replaceAll('{theme}', theme)
     },
   }
 
