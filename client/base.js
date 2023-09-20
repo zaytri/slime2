@@ -1,14 +1,24 @@
 // these colors are randomly assigned to a user if they don't have a chat color,
 // and are used by by the test messages
 const DEFAULT_USER_COLORS = [
-  '#FFADAD', // pastel red
-  '#FFD6A5', // pastel orange
-  '#FDFFB6', // pastel yellow
-  '#CAFFBF', // pastel green
-  '#9BF6FF', // pastel blue
-  '#A0C4FF', // pastel indigo
-  '#BDB2FF', // pastel purple
-  '#FFC6FF', // pastel pink
+  '#FFFFFF', // white
+  '#FFC6FF', // light pink
+  '#FFADAD', // light red
+  '#FFD6A5', // light orange
+  '#FDFFB6', // light yellow
+  '#CAFFBF', // light green
+  '#9BF6FF', // light cyan
+  '#A0C4FF', // light blue
+  '#BDB2FF', // light purple
+  '#6A236A', // dark pink
+  '#5D1B1B', // dark red
+  '#614420', // dark orange
+  '#665D22', // dark yellow
+  '#2F6623', // dark green
+  '#20595F', // dark cyan
+  '#1F3861', // dark blue
+  '#3C2366', // dark purple
+  '#000000', // black
 ]
 
 let messages = []
@@ -33,11 +43,14 @@ var slime2Chat = {
     messageClone.find('.user').append(buildUser(user))
     messageClone.find('.content').append(buildContent(parts))
 
+    const nameColor = getUserColor(user)
+    const nameColorBrightness = textBrightness(nameColor)
+
     // add user's name color and add class to determine name color brightness
     messageClone
       .find('.user')
-      .css('color', getUserColor(user))
-      .addClass(user.colorBrightness === 'dark' ? 'name-dark' : 'name-light')
+      .css('background-color', nameColor)
+      .addClass(nameColorBrightness === 'dark' ? 'name-dark' : 'name-light')
 
     // defines what happens after the message has been fully rendered
     // can be used to delete messages over time, get message dimensions, etc.
@@ -192,7 +205,7 @@ function getUserColor(user) {
   const { userName } = user
 
   // get the stored user data from this session
-  const storedUserData = userData[userName]
+  let storedUserData = userData[userName]
 
   // if this was the first chat from the user during this session, they
   // don't have any stored data, so create new stored data for them
@@ -210,6 +223,36 @@ function getUserColor(user) {
   }
 
   return storedUserData.color
+}
+
+// returns either 'light' or 'dark'
+// 'light' if the given text color has better readability on a black background
+// 'dark' if the given text color has better readability on a white background
+// https://colorjs.io/docs/contrast#accessible-perceptual-contrast-algorithm-apca
+function textBrightness(color) {
+  const textColor = new Color(color)
+  const blackBackground = new Color('#000000')
+  const whiteBackground = new Color('#FFFFFF')
+
+  const darkContrast = Math.abs(blackBackground.contrastAPCA(textColor))
+  const lightContrast = Math.abs(whiteBackground.contrastAPCA(textColor))
+
+  return darkContrast > lightContrast ? 'light' : 'dark'
+}
+
+// returns either 'light' or 'dark'
+// 'light' if black text has better readability on the given background color
+// 'dark' if white text has better readability on the given background color
+// https://colorjs.io/docs/contrast#accessible-perceptual-contrast-algorithm-apca
+function backgroundBrightness(color) {
+  const backgroundColor = new Color(color)
+  const blackText = new Color('#000000')
+  const whiteText = new Color('#FFFFFF')
+
+  const darkContrast = Math.abs(backgroundColor.contrastAPCA(whiteText))
+  const lightContrast = Math.abs(backgroundColor.contrastAPCA(blackText))
+
+  return darkContrast > lightContrast ? 'dark' : 'light'
 }
 
 // given an ID, clone the template and wrap it with jQuery
