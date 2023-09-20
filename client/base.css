@@ -15,22 +15,22 @@
 /* Container for the chat message list from slime2 */
 #slime2-chat-list {
   display: flex;
-  flex-direction: column;
-  align-content: flex-start;
+  overflow: hidden;
+  gap: 10px;
   position: absolute;
-  bottom: 0;
-  width: 100%;
   font-family: Nunito, Helvetica, Arial, sans-serif;
   line-height: 30px;
   font-size: 16px;
   font-weight: 800;
   color: white;
   padding: 20px;
+  width: 100%;
+  height: 100%;
 }
 
 /* Container for each chat message from slime2 */
 #slime2-chat-message {
-  margin-top: 0.2rem;
+  flex-shrink: 0;
 }
 
 /* Message container */
@@ -38,13 +38,58 @@
   display: inline-block;
 }
 
+/******************************************************
+ * Chat list axis (vertical/horizontal) and alignment *
+ ******************************************************/
 
+/* Apply these classes to main in the HTML */
+
+.vertical-top-left #slime2-chat-list {
+  flex-direction: column-reverse;
+  justify-content: start;
+  align-items: flex-start;
 }
 
+.vertical-top-right #slime2-chat-list {
+  flex-direction: column-reverse;
+  justify-content: start;
+  align-items: flex-end;
 }
 
+.vertical-bottom-left #slime2-chat-list {
+  flex-direction: column;
+  justify-content: end;
+  align-items: flex-start;
 }
 
+.vertical-bottom-right #slime2-chat-list {
+  flex-direction: column;
+  justify-content: end;
+  align-items: flex-end;
+}
+
+.horizontal-top-left #slime2-chat-list {
+  flex-direction: row-reverse;
+  justify-content: start;
+  align-items: flex-start;
+}
+
+.horizontal-top-right #slime2-chat-list {
+  flex-direction: row;
+  justify-content: end;
+  align-items: flex-start;
+}
+
+.horizontal-bottom-left #slime2-chat-list {
+  flex-direction: row-reverse;
+  justify-content: start;
+  align-items: flex-end;
+}
+
+.horizontal-bottom-right #slime2-chat-list {
+  flex-direction: row;
+  justify-content: end;
+  align-items: flex-end;
 }
 
 /***************
@@ -94,7 +139,7 @@
 }
 
 .pronouns::before {
-  content: ' (';
+  content: '(';
 }
 
 .pronouns::after {
