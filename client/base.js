@@ -10,14 +10,14 @@ const DEFAULT_USER_COLORS = [
   '#9BF6FF', // light cyan
   '#A0C4FF', // light blue
   '#BDB2FF', // light purple
-  '#6A236A', // dark pink
-  '#5D1B1B', // dark red
-  '#614420', // dark orange
-  '#665D22', // dark yellow
-  '#2F6623', // dark green
-  '#20595F', // dark cyan
-  '#1F3861', // dark blue
-  '#3C2366', // dark purple
+  '#830044', // dark pink
+  '#6E0000', // dark red
+  '#854A02', // dark orange
+  '#987200', // dark yellow
+  '#115D00', // dark green
+  '#006974', // dark cyan
+  '#002560', // dark blue
+  '#3C0067', // dark purple
   '#000000', // black
 ]
 
