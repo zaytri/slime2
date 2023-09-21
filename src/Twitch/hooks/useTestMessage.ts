@@ -105,11 +105,13 @@ export default function useTestMessage() {
         case 'action':
           text = `${text} (/me action message)`
           textPart = text
+          messageType = { type }
           break
 
         case 'highlight':
           text = `${text} (highlighted message)`
           textPart = text
+          messageType = { type }
           break
 
         case 'cheer':
