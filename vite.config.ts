@@ -17,6 +17,9 @@ logger.warn = (message, options) => {
   originalWarning(message, options)
 }
 
+const assetFileNames = 'slime2[extname]'
+const entryFileNames = 'slime2.js'
+
 // https://vitejs.dev/config/
 export default defineConfig(({ command, mode }) => {
   let publicRoot = 'client'
@@ -24,8 +27,6 @@ export default defineConfig(({ command, mode }) => {
   let theme = 'base'
   let entry = `${publicDir}/${theme}.html`
   let outDir = 'release'
-  let assetFileNames = 'slime2[extname]'
-  let entryFileNames = 'slime2.js'
 
   theme = mode.startsWith('theme.') ? mode.split('.')[1] : theme
 
@@ -34,8 +35,6 @@ export default defineConfig(({ command, mode }) => {
     publicDir = `${publicRoot}/${theme}`
     entry = `${publicDir}/${theme}.html`
     outDir = `release-theme-${theme}`
-    assetFileNames = `${publicDir}/discard[extname]`
-    entryFileNames = `${publicDir}/discard.js`
   }
 
   const transformIndexPlugin: PluginOption = {
@@ -60,6 +59,11 @@ export default defineConfig(({ command, mode }) => {
       await fileSystem.rm(resolve(__dirname, `${outDir}/${publicRoot}`), {
         recursive: true,
       })
+
+      if (theme !== 'base') {
+        await fileSystem.rm(resolve(__dirname, `${outDir}/slime2.css`))
+        await fileSystem.rm(resolve(__dirname, `${outDir}/slime2.js`))
+      }
     },
   }
 
