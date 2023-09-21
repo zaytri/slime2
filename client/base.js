@@ -52,6 +52,7 @@ var slime2Chat = {
       .css('--userColor', userColor)
       .addClass(userColorBrightness === 'dark' ? 'user-dark' : 'user-light')
 
+    // set emote size
     const emoteSize = calculateEmoteSize(parts)
     messageClone.find('.content').addClass(`emote-${emoteSize}`)
 
