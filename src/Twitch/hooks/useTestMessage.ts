@@ -85,8 +85,8 @@ export default function useTestMessage() {
       user.badges = [badge]
       user.roles[role] = true
 
-      // ensure that testFounder is also a subscriber
-      if (role === 'founder') {
+      // ensure that testFounder and testBroadcaster are also subscribers
+      if (role === 'founder' || role === 'broadcaster') {
         user.roles.subscriber = true
       }
 
