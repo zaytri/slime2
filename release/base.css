@@ -1,18 +1,6 @@
 /* Google Fonts Import */
 @import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;0,1000;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900;1,1000&display=swap');
 
-/* Global Styles */
-* {
-  box-sizing: border-box;
-  overflow-wrap: break-word;
-  margin: 0;
-  padding: 0;
-}
-
-html {
-  font-size: 24px;
-}
-
 /*********************
  * slime2 containers *
  *********************/
@@ -27,22 +15,22 @@ html {
 /* Container for the chat message list from slime2 */
 #slime2-chat-list {
   display: flex;
-  flex-direction: column;
-  align-content: start;
+  overflow: hidden;
+  gap: 10px;
   position: absolute;
-  bottom: 0;
-  width: 100%;
   font-family: Nunito, Helvetica, Arial, sans-serif;
-  font-size: 0.8125rem;
-  line-height: 1.25rem;
+  line-height: 30px;
+  font-size: 16px;
   font-weight: 800;
   color: white;
   padding: 20px;
+  width: 100%;
+  height: 100%;
 }
 
 /* Container for each chat message from slime2 */
 #slime2-chat-message {
-  margin-top: 0.2rem;
+  flex-shrink: 0;
 }
 
 /* Message container */
@@ -50,28 +38,58 @@ html {
   display: inline-block;
 }
 
-/**************************
- * Message Content Styles *
- **************************/
+/******************************************************
+ * Chat list axis (vertical/horizontal) and alignment *
+ ******************************************************/
 
-/* Content container */
-.content {
-  align-items: center;
+/* Apply these classes to main in the HTML */
+
+.vertical-top-left #slime2-chat-list {
+  flex-direction: column-reverse;
+  justify-content: start;
+  align-items: flex-start;
 }
 
-.text {
+.vertical-top-right #slime2-chat-list {
+  flex-direction: column-reverse;
+  justify-content: start;
+  align-items: flex-end;
 }
 
-.emote,
-.cheer {
-  height: 1.75rem;
-  display: inline-block;
-  vertical-align: middle;
-  margin-top: -0.25rem;
-  margin-bottom: -0.2rem;
+.vertical-bottom-left #slime2-chat-list {
+  flex-direction: column;
+  justify-content: end;
+  align-items: flex-start;
 }
 
-.cheer-amount {
+.vertical-bottom-right #slime2-chat-list {
+  flex-direction: column;
+  justify-content: end;
+  align-items: flex-end;
+}
+
+.horizontal-top-left #slime2-chat-list {
+  flex-direction: row-reverse;
+  justify-content: start;
+  align-items: flex-start;
+}
+
+.horizontal-top-right #slime2-chat-list {
+  flex-direction: row;
+  justify-content: end;
+  align-items: flex-start;
+}
+
+.horizontal-bottom-left #slime2-chat-list {
+  flex-direction: row-reverse;
+  justify-content: start;
+  align-items: flex-end;
+}
+
+.horizontal-bottom-right #slime2-chat-list {
+  flex-direction: row;
+  justify-content: end;
+  align-items: flex-end;
 }
 
 /***************
@@ -80,45 +98,48 @@ html {
 
 /* Container for all user details (name, badges, pronouns) */
 .user {
+  padding: 5px;
+  border-radius: 6px;
+  font-weight: 700;
+  background-color: var(--userColor);
+}
+
+/* Added when the user's color is dark */
+.user-dark {
+}
+
+/* Added when the user's color is light */
+.user-light {
+  color: black;
 }
 
 /* Display name of the user */
 .name {
 }
 
-/* Added when the user's name color is dark */
-.name-dark {
-  --outlineColor: rgb(255, 255, 255) !important;
-  --outlineColorLowOpacity: rgba(255, 255, 255, 0.25) !important;
-}
-
-/* Added when the user's name color is light */
-.name-light {
-}
-
 /* Badges container */
 .badges {
-  position: relative;
-  vertical-align: middle;
   display: inline-block;
 }
 
 /* Badge style */
 .badge {
-  height: 1.125rem;
-  margin-right: 0.2rem;
+  height: 24px;
+  margin-right: 5px;
   display: inline-block;
-  margin-top: -0.25rem;
-  margin-bottom: -0.2rem;
+  margin-top: -2px;
 }
 
 /* Pronoun styles */
 .pronouns {
   text-transform: lowercase;
+  font-size: 14px;
+  display: inline-block;
+  margin-left: 4px;
 }
 
 .pronouns::before {
-  content: ' (';
+  content: '(';
 }
 
 .pronouns::after {
@@ -129,6 +150,38 @@ html {
   display: none;
 }
 
+/**************************
+ * Message Content Styles *
+ **************************/
+
+/* Content container */
+.content {
+}
+
+.text {
+}
+
+.emote,
+.cheer {
+  height: 1.75em;
+  max-height: 112px;
+  display: inline-block;
+  vertical-align: middle;
+  margin-top: -0.25em;
+  margin-bottom: -0.2em;
+}
+
+.dynamic-emote-sizes .emote-2 .emote {
+  height: 3.5em;
+}
+
+.dynamic-emote-sizes .emote-4 .emote {
+  height: 112px;
+}
+
+.cheer-amount {
+}
+
 /****************
  * Extra Styles *
  ****************/
@@ -136,7 +189,7 @@ html {
 /* Smooth 1px text outline */
 .text-outline-1 {
   --outlineColor: rgb(0, 0, 0);
-  --outlineColorLowOpacity: rgba(0, 0, 0, 0.25);
+  --outlineColorLowOpacity: rgba(0, 0, 0, 0.2);
   text-shadow:
     /* 1px offset top          */ 0 -1px var(--outlineColor),
     /* 1px offset bottom       */ 0 1px var(--outlineColor),
@@ -152,7 +205,7 @@ html {
 /* Smooth 2px text outline */
 .text-outline-2 {
   --outlineColor: rgb(0, 0, 0);
-  --outlineColorLowOpacity: rgba(0, 0, 0, 0.25);
+  --outlineColorLowOpacity: rgba(0, 0, 0, 0.2);
   text-shadow:
     /* 1px offset top          */ 0 -1px var(--outlineColor),
     /* 1px offset bottom       */ 0 1px var(--outlineColor),

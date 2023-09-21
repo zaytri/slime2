@@ -1,4 +1,5 @@
-<!-- using slime2 version 0.1.4 -->
+<!-- base theme -->
+<!-- using slime2 version 0.2.0 -->
 
 <!doctype html>
 <html lang="en">
@@ -11,19 +12,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <!-- title and favicon -->
-    <title>slime2 overlay</title>
+    <title>slime2 v0.2.0</title>
     <link
       rel="icon"
       type="image/x-icon"
-      href="https:/https://cdn.jsdelivr.net/gh/zaytri/slime2@0.1.4/release/slime2.stream/favicon.ico"
+      href="https://slime2.stream/favicon.ico"
     />
     
-    <!-- jQuery, used in the custom JS -->
+    <!-- jQuery and Color.js, used in the custom JS -->
     <script
       src="https://code.jquery.com/jquery-3.7.1.slim.min.js"
       integrity="sha256-kmHvs0B+OpCW5GVHUNjv9rOmY0IvSIRcf7zGUDTDQM8="
       crossorigin="anonymous"
     ></script>
+    <script src="https://colorjs.io/dist/color.global.js"></script>
 
     <!-- custom JS/CSS -->
     <script src="TOKEN.js"></script>
@@ -31,15 +33,18 @@
     <link href="base.css" rel="stylesheet" />
 
     <!-- slime2 JS/CSS -->
-    <script type="module" crossorigin src="https://cdn.jsdelivr.net/gh/zaytri/slime2@0.1.4/release/slime2.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/zaytri/slime2@0.1.4/release/slime2.css">
+    <script type="module" crossorigin src="https://cdn.jsdelivr.net/gh/zaytri/slime2@0.2.0/release/slime2.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/zaytri/slime2@0.2.0/release/slime2.css">
   </head>
 
   <!-----------------------------------------------------
     HTML structure, slime2 inserts everything into main
   ------------------------------------------------------>
   <body>
-    <main id="slime2-root"></main>
+    <main
+      id="slime2-root"
+      class="vertical-bottom-left dynamic-emote-sizes"
+    ></main>
   </body>
 
   <!----------------------------------------------------------------------
@@ -49,7 +54,7 @@
   <!-- message template, inserted into main -->
   <template id="message-template">
     <div class="message">
-      <span class="user text-outline-2"></span>
+      <span class="user"></span>
       <span class="content text-outline-2"></span>
     </div>
   </template>
@@ -57,8 +62,8 @@
   <!-- user template, inserted into the user class -->
   <template id="user-template"
     ><span class="badges"></span><span class="name"></span
-    ><span class="pronouns"></span>:</template
-  >
+    ><span class="pronouns"></span
+  ></template>
 
   <!-- badge template, inserted into the badges class -->
   <template id="badge-template"><img class="badge" /></template>

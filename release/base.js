@@ -1,15 +1,28 @@
-const DEFAULT_USER_COLORS = [
-  '#FFADAD', // pastel red
-  '#FFD6A5', // pastel orange
-  '#FDFFB6', // pastel yellow
-  '#CAFFBF', // pastel green
-  '#9BF6FF', // pastel blue
-  '#A0C4FF', // pastel indigo
-  '#BDB2FF', // pastel purple
-  '#FFC6FF', // pastel pink
+// these colors are randomly assigned to a user if they don't have a chat color,
+// and are used by by the test messages
+const FALLBACK_USER_COLORS = [
+  '#FFFFFF', // white
+  '#FFC6FF', // light pink
+  '#FFADAD', // light red
+  '#FFD6A5', // light orange
+  '#FDFFB6', // light yellow
+  '#CAFFBF', // light green
+  '#9BF6FF', // light cyan
+  '#A0C4FF', // light blue
+  '#BDB2FF', // light purple
+  '#830044', // dark pink
+  '#6E0000', // dark red
+  '#854A02', // dark orange
+  '#987200', // dark yellow
+  '#115D00', // dark green
+  '#006974', // dark cyan
+  '#002560', // dark blue
+  '#3C0067', // dark purple
+  '#000000', // black
 ]
 
 let messages = []
+const userData = {}
 
 /****************
  * Chat Handler *
@@ -30,15 +43,17 @@ var slime2Chat = {
     messageClone.find('.user').append(buildUser(user))
     messageClone.find('.content').append(buildContent(parts))
 
-    // if the user hasn't set a name color,
-    // generate a color for them from the DEFAULT_USER_COLORS list
-    const nameColor = user.color || generateUserColor(user.displayName)
+    const userColor = getUserColor(user)
+    const userColorBrightness = textBrightness(userColor)
 
     // add user's name color and add class to determine name color brightness
     messageClone
       .find('.user')
-      .css('color', nameColor)
-      .addClass(user.colorBrightness === 'dark' ? 'name-dark' : 'name-light')
+      .css('--userColor', userColor)
+      .addClass(userColorBrightness === 'dark' ? 'user-dark' : 'user-light')
+
+    const emoteSize = calculateEmoteSize(parts)
+    messageClone.find('.content').addClass(`emote-${emoteSize}`)
 
     // defines what happens after the message has been fully rendered
     // can be used to delete messages over time, get message dimensions, etc.
@@ -183,24 +198,92 @@ function buildText(part) {
   return textClone
 }
 
+/*******************
+ * Color Functions *
+ *******************/
+
+// gets the user's name color, if they chose a color
+// if they never chose one, assign a random color from DEFAULT_USER_COLORS
+function getUserColor(user) {
+  const { userName } = user
+
+  // get the stored user data from this session
+  let storedUserData = userData[userName]
+
+  // if this was the first chat from the user during this session, they
+  // don't have any stored data, so create new stored data for them
+  if (!storedUserData) {
+    // if user.color exists, use that
+    // otherwise get a random color from DEFAULT_USER_COLORS
+    storedUserData = {
+      color:
+        user.color ||
+        FALLBACK_USER_COLORS[randomInteger(0, FALLBACK_USER_COLORS.length - 1)],
+    }
+
+    // store the user data so that the user will always have the same color
+    userData[userName] = storedUserData
+  }
+
+  return storedUserData.color
+}
+
+// returns either 'light' or 'dark'
+// 'light' if the given text color has better readability on a black background
+// 'dark' if the given text color has better readability on a white background
+// https://colorjs.io/docs/contrast#accessible-perceptual-contrast-algorithm-apca
+function textBrightness(color) {
+  const textColor = new Color(color)
+  const blackBackground = new Color('#000000')
+  const whiteBackground = new Color('#FFFFFF')
+
+  const darkContrast = Math.abs(blackBackground.contrastAPCA(textColor))
+  const lightContrast = Math.abs(whiteBackground.contrastAPCA(textColor))
+
+  return darkContrast > lightContrast ? 'light' : 'dark'
+}
+
+// returns either 'light' or 'dark'
+// 'light' if black text has better readability on the given background color
+// 'dark' if white text has better readability on the given background color
+// https://colorjs.io/docs/contrast#accessible-perceptual-contrast-algorithm-apca
+function backgroundBrightness(color) {
+  const backgroundColor = new Color(color)
+  const blackText = new Color('#000000')
+  const whiteText = new Color('#FFFFFF')
+
+  const darkContrast = Math.abs(backgroundColor.contrastAPCA(whiteText))
+  const lightContrast = Math.abs(backgroundColor.contrastAPCA(blackText))
+
+  return darkContrast > lightContrast ? 'dark' : 'light'
+}
+
 /********************
  * Helper Functions *
  ********************/
 
-// generates a color from DEFAULT_USER_COLORS based on the name given,
-// so that the same user will always be given the same color
-function generateUserColor(name) {
-  // take the first color as a fallback if name somehow doesn't exist
-  if (!name) return DEFAULT_USER_COLORS[0]
+// emote size is 1 if the message contains anything other than emotes
+// 2 if the message contains multiple emotes and nothing else
+// 4 if the entire messages is just a single emote
+function calculateEmoteSize(parts) {
+  let emoteCount = 0
+  let otherCount = 0
 
-  // separate out each character of the string, convert each one into a
-  // number, then sum all of those together
-  const nameValue = name
-    .split('')
-    .reduce((sum, character) => sum + character.charCodeAt(0), 0)
+  parts.forEach(part => {
+    if (part.type === 'emote') {
+      emoteCount++
+    } else if (part.text.trim() !== '') {
+      otherCount++
+    }
+  })
 
-  // use that value to index the DEFAULT_USER_COLORS array
-  return DEFAULT_USER_COLORS[nameValue % DEFAULT_USER_COLORS.length]
+  if (otherCount > 0) {
+    return 1
+  } else if (emoteCount > 1) {
+    return 2
+  }
+
+  return 4
 }
 
 // given an ID, clone the template and wrap it with jQuery
