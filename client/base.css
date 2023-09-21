@@ -171,6 +171,14 @@
   margin-bottom: -0.2em;
 }
 
+.dynamic-emote-sizes .emote-2 .emote {
+  height: 3.5em;
+}
+
+.dynamic-emote-sizes .emote-4 .emote {
+  height: 112px;
+}
+
 .cheer-amount {
 }
 

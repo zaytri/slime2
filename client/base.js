@@ -52,6 +52,9 @@ var slime2Chat = {
       .css('--userColor', userColor)
       .addClass(userColorBrightness === 'dark' ? 'user-dark' : 'user-light')
 
+    const emoteSize = calculateEmoteSize(parts)
+    messageClone.find('.content').addClass(`emote-${emoteSize}`)
+
     // defines what happens after the message has been fully rendered
     // can be used to delete messages over time, get message dimensions, etc.
     function callback(messageElement) {
@@ -195,9 +198,9 @@ function buildText(part) {
   return textClone
 }
 
-/********************
- * Helper Functions *
- ********************/
+/*******************
+ * Color Functions *
+ *******************/
 
 // gets the user's name color, if they chose a color
 // if they never chose one, assign a random color from DEFAULT_USER_COLORS
@@ -253,6 +256,34 @@ function backgroundBrightness(color) {
   const lightContrast = Math.abs(backgroundColor.contrastAPCA(blackText))
 
   return darkContrast > lightContrast ? 'dark' : 'light'
+}
+
+/********************
+ * Helper Functions *
+ ********************/
+
+// emote size is 1 if the message contains anything other than emotes
+// 2 if the message contains multiple emotes and nothing else
+// 4 if the entire messages is just a single emote
+function calculateEmoteSize(parts) {
+  let emoteCount = 0
+  let otherCount = 0
+
+  parts.forEach(part => {
+    if (part.type === 'emote') {
+      emoteCount++
+    } else if (part.text.trim() !== '') {
+      otherCount++
+    }
+  })
+
+  if (otherCount > 0) {
+    return 1
+  } else if (emoteCount > 1) {
+    return 2
+  }
+
+  return 4
 }
 
 // given an ID, clone the template and wrap it with jQuery
