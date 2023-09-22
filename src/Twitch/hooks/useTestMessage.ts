@@ -36,6 +36,8 @@ const TEST_ANNOUNCEMENT_COLORS = [
 
 const TEST_CHEER_AMOUNTS = [1, 5, 10, 50, 100, 500, 1000, 5000, 10000]
 
+const TEST_PUNCTUATION = ['', '.', '...', '!', '?', '!!', '!?', '?!']
+
 export default function useTestMessage() {
   const dispatch = useMessageListDispatch()
   const { getAllOtherEmotes } = useOtherEmotes()
@@ -49,9 +51,17 @@ export default function useTestMessage() {
     const channelEmotes = [...getAllChannelEmotes(), ...getAllOtherEmotes()]
 
     const date = new Date()
-    const first = !randomInteger(0, 4) // 20% chance of being first time chat
-    let text = 'test message'
+    const first = !randomInteger(0, 19) // 5% chance of being first time chat
+
+    const testMessage = 'test message'
+    const longTestMessage = `long test message${' long test message'.repeat(9)}`
+
+    // 10% chance of being a long message
+    let text = `${randomInteger(0, 9) ? testMessage : longTestMessage}${
+      TEST_PUNCTUATION[randomInteger(0, TEST_PUNCTUATION.length - 1)]
+    }`
     let textPart = text
+
     if (first) {
       text = `${text} (first time chat)`
     }
