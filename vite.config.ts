@@ -34,7 +34,7 @@ export default defineConfig(({ command, mode }) => {
     publicRoot = 'themes'
     publicDir = `${publicRoot}/${theme}`
     entry = `${publicDir}/${theme}.html`
-    outDir = `release-theme-${theme}`
+    outDir = `themes/release-${theme}`
   }
 
   const transformIndexPlugin: PluginOption = {

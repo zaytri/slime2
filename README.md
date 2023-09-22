@@ -6,7 +6,7 @@ Built with [Vite](https://vitejs.dev/) using [React](https://react.dev/)
 
 Guide: https://forums.slime2.stream/resources/getting-started-with-slime2.3/
 
-## Using this repo for building themes
+## If you want to use this repo to build themes
 
 It's not necessary to build themes using this, but if you do then you get the added benefit of hot reloading and using `.env.local` for your tokens instead of directly including them in `TOKEN.js`.
 
@@ -79,23 +79,26 @@ It's not necessary to build themes using this, but if you do then you get the ad
     npm run theme-build theme.custom
     ```
 
-11. This will create a new `release-theme-*` folder using the name of your theme, which will look like this:
+11. This will create a new `themes/release-*` folder using the name of your theme, which will look like this:
 
     ```
     📁 client
     📁 release
-    📁 release-theme-custom
-      \_📄 custom.css
-      \_📄 custom.html
-      \_📄 custom.js
-      \_📄 TOKEN.js
     📁 src
     📁 themes
+      \_📁 custom
+      \_📁 release-custom
+         \_📄 custom.css
+         \_📄 custom.html
+         \_📄 custom.js
+         \_📄 TOKEN.js
     ...
     ```
 
     - This will automatically update the HTML file to include the JS and CSS of the repo's version of slime2, replaces all instances of `{version}` with the slime2 version number, and replaces all instances of `{theme}` with your theme name.
 
-12. Zip all of the `release-theme-*` files, naming the `.zip` whatever you want, but I would recommend something like `custom-chat-1.0.0.zip`, and whenever you make a new update, update that version number accordingly!
+12. Zip all of the `release-*` files, naming the `.zip` whatever you want, but I would recommend something like `Custom-Chat-1.0.0.zip`, and whenever you make a new update, update that version number accordingly!
 
 13. Distribute that `.zip` file however you want! And if you just want to use your theme yourself, copy all of those files into a separate folder, put your token from https://slime2.stream/token into `TOKEN.js`, and load your HTML file into a browser source in OBS as a local file!
+
+14. **Bonus Tip**: Use the `themes` folder itself as a git repo to easily track and version control your own theme development!
