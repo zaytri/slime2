@@ -4,9 +4,17 @@ Built with [Vite](https://vitejs.dev/) using [React](https://react.dev/)
 
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/V7V14PTBF)
 
-## Getting Started
+## Useful Links
 
-Guide: https://forums.slime2.stream/resources/getting-started-with-slime2.3/
+Setup: https://forums.slime2.stream/resources/getting-started-with-slime2.3/
+Customization: https://forums.slime2.stream/resources/base-chat.10/field?field=customization
+Support: https://forums.slime2.stream/forums/help.13/
+
+## Terms of Use
+
+- Do not claim this as your own or sell it
+- You may modify this to create your own slime2 theme, and you can freely share or sell your theme
+- Feel free to post your theme here on the forums: https://forums.slime2.stream/resources/categories/themes.2/
 
 ## If you want to use this repo to build themes
 
