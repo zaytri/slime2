@@ -2,6 +2,8 @@
 
 Built with [Vite](https://vitejs.dev/) using [React](https://react.dev/)
 
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/V7V14PTBF)
+
 ## Getting Started
 
 Guide: https://forums.slime2.stream/resources/getting-started-with-slime2.3/
