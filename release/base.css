@@ -156,6 +156,7 @@
 
 /* Content container */
 .content {
+  overflow-wrap: anywhere;
 }
 
 .text {
