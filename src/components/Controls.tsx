@@ -2,19 +2,22 @@ import { useEffect, useState } from 'react'
 import useTestMessage from '../Twitch/hooks/useTestMessage'
 
 type Style = {
-  top?: number | string
-  bottom?: number
-  left?: number | string
-  right?: number
+  top?: string
+  bottom?: string
+  left?: string
+  right?: string
   transform?: string
 }
 
-const POSITION_MARGIN = 20
+const oneThird = 1 / 3
+const halfPercent = '50%'
+const sixthPercent = `${100 / 6}%`
 
 export default function Controls() {
   const [style, setStyle] = useState<Style>({
-    bottom: POSITION_MARGIN,
-    right: POSITION_MARGIN,
+    top: halfPercent,
+    left: halfPercent,
+    transform: 'translate(-50%, -50%)',
   })
   const [visible, setVisible] = useState(false)
 
@@ -28,58 +31,74 @@ export default function Controls() {
       const mouseX = event.clientX
       const mouseY = event.clientY
 
-      if (mouseY < windowHeight * 0.34) {
-        if (mouseX < windowWidth * 0.34) {
+      if (mouseY < windowHeight * oneThird) {
+        if (mouseX < windowWidth * oneThird) {
           // top left
-          setStyle({ top: POSITION_MARGIN, left: POSITION_MARGIN })
-        } else if (mouseX < windowWidth * 0.67) {
+          setStyle({
+            top: sixthPercent,
+            left: sixthPercent,
+            transform: 'translate(-50%, -50%)',
+          })
+        } else if (mouseX < windowWidth * oneThird * 2) {
           // top center
           setStyle({
-            top: POSITION_MARGIN,
-            left: '50%',
-            transform: 'translateX(-50%)',
+            top: sixthPercent,
+            left: halfPercent,
+            transform: 'translate(-50%, -50%)',
           })
         } else {
           // top right
-          setStyle({ top: POSITION_MARGIN, right: POSITION_MARGIN })
+          setStyle({
+            top: sixthPercent,
+            right: sixthPercent,
+            transform: 'translate(50%, -50%)',
+          })
         }
-      } else if (mouseY < windowHeight * 0.67) {
-        if (mouseX < windowWidth * 0.34) {
+      } else if (mouseY < windowHeight * oneThird * 2) {
+        if (mouseX < windowWidth * oneThird) {
           // center left
           setStyle({
-            top: '50%',
-            left: POSITION_MARGIN,
-            transform: 'translateY(-50%)',
+            top: halfPercent,
+            left: sixthPercent,
+            transform: 'translate(-50%, -50%)',
           })
-        } else if (mouseX < windowWidth * 0.67) {
+        } else if (mouseX < windowWidth * oneThird * 2) {
           // center
           setStyle({
-            top: '50%',
-            left: '50%',
+            top: halfPercent,
+            left: halfPercent,
             transform: 'translate(-50%, -50%)',
           })
         } else {
           // center right
           setStyle({
-            top: '50%',
-            right: POSITION_MARGIN,
-            transform: 'translateY(-50%)',
+            top: halfPercent,
+            right: sixthPercent,
+            transform: 'translate(50%, -50%)',
           })
         }
       } else {
-        if (mouseX < windowWidth * 0.34) {
+        if (mouseX < windowWidth * oneThird) {
           // bottom left
-          setStyle({ bottom: POSITION_MARGIN, left: POSITION_MARGIN })
-        } else if (mouseX < windowWidth * 0.67) {
+          setStyle({
+            bottom: sixthPercent,
+            left: sixthPercent,
+            transform: 'translate(-50%, 50%)',
+          })
+        } else if (mouseX < windowWidth * oneThird * 2) {
           // bottom center
           setStyle({
-            bottom: POSITION_MARGIN,
-            left: '50%',
-            transform: 'translateX(-50%)',
+            bottom: sixthPercent,
+            left: halfPercent,
+            transform: 'translate(-50%, 50%)',
           })
         } else {
           // bottom right
-          setStyle({ bottom: POSITION_MARGIN, right: POSITION_MARGIN })
+          setStyle({
+            bottom: sixthPercent,
+            right: sixthPercent,
+            transform: 'translate(50%, 50%)',
+          })
         }
       }
     }
