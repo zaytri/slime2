@@ -54,10 +54,17 @@ export default function useTestMessage() {
     const first = !randomInteger(0, 19) // 5% chance of being first time chat
 
     const testMessage = 'test message'
-    const longTestMessage = `long test message${' long test message'.repeat(9)}`
+    const longTestMessage = `long test message${' long test message'.repeat(5)}`
+    const connectedLongTestMessage = 'LongTestMessage'.repeat(7)
 
-    // 10% chance of being a long message
-    let text = `${randomInteger(0, 9) ? testMessage : longTestMessage}${
+    let text = testMessage
+
+    // 5% chance of being longTestMessage or connectedLongTestMessage
+    if (!randomInteger(0, 19)) text = longTestMessage
+    if (!randomInteger(0, 19)) text = connectedLongTestMessage
+
+    // add in randomized punctuation
+    text = `${text}${
       TEST_PUNCTUATION[randomInteger(0, TEST_PUNCTUATION.length - 1)]
     }`
     let textPart = text
@@ -227,6 +234,12 @@ export default function useTestMessage() {
       parts.unshift({ type: 'text', text: ' ' })
       parts.unshift({ type: 'emote', emote, text: emote.name })
       text = `${emote.name} ${text}`
+    }
+
+    // 20% chance of converting any basic message to just say "hi"
+    if (messageType.type === 'basic' && !randomInteger(0, 4)) {
+      text = 'hi'
+      textPart = text
     }
 
     parts.push({ type: 'text', text: textPart })
