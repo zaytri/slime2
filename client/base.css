@@ -38,60 +38,6 @@
   display: inline-block;
 }
 
-/******************************************************
- * Chat list axis (vertical/horizontal) and alignment *
- ******************************************************/
-
-/* Apply these classes to main in the HTML */
-
-.vertical-top-left #slime2-chat-list {
-  flex-direction: column-reverse;
-  justify-content: start;
-  align-items: flex-start;
-}
-
-.vertical-top-right #slime2-chat-list {
-  flex-direction: column-reverse;
-  justify-content: start;
-  align-items: flex-end;
-}
-
-.vertical-bottom-left #slime2-chat-list {
-  flex-direction: column;
-  justify-content: end;
-  align-items: flex-start;
-}
-
-.vertical-bottom-right #slime2-chat-list {
-  flex-direction: column;
-  justify-content: end;
-  align-items: flex-end;
-}
-
-.horizontal-top-left #slime2-chat-list {
-  flex-direction: row-reverse;
-  justify-content: start;
-  align-items: flex-start;
-}
-
-.horizontal-top-right #slime2-chat-list {
-  flex-direction: row;
-  justify-content: end;
-  align-items: flex-start;
-}
-
-.horizontal-bottom-left #slime2-chat-list {
-  flex-direction: row-reverse;
-  justify-content: start;
-  align-items: flex-end;
-}
-
-.horizontal-bottom-right #slime2-chat-list {
-  flex-direction: row;
-  justify-content: end;
-  align-items: flex-end;
-}
-
 /***************
  * User Styles *
  ***************/
@@ -172,6 +118,13 @@
   margin-bottom: -0.2em;
 }
 
+.cheer-amount {
+}
+
+/***********************
+ * Dynamic Emote Sizes *
+ ***********************/
+
 .dynamic-emote-sizes .emote-2 .emote {
   height: 3.5em;
 }
@@ -180,7 +133,58 @@
   height: 112px;
 }
 
-.cheer-amount {
+/******************************************************
+ * Chat list axis (vertical/horizontal) and alignment *
+ ******************************************************/
+
+/* Apply these classes to main in the HTML */
+
+.vertical-top-left #slime2-chat-list {
+  flex-direction: column-reverse;
+  justify-content: start;
+  align-items: flex-start;
+}
+
+.vertical-top-right #slime2-chat-list {
+  flex-direction: column-reverse;
+  justify-content: start;
+  align-items: flex-end;
+}
+
+.vertical-bottom-left #slime2-chat-list {
+  flex-direction: column;
+  justify-content: end;
+  align-items: flex-start;
+}
+
+.vertical-bottom-right #slime2-chat-list {
+  flex-direction: column;
+  justify-content: end;
+  align-items: flex-end;
+}
+
+.horizontal-top-left #slime2-chat-list {
+  flex-direction: row-reverse;
+  justify-content: start;
+  align-items: flex-start;
+}
+
+.horizontal-top-right #slime2-chat-list {
+  flex-direction: row;
+  justify-content: end;
+  align-items: flex-start;
+}
+
+.horizontal-bottom-left #slime2-chat-list {
+  flex-direction: row-reverse;
+  justify-content: start;
+  align-items: flex-end;
+}
+
+.horizontal-bottom-right #slime2-chat-list {
+  flex-direction: row;
+  justify-content: end;
+  align-items: flex-end;
 }
 
 /****************
