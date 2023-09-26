@@ -89,7 +89,7 @@ export default defineConfig(({ command, mode }) => {
       transformIndexPlugin,
       staticCopyPlugin,
       cleanBuildPlugin,
-      removeBuildInDevPlugin,
+      // removeBuildInDevPlugin,
     ],
     publicDir,
     base:
