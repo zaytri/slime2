@@ -7,7 +7,7 @@ Customization: https://forums.slime2.stream/resources/base-chat.10/field?field=c
 Support: https://forums.slime2.stream/forums/help.13/
 
 Terms of Use:
-- Do not claim this as your own or sell it
+- Do not claim this as your own or resell it
 - You may modify this to create your own slime2 theme, and you can freely share or sell your theme
 - Feel free to post your theme here on the forums: https://forums.slime2.stream/resources/categories/themes.2/
 
