@@ -6,9 +6,9 @@ Built with [Vite](https://vitejs.dev/) using [React](https://react.dev/)
 
 ## Useful Links
 
-Setup: https://forums.slime2.stream/resources/getting-started-with-slime2.3/
-Customization: https://forums.slime2.stream/resources/base-chat.10/field?field=customization
-Support: https://forums.slime2.stream/forums/help.13/
+- Setup: https://forums.slime2.stream/resources/getting-started-with-slime2.3/
+- Customization: https://forums.slime2.stream/resources/base-chat.10/field?field=customization
+- Support: https://forums.slime2.stream/forums/help.13/
 
 ## Terms of Use
 
