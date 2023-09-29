@@ -13,7 +13,7 @@ Built with [Vite](https://vitejs.dev/) using [React](https://react.dev/)
 ## Terms of Use
 
 - Do not claim this as your own or sell it
-- You may modify this to create your own slime2 theme, and you can freely share or sell your theme
+- You may modify the base theme to create your own slime2 theme, and you can freely share or sell your theme
 - Feel free to post your theme here on the forums: https://forums.slime2.stream/resources/categories/themes.2/
 
 ## If you want to use this repo to build themes
