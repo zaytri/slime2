@@ -7,7 +7,7 @@
 /widgets-private
 
 # slime2 keys
-slime2key_*.js
+SLIME2_*_KEY.js
 
 # apple
 .DS_Store

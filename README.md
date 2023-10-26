@@ -92,11 +92,11 @@ It's not necessary to build widgets using this, but if you do then you get the a
     ```
 
 - This will automatically update the HTML file to include the JS and CSS of the repo's version of slime2, replaces all instances of `{version}` with the slime2 version number, and replaces all instances of `{widget}` with your widget name.
-- This will also automatically delete any `slime2key_*.js` files, since they shouldn't be included in a public build.
+- This will also automatically delete any `SLIME2_*_KEY.js` files, since they shouldn't be included in a public build.
 
 11. Zip all of the `release-*` files and name the `.zip` whatever you want. I would recommend something like `Custom-Chat-1.0.0.zip`. Whenever you make a new update, update that version number accordingly!
 
-12. Distribute that `.zip` file however you want! And if you just want to use your widget yourself, copy all of those files into a separate folder, copy in the `slime2key_*.js` file that you already downloaded from https://slime2.stream/account, and load your HTML file into a browser source in OBS as a local file!
+12. Distribute that `.zip` file however you want! And if you just want to use your widget yourself, copy all of those files into a separate folder, copy in the `SLIME2_*_KEY*.js` file that you already downloaded from https://slime2.stream/account, and load your HTML file into a browser source in OBS as a local file!
 
 13. **Bonus Tip**: Use the `widgets` folder itself as a git repo to easily track and version control your own widget development!
 

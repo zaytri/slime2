@@ -89,7 +89,9 @@ export default defineConfig(({ command, mode }) => {
         }),
         ...['twitch', 'google'].map(provider => {
           return fileSystem
-            .unlink(buildPath(outDir, `slime2key_${provider}.js`))
+            .unlink(
+              buildPath(outDir, `SLIME2_${provider.toUpperCase()}_KEY.js`),
+            )
             .catch(() => {}) // ignore error if file doesn't exist
         }),
       ])
