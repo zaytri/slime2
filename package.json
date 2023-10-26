@@ -4,15 +4,15 @@
   "private": true,
   "homepage": ".",
   "scripts": {
-    "start": "npm run slime2",
-    "build": "npm run slime2 build",
+    "start": "npm run lint && vite",
+    "build": "npm run lint && npm install && tsc && vite build",
     "widget": "npm run slime2 widget",
     "build:widget": "npm run slime2 build widget",
     "private": "npm run slime2 private widget",
     "build:private": "npm run slime2 build private widget",
     "slime2": "node ./cli/index.mjs",
     "debug": "vite --mode debug",
-    "lint": "eslint . --ext ts, tsx --report-unused-disable-directives --max-warnings 0"
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.0.5",

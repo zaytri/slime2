@@ -1,10 +1,10 @@
-import { defineConfig, createLogger } from 'vite'
 import react from '@vitejs/plugin-react-swc'
-import { version } from './package.json'
-import { viteStaticCopy } from 'vite-plugin-static-copy'
 import fileSystem from 'fs/promises'
 import { resolve } from 'path'
+import { createLogger, defineConfig } from 'vite'
+import { viteStaticCopy } from 'vite-plugin-static-copy'
 import tsconfigPaths from 'vite-tsconfig-paths'
+import { version } from './package.json'
 
 const logger = createLogger()
 const originalWarning = logger.warn
@@ -42,8 +42,8 @@ export default defineConfig(({ command, mode }) => {
     outDir = `${publicRoot}/release-${widget}`
   }
 
-  let publicDir = `${publicRoot}/${widget}`
-  let entry = `${publicDir}/${widget}.html`
+  const publicDir = `${publicRoot}/${widget}`
+  const entry = `${publicDir}/${widget}.html`
 
   const plugins = [react(), tsconfigPaths()]
 

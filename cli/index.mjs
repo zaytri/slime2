@@ -1,7 +1,7 @@
 #! /usr/bin/env node
+import { exec, fork, spawn } from 'child_process'
 import yargs from 'yargs'
 import { hideBin } from 'yargs/helpers'
-import { execSync } from 'child_process'
 
 async function run() {
   const argv = await yargs(hideBin(process.argv)).argv
@@ -30,7 +30,9 @@ async function run() {
 
   if (widget && isPrivate) widget = `${widget}/private`
 
-  execSync(createCommand(isBuild, widget))
+  exec(createCommand(isBuild, widget), (error, stdout) => {
+    console.log(stdout)
+  })
 }
 
 function createCommand(isBuild, widget) {
