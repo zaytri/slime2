@@ -4,13 +4,15 @@
   "private": true,
   "homepage": ".",
   "scripts": {
-    "start": "vite",
+    "start": "npm run slime2",
+    "build": "npm run slime2 build",
+    "widget": "npm run slime2 widget",
+    "build:widget": "npm run slime2 build widget",
+    "private": "npm run slime2 private widget",
+    "build:private": "npm run slime2 build private widget",
+    "slime2": "node ./cli/index.mjs",
     "debug": "vite --mode debug",
-    "build": "npm install && tsc && vite build",
-    "theme": "vite --mode",
-    "theme-build": "tsc && vite build --mode",
-    "lint": "eslint . --ext ts, tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "lint": "eslint . --ext ts, tsx --report-unused-disable-directives --max-warnings 0"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.0.0",
@@ -18,25 +20,29 @@
     "@twurple/auth": "^7.0.4",
     "@twurple/chat": "^7.0.4",
     "axios": "^1.5.1",
-    "framer-motion": "^10.16.4",
+    "clsx": "^2.0.0",
     "imagesloaded": "^5.0.0",
     "jquery": "^3.7.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-spinners": "^0.13.8"
+    "react-spinners": "^0.13.8",
+    "vite-tsconfig-paths": "^4.2.1"
   },
   "devDependencies": {
     "@d-fischer/typed-event-emitter": "^3.3.2",
-    "@types/imagesloaded": "^4.1.3",
-    "@types/jquery": "^3.5.22",
-    "@types/node": "^20.8.6",
-    "@types/react": "^18.2.28",
-    "@types/react-dom": "^18.2.13",
+    "@types/gapi": "^0.0.46",
+    "@types/gapi.client.youtube-v3": "^0.0.3",
+    "@types/google.accounts": "^0.0.13",
+    "@types/imagesloaded": "^4.1.4",
+    "@types/jquery": "^3.5.24",
+    "@types/node": "^20.8.7",
+    "@types/react": "^18.2.29",
+    "@types/react-dom": "^18.2.14",
+    "@types/yargs": "^17.0.29",
     "@typescript-eslint/eslint-plugin": "^6.8.0",
     "@typescript-eslint/parser": "^6.8.0",
     "@vitejs/plugin-react-swc": "^3.4.0",
     "autoprefixer": "^10.4.16",
-    "cross-env": "^7.0.3",
     "eslint": "^8.51.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.3",
@@ -44,8 +50,11 @@
     "prettier": "^3.0.3",
     "prettier-plugin-tailwindcss": "^0.5.6",
     "tailwindcss": "^3.3.3",
+    "ts-node": "^10.9.1",
+    "typedoc": "^0.25.2",
     "typescript": "^5.2.2",
-    "vite": "^4.4.11",
-    "vite-plugin-static-copy": "^0.17.0"
+    "vite": "^4.5.0",
+    "vite-plugin-static-copy": "^0.17.0",
+    "yargs": "^17.7.2"
   }
 }

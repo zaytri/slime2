@@ -21,7 +21,10 @@
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
 
-    "types": ["vite/client"]
+    "types": ["jquery", "gapi", "gapi.client.youtube-v3", "google.accounts"],
+    "paths": {
+      "@/*": ["./src/*"]
+    }
   },
   "include": ["src"],
   "references": [{ "path": "./tsconfig.node.json" }]

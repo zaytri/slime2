@@ -2,25 +2,18 @@
 
 # dependencies
 /node_modules
-/.pnp
-.pnp.js
 
-# testing
-/coverage
+# private widgets
+/widgets-private
 
-# production
-/build
+# slime2 keys
+slime2key_*.js
 
-# themes
-/themes*
-
-# misc
+# apple
 .DS_Store
-*.env.local
-*.env.development.local
-*.env.test.local
-*.env.production.local
 
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
+# environmental variable secrets
+*.env.*local
+
+# debug logs
+*.log*

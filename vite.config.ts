@@ -1,9 +1,10 @@
-import { type PluginOption, defineConfig, createLogger } from 'vite'
+import { defineConfig, createLogger } from 'vite'
 import react from '@vitejs/plugin-react-swc'
 import { version } from './package.json'
 import { viteStaticCopy } from 'vite-plugin-static-copy'
 import fileSystem from 'fs/promises'
 import { resolve } from 'path'
+import tsconfigPaths from 'vite-tsconfig-paths'
 
 const logger = createLogger()
 const originalWarning = logger.warn
@@ -22,75 +23,81 @@ const entryFileNames = 'slime2.js'
 
 // https://vitejs.dev/config/
 export default defineConfig(({ command, mode }) => {
-  let publicRoot = 'client'
-  let publicDir = publicRoot
-  let theme = 'base'
-  let entry = `${publicDir}/${theme}.html`
+  let publicRoot = 'widgets'
+  let widget = 'simple-chat'
   let outDir = 'release'
 
-  theme = mode.startsWith('theme.') ? mode.split('.')[1] : theme
+  const widgetMode = ['debug', 'production', 'development'].every(
+    devMode => devMode !== mode,
+  )
 
-  if (theme !== 'base') {
-    publicRoot = 'themes'
-    publicDir = `${publicRoot}/${theme}`
-    entry = `${publicDir}/${theme}.html`
-    outDir = `themes/release-${theme}`
+  if (widgetMode) {
+    if (mode.endsWith('/private')) {
+      widget = mode.split('/')[0]
+      publicRoot = 'widgets-private'
+    } else {
+      widget = mode
+    }
+
+    outDir = `${publicRoot}/release-${widget}`
   }
 
-  const transformIndexPlugin: PluginOption = {
+  let publicDir = `${publicRoot}/${widget}`
+  let entry = `${publicDir}/${widget}.html`
+
+  const plugins = [react(), tsconfigPaths()]
+
+  plugins.push({
     name: 'slime2-transform-index',
     transformIndexHtml: html => {
-      return html.replaceAll('{version}', version).replaceAll('{theme}', theme)
+      return html
+        .replaceAll('{version}', version)
+        .replaceAll('{widget}', widget)
     },
-  }
-
-  const staticCopyPlugin: PluginOption = viteStaticCopy({
-    targets: [
-      {
-        src: `${outDir}/${entry}`,
-        dest: '.',
-      },
-    ],
   })
 
-  const cleanBuildPlugin: PluginOption = {
+  // widget build
+  if (command === 'build' && widgetMode) {
+    // copy and replace html file
+    plugins.push(
+      viteStaticCopy({
+        targets: [
+          {
+            src: `${outDir}/${entry}`,
+            dest: '.',
+          },
+        ],
+      }),
+    )
+  }
+
+  plugins.push({
     name: 'slime2-clean-build',
+
     closeBundle: async () => {
-      await fileSystem.rm(resolve(__dirname, `${outDir}/${publicRoot}`), {
+      // delete unnecessary folder
+      await fileSystem.rm(buildPath(outDir, publicRoot), {
         recursive: true,
       })
 
-      if (theme !== 'base') {
-        await fileSystem.rm(resolve(__dirname, `${outDir}/slime2.css`))
-        await fileSystem.rm(resolve(__dirname, `${outDir}/slime2.js`))
-      }
-    },
-  }
+      if (!widgetMode) return
 
-  const removeBuildInDevPlugin: PluginOption = {
-    name: 'slime2-remove-build-in-dev',
-    apply: 'serve',
-    configureServer: async () => {
-      const buildFolder = resolve(__dirname, outDir)
-      const buildFolderExists = await fileSystem
-        .access(buildFolder)
-        .then(_ => true)
-        .catch(_ => false)
-
-      if (buildFolderExists) {
-        await fileSystem.rm(buildFolder, { recursive: true })
-      }
+      // remove slime2 files and keys from widget build
+      await Promise.all([
+        ...['slime2.css', 'slime2.js'].map(file => {
+          return fileSystem.unlink(buildPath(outDir, file))
+        }),
+        ...['twitch', 'google'].map(provider => {
+          return fileSystem
+            .unlink(buildPath(outDir, `slime2key_${provider}.js`))
+            .catch(() => {}) // ignore error if file doesn't exist
+        }),
+      ])
     },
-  }
+  })
 
   return {
-    plugins: [
-      react(),
-      transformIndexPlugin,
-      staticCopyPlugin,
-      cleanBuildPlugin,
-      // removeBuildInDevPlugin,
-    ],
+    plugins,
     publicDir,
     base:
       command === 'build'
@@ -98,6 +105,7 @@ export default defineConfig(({ command, mode }) => {
         : '/',
     build: {
       outDir,
+      copyPublicDir: widgetMode, // only copy when building widget
       rollupOptions: {
         input: {
           app: entry,
@@ -114,3 +122,7 @@ export default defineConfig(({ command, mode }) => {
     },
   }
 })
+
+function buildPath(...paths: string[]): string {
+  return resolve(__dirname, ...paths)
+}

@@ -1,0 +1,86 @@
+<!-- simple-chat widget -->
+<!-- using slime2 version 0.2.3 -->
+
+<!doctype html>
+<html lang="en">
+  <!------------------------------------------
+    HTML info and the files imported into it
+  ------------------------------------------->
+  <head>
+    <!-- HTML meta fields -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- title and favicon -->
+    <title>slime2 v0.2.3</title>
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="https://slime2.stream/favicon.ico"
+    />
+    
+    <!-- Google API library used for YouTube -->
+    <script src="https://apis.google.com/js/api.js"></script>
+    <script src="https://accounts.google.com/gsi/client"></script>
+
+    <!-- jQuery and Color.js, used in the custom JS -->
+    <script
+      src="https://code.jquery.com/jquery-3.7.1.slim.min.js"
+      integrity="sha256-kmHvs0B+OpCW5GVHUNjv9rOmY0IvSIRcf7zGUDTDQM8="
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://colorjs.io/dist/color.global.js"></script>
+
+    <!-- custom JS/CSS -->
+    <script src="slime2key_twitch.js"></script>
+    <script src="slime2key_google.js"></script>
+    <script src="simple-chat.js"></script>
+    <link href="simple-chat.css" rel="stylesheet" />
+
+    <!-- slime2 JS/CSS -->
+    <script type="module" crossorigin src="https://cdn.jsdelivr.net/gh/zaytri/slime2@0.2.3/release/slime2.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/zaytri/slime2@0.2.3/release/slime2.css">
+  </head>
+
+  <!-----------------------------------------------------
+    HTML structure, slime2 inserts everything into main
+  ------------------------------------------------------>
+  <body>
+    <main
+      id="slime2-root"
+      class="vertical-bottom-left dynamic-emote-sizes"
+    ></main>
+  </body>
+
+  <!----------------------------------------------------------------------
+    template structures, the custom JS copies these to build the message
+  ----------------------------------------------------------------------->
+
+  <!-- message template, inserted into main -->
+  <template id="message-template">
+    <div class="message">
+      <span class="user"></span>
+      <span class="content text-outline-2"></span>
+    </div>
+  </template>
+
+  <!-- user template, inserted into the user class -->
+  <template id="user-template"
+    ><span class="badges"></span><span class="name"></span
+    ><span class="pronouns"></span
+  ></template>
+
+  <!-- badge template, inserted into the badges class -->
+  <template id="badge-template"><img class="badge" /></template>
+
+  <!-- emote template, inserted into the content class -->
+  <template id="content-emote-template"><img class="emote" /></template>
+
+  <!-- cheer template, inserted into the content class -->
+  <template id="content-cheer-template"
+    ><img class="emote" /><span class="cheer-amount"></span
+  ></template>
+
+  <!-- text template, inserted into the content class -->
+  <template id="content-text-template"><span class="text"></span></template>
+</html>

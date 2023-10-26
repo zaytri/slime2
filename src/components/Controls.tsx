@@ -1,5 +1,5 @@
+import useEmulate from '@/services/platforms/twitch/chat/useEmulate'
 import { useEffect, useState } from 'react'
-import useTestMessage from '../Twitch/hooks/useTestMessage'
 
 type Style = {
   top?: string
@@ -21,10 +21,11 @@ export default function Controls() {
   })
   const [visible, setVisible] = useState(false)
 
-  const { sendTestMessage } = useTestMessage()
+  const emulate = useEmulate()
 
   useEffect(() => {
     function onMouseMove(event: MouseEvent) {
+      setVisible(true)
       const windowWidth = window.innerWidth
       const windowHeight = window.innerHeight
 
@@ -103,30 +104,24 @@ export default function Controls() {
       }
     }
 
-    function onMouseEnter(_: MouseEvent) {
-      setVisible(true)
-    }
-
     function onMouseLeave(_: MouseEvent) {
       setVisible(false)
     }
 
     window.addEventListener('mousemove', onMouseMove)
-    document.addEventListener('mouseenter', onMouseEnter)
     document.addEventListener('mouseleave', onMouseLeave)
 
     return () => {
       window.removeEventListener('mousemove', onMouseMove)
-      document.removeEventListener('mouseenter', onMouseEnter)
       document.removeEventListener('mouseleave', onMouseLeave)
     }
-  }, [sendTestMessage])
+  }, [emulate])
 
   if (!visible) return null
 
   return (
     <button
-      onClick={sendTestMessage}
+      onClick={emulate}
       className='btn-shadow-i !fixed z-[999] flex justify-center gap-2 overflow-hidden rounded-2xl border-2 border-emerald-800 bg-gradient-to-b from-lime-600 to-emerald-700 px-3 py-1 text-center hover:from-lime-500 hover:to-emerald-600 focus:outline-offset-8'
       style={{ ...style }}
     >

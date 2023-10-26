@@ -38,3 +38,16 @@ html {
 .btn-shadow-i:active::after {
   display: none;
 }
+
+.slime2-loader-success {
+  animation: slime2-loader-fade 0.3s 3s forwards;
+}
+
+@keyframes slime2-loader-fade {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
