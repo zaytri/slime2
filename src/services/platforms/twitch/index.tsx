@@ -1,4 +1,8 @@
 import LoadingBanner from '@/components/banner/LoadingBanner'
+import SuccessBanner from '@/components/banner/SuccessBanner'
+import { usePlatformReady } from '@/contexts/PlatformReadyContext'
+import { useEffect } from 'react'
+import ChatHandler from './chat'
 import useBadges from './useBadges'
 import useTwitchBroadcaster from './useBroadcaster'
 import useChannelEmotes from './useChannelEmotes'
@@ -6,10 +10,6 @@ import useChannelPointRewards from './useChannelPointRewards'
 import useCheermotes from './useCheermotes'
 import { useAllPronouns } from './usePronouns'
 import useThirdPartyEmotes from './useThirdPartyEmotes'
-import { useEffect } from 'react'
-import SuccessBanner from '@/components/banner/SuccessBanner'
-import ChatHandler from './chat'
-import { usePlatformReady } from '@/contexts/PlatformReadyContext'
 
 export default function TwitchLoader() {
   const { data: broadcaster, status: broadcasterStatus } =

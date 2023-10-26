@@ -1,6 +1,6 @@
+import { infiniteCache } from '@/services/settings'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { getAllPronouns, getUserPronouns } from './pronouns'
-import { infiniteCache } from '@/services/settings'
 
 export default function usePronouns() {
   const { data: pronounsMap } = useAllPronouns()

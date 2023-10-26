@@ -1,5 +1,4 @@
-import { infiniteCache } from '@/services/settings'
-import settings from '@/services/settings'
+import settings, { infiniteCache } from '@/services/settings'
 import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
 

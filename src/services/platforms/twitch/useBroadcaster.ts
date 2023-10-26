@@ -1,9 +1,8 @@
-import useAccessToken from '@/services/useAccessToken'
 import useTwitchApi from '@/services/platforms/twitch/useApi'
-import { infiniteCache } from '@/services/settings'
+import settings, { infiniteCache } from '@/services/settings'
+import useAccessToken from '@/services/useAccessToken'
 import { useQuery } from '@tanstack/react-query'
 import { getTokenInfo } from '@twurple/auth'
-import settings from '@/services/settings'
 
 export default function useTwitchBroadcaster() {
   const { data: accessToken } = useAccessToken('twitch')

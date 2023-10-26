@@ -1,8 +1,8 @@
-import { useQuery } from '@tanstack/react-query'
-import useTwitchBroadcaster from './useBroadcaster'
-import useTwitchApi from './useApi'
 import { infiniteCache } from '@/services/settings'
+import { useQuery } from '@tanstack/react-query'
 import { buildEmoteImageUrl } from '@twurple/chat'
+import useTwitchApi from './useApi'
+import useTwitchBroadcaster from './useBroadcaster'
 
 export default function useChannelEmotes() {
   const { data: broadcaster } = useTwitchBroadcaster()

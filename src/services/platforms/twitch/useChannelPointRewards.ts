@@ -1,8 +1,8 @@
+import { infiniteCache } from '@/services/settings'
 import { useQuery } from '@tanstack/react-query'
+import type { HelixCustomReward } from '@twurple/api'
 import useTwitchApi from './useApi'
 import useTwitchBroadcaster from './useBroadcaster'
-import { infiniteCache } from '@/services/settings'
-import type { HelixCustomReward } from '@twurple/api'
 
 export default function useChannelPointRewards() {
   const { data: broadcaster } = useTwitchBroadcaster()

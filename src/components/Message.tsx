@@ -1,7 +1,7 @@
-import { memo, useEffect, useRef, useState } from 'react'
-import imagesLoaded from 'imagesloaded'
-import { useMessageListDispatch } from '@/contexts/MessageListContext'
 import { useClient } from '@/contexts/ClientContext'
+import { useMessageListDispatch } from '@/contexts/MessageListContext'
+import imagesLoaded from 'imagesloaded'
+import { memo, useEffect, useRef, useState } from 'react'
 
 function Message(props: Slime2.Event.Message) {
   const client = useClient()

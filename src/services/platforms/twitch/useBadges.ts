@@ -1,8 +1,8 @@
+import { infiniteCache } from '@/services/settings'
 import { useQuery } from '@tanstack/react-query'
+import type { HelixChatBadgeSet, HelixChatBadgeVersion } from '@twurple/api'
 import useTwitchApi from './useApi'
 import useTwitchBroadcaster from './useBroadcaster'
-import { infiniteCache } from '@/services/settings'
-import type { HelixChatBadgeSet, HelixChatBadgeVersion } from '@twurple/api'
 
 export default function useBadges() {
   const { data: broadcaster } = useTwitchBroadcaster()

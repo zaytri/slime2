@@ -1,4 +1,4 @@
-import { type ParsedMessageEmotePart, buildEmoteImageUrl } from '@twurple/chat'
+import { buildEmoteImageUrl, type ParsedMessageEmotePart } from '@twurple/chat'
 import useThirdPartyEmotes from '../../useThirdPartyEmotes'
 
 /**

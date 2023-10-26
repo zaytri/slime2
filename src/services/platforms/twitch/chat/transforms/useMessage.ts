@@ -1,7 +1,7 @@
-import { type ChatMessage, UserNotice } from '@twurple/chat'
+import { UserNotice, type ChatMessage } from '@twurple/chat'
 import useChannelPointRewards from '../../useChannelPointRewards'
-import useUser from './useUser'
 import useText from './useText'
+import useUser from './useUser'
 
 /**
  * Hook that returns the function {@link transform}

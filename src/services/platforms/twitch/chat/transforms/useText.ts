@@ -1,8 +1,8 @@
 import { parseChatMessage } from '@twurple/chat'
 import useCheermotes from '../../useCheermotes'
-import { useTextPart } from './useTextPart'
-import { useEmotePart } from './useEmotePart'
 import { useCheerPart } from './useCheerPart'
+import { useEmotePart } from './useEmotePart'
+import { useTextPart } from './useTextPart'
 
 /**
  * Hook that returns the function {@link transform}

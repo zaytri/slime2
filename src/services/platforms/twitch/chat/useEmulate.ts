@@ -1,10 +1,10 @@
 import { useMessageListDispatch } from '@/contexts/MessageListContext'
-import useThirdPartyEmotes from '../useThirdPartyEmotes'
+import { usePlatformReady } from '@/contexts/PlatformReadyContext'
+import useBadges from '../useBadges'
 import useChannelEmotes from '../useChannelEmotes'
 import useCheermotes from '../useCheermotes'
-import useBadges from '../useBadges'
 import { useAllPronouns } from '../usePronouns'
-import { usePlatformReady } from '@/contexts/PlatformReadyContext'
+import useThirdPartyEmotes from '../useThirdPartyEmotes'
 
 const TEST_ROLES: (keyof Twitch.Event.Message.User['roles'])[] = [
   'broadcaster',

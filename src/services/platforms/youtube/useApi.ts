@@ -1,5 +1,5 @@
-import useAccessToken from '@/services/useAccessToken'
 import { infiniteCache } from '@/services/settings'
+import useAccessToken from '@/services/useAccessToken'
 import { useQuery } from '@tanstack/react-query'
 
 export default function useYoutubeApi() {

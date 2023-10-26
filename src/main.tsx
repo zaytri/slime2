@@ -1,10 +1,10 @@
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App'
-import './main.css'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { PlatformReadyProvider } from './contexts/PlatformReadyContext'
 import { ClientProvider } from './contexts/ClientContext'
+import { PlatformReadyProvider } from './contexts/PlatformReadyContext'
+import './main.css'
 
 const root = ReactDOM.createRoot(
   document.getElementById('slime2-root') as HTMLElement,

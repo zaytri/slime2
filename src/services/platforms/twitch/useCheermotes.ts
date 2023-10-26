@@ -1,8 +1,8 @@
+import { infiniteCache } from '@/services/settings'
 import { useQuery } from '@tanstack/react-query'
+import { HelixCheermoteList } from '@twurple/api'
 import useTwitchApi from './useApi'
 import useTwitchBroadcaster from './useBroadcaster'
-import { HelixCheermoteList } from '@twurple/api'
-import { infiniteCache } from '@/services/settings'
 
 export default function useCheermotes() {
   const { data: broadcaster } = useTwitchBroadcaster()

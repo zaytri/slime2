@@ -1,9 +1,9 @@
-import { useMessageListDispatch } from '@/contexts/MessageListContext'
-import useChatClient from './useChatClient'
-import { useEffect } from 'react'
-import type { Listener } from '@d-fischer/typed-event-emitter'
-import useMessage from './transforms/useMessage'
 import { useClient } from '@/contexts/ClientContext'
+import { useMessageListDispatch } from '@/contexts/MessageListContext'
+import type { Listener } from '@d-fischer/typed-event-emitter'
+import { useEffect } from 'react'
+import useMessage from './transforms/useMessage'
+import useChatClient from './useChatClient'
 
 export default function ChatHandler() {
   const client = useClient()

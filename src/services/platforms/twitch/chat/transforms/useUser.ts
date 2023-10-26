@@ -1,7 +1,7 @@
 import type { ChatUser } from '@twurple/chat'
-import usePronouns from '../../usePronouns'
 import useBadges from '../../useBadges'
 import useFollowDate from '../../useFollowDate'
+import usePronouns from '../../usePronouns'
 
 /**
  * Hook that returns the function {@link transform}
