@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import App from './components/App'
+import App from './App'
 import './main.css'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { PlatformReadyProvider } from './contexts/PlatformReadyContext'

@@ -1,15 +1,15 @@
-import Controls from './Controls'
-import ErrorBanner from './banner/ErrorBanner'
-import LoadingBanner from './banner/LoadingBanner'
+import Controls from './components/Controls'
+import ErrorBanner from './components/banner/ErrorBanner'
+import LoadingBanner from './components/banner/LoadingBanner'
 import { MessageListProvider } from '@/contexts/MessageListContext'
 import useAccessToken, {
   KeyInvalidError,
   KeyNotFoundError,
-} from '@/services/useAccessToken'
-import Twitch from '@/services/platforms/twitch'
-import MessageList from './MessageList'
+} from './services/useAccessToken'
+import Twitch from './services/platforms/twitch'
+import MessageList from './components/MessageList'
 import { useEffect } from 'react'
-import { useClientDispatch } from '@/contexts/ClientContext'
+import { useClientDispatch } from './contexts/ClientContext'
 
 export default function App() {
   const { status: twitchStatus, error: twitchError } = useAccessToken('twitch')
