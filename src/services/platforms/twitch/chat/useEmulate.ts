@@ -1,4 +1,4 @@
-import { useMessageListDispatch } from '@/contexts/message-list/MessageListContext'
+import { useMessageListDispatch } from '@/contexts/message-list/useContext'
 import { usePlatformReady } from '@/contexts/platform-ready/useContext'
 import useBadges from '../useBadges'
 import useChannelEmotes from '../useChannelEmotes'

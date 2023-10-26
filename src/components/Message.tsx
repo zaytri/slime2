@@ -1,5 +1,5 @@
 import { useClient } from '@/contexts/client/useContext'
-import { useMessageListDispatch } from '@/contexts/message-list/MessageListContext'
+import { useMessageListDispatch } from '@/contexts/message-list/useContext'
 import imagesLoaded from 'imagesloaded'
 import { memo, useEffect, useRef, useState } from 'react'
 

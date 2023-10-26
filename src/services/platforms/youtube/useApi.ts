@@ -3,7 +3,7 @@ import useAccessToken from '@/services/useAccessToken'
 import { useQuery } from '@tanstack/react-query'
 
 export default function useYoutubeApi() {
-  const { data: accessToken } = useAccessToken('youtube')
+  const { data: accessToken } = useAccessToken('google')
 
   return useQuery<typeof gapi.client>({
     enabled: !!accessToken,
