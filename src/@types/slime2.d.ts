@@ -2,10 +2,21 @@ namespace Slime2 {
   type Client = {
     onEvent: Client.OnEvent
     onModMessageDelete: Client.OnModMessageDelete
+    key: {
+      [key in AuthProvider]?: string
+    }
   }
 
-  type Settings = {
-    [key in Platform]: Platform.Settings
+  type AuthSettings = {
+    [key in AuthProvider]: AuthProvider.Settings
+  }
+
+  type AuthProvider = 'twitch' | 'google'
+  namespace AuthProvider {
+    type Settings = {
+      clientId: string
+      scopes: string[]
+    }
   }
 
   namespace Client {
@@ -28,15 +39,6 @@ namespace Slime2 {
   }
 
   type Platform = 'twitch' | 'youtube'
-  namespace Platform {
-    type Settings = {
-      key?: string
-      clientId: string
-      scopes: string[]
-    }
-  }
-
-  type Provider = 'twitch' | 'google'
 
   type BasicEvent = {
     remove: () => void

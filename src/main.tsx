@@ -2,8 +2,8 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App'
-import { ClientProvider } from './contexts/ClientContext'
-import { PlatformReadyProvider } from './contexts/PlatformReadyContext'
+import { ClientProvider } from './contexts/client/Provider'
+import PlatformReadyProvider from './contexts/platform-ready/Provider'
 import './main.css'
 
 const root = ReactDOM.createRoot(
@@ -11,11 +11,6 @@ const root = ReactDOM.createRoot(
 )
 
 const queryClient = new QueryClient()
-
-globalThis.slime2 = {
-  onEvent: emptyFunction,
-  onModMessageDelete: emptyFunction,
-}
 
 root.render(
   <React.StrictMode>
@@ -28,5 +23,3 @@ root.render(
     </ClientProvider>
   </React.StrictMode>,
 )
-
-function emptyFunction() {}

@@ -1,5 +1,5 @@
-import { useClient } from '@/contexts/ClientContext'
-import { useMessageListDispatch } from '@/contexts/MessageListContext'
+import { useClient } from '@/contexts/client/useContext'
+import { useMessageListDispatch } from '@/contexts/message-list/MessageListContext'
 import imagesLoaded from 'imagesloaded'
 import { memo, useEffect, useRef, useState } from 'react'
 
@@ -45,6 +45,7 @@ function Message(props: Slime2.Event.Message) {
     return () => {
       cancel = true
     }
+    /* eslint-disable-next-line react-hooks/exhaustive-deps */
   }, [])
 
   useEffect(() => {
@@ -79,7 +80,8 @@ function Message(props: Slime2.Event.Message) {
 
 // memo necessary so that messages don't get re-rendered
 // when the message list is updated
-export default memo(Message)
+const MemoMessage = memo(Message)
+export default MemoMessage
 
 function generateInnerHTML(clientFragment?: Slime2.Client.Fragment): string {
   if (!clientFragment) return ''

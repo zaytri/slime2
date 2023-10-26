@@ -104,15 +104,15 @@ export default function Controls() {
       }
     }
 
-    function onMouseLeave(_: MouseEvent) {
+    function onMouseLeave() {
       setVisible(false)
     }
 
-    window.addEventListener('mousemove', onMouseMove)
+    document.addEventListener('mousemove', onMouseMove)
     document.addEventListener('mouseleave', onMouseLeave)
 
     return () => {
-      window.removeEventListener('mousemove', onMouseMove)
+      document.removeEventListener('mousemove', onMouseMove)
       document.removeEventListener('mouseleave', onMouseLeave)
     }
   }, [emulate])

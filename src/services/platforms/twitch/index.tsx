@@ -1,6 +1,6 @@
 import LoadingBanner from '@/components/banner/LoadingBanner'
 import SuccessBanner from '@/components/banner/SuccessBanner'
-import { usePlatformReady } from '@/contexts/PlatformReadyContext'
+import { usePlatformReady } from '@/contexts/platform-ready/useContext'
 import { useEffect } from 'react'
 import ChatHandler from './chat'
 import useBadges from './useBadges'
@@ -40,7 +40,7 @@ export default function TwitchLoader() {
         setPlatformReady()
       }, 1.5 * 1000)
     }
-  }, [loading])
+  }, [loading, setPlatformReady])
 
   if (!platformReady) {
     return (

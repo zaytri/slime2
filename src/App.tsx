@@ -1,11 +1,12 @@
-import { MessageListProvider } from '@/contexts/MessageListContext'
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import Controls from './components/Controls'
 import MessageList from './components/MessageList'
 import ErrorBanner from './components/banner/ErrorBanner'
 import LoadingBanner from './components/banner/LoadingBanner'
-import { useClientDispatch } from './contexts/ClientContext'
+import { useClientDispatch } from './contexts/client/useContext'
+import { MessageListProvider } from './contexts/message-list/Provder'
 import Twitch from './services/platforms/twitch'
+import { clientStorage } from './services/storage'
 import useAccessToken, {
   KeyInvalidError,
   KeyNotFoundError,
@@ -14,23 +15,40 @@ import useAccessToken, {
 export default function App() {
   const { status: twitchStatus, error: twitchError } = useAccessToken('twitch')
   const { status: youtubeStatus, error: youtubeError } =
-    useAccessToken('youtube')
+    useAccessToken('google')
+  const clientReady = useRef(false)
   const dispatch = useClientDispatch()
 
+  // set functions for global var slime2
   useEffect(() => {
+    if (clientReady.current) return
+
     function setOnEvent(setFunction: Slime2.Client.OnEvent) {
-      dispatch({ type: 'event', payload: setFunction })
+      dispatch({ type: 'event', setFunction })
     }
 
     function setOnModMessageDelete(
       setFunction: Slime2.Client.OnModMessageDelete,
     ) {
-      dispatch({ type: 'modMessageDelete', payload: setFunction })
+      dispatch({ type: 'modMessageDelete', setFunction })
     }
 
-    // allow client to set these functions
-    slime2.onEvent = setOnEvent
-    slime2.onModMessageDelete = setOnModMessageDelete
+    function setKey(authProvider: Slime2.AuthProvider, key: string) {
+      dispatch({ type: 'key', authProvider, key })
+    }
+
+    // allow client to use these functions
+    globalThis.slime2 = {
+      onEvent: setOnEvent,
+      onModMessageDelete: setOnModMessageDelete,
+      setKey: setKey,
+      storage: clientStorage,
+    }
+
+    dispatchEvent(new CustomEvent('slime2:ready'))
+
+    clientReady.current = true
+    /* eslint-disable-next-line react-hooks/exhaustive-deps */
   }, [])
 
   if (twitchStatus === 'error' || youtubeStatus === 'error') {

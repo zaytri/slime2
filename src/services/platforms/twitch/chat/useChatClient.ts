@@ -1,4 +1,4 @@
-import settings from '@/services/settings'
+import { auth } from '@/services/settings'
 import useAccessToken from '@/services/useAccessToken'
 import { StaticAuthProvider } from '@twurple/auth'
 import { ChatClient } from '@twurple/chat'
@@ -8,12 +8,12 @@ import useTwitchBroadcaster from '../useBroadcaster'
 export default function useChatClient() {
   const { data: accessToken } = useAccessToken('twitch')
   const { data: broadcaster } = useTwitchBroadcaster()
-  const { clientId } = settings.twitch
+  const { clientId } = auth.twitch
 
   const authProvider = new StaticAuthProvider(
     clientId,
     accessToken || '',
-    settings.twitch.scopes,
+    auth.twitch.scopes,
   )
 
   const chatClientRef = useRef(

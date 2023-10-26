@@ -1,5 +1,5 @@
-import { useMessageListDispatch } from '@/contexts/MessageListContext'
-import { usePlatformReady } from '@/contexts/PlatformReadyContext'
+import { useMessageListDispatch } from '@/contexts/message-list/MessageListContext'
+import { usePlatformReady } from '@/contexts/platform-ready/useContext'
 import useBadges from '../useBadges'
 import useChannelEmotes from '../useChannelEmotes'
 import useCheermotes from '../useCheermotes'
@@ -127,99 +127,115 @@ export default function useEmulate() {
 
       switch (type) {
         case 'action':
-          text = `${text} (/me action message)`
-          textPart = text
-          messageType = { type }
+          {
+            text = `${text} (/me action message)`
+            textPart = text
+            messageType = { type }
+          }
           break
 
         case 'highlight':
-          text = `${text} (highlighted message)`
-          textPart = text
-          messageType = { type }
+          {
+            text = `${text} (highlighted message)`
+            textPart = text
+            messageType = { type }
+          }
           break
 
         case 'cheer':
-          const amount =
-            TEST_CHEER_AMOUNTS[randomInteger(0, TEST_CHEER_AMOUNTS.length - 1)]
-          const name = 'Cheer'
-          messageType = {
-            type,
-            cheer: {
-              amount,
-            },
-          }
-          const cheerText = `${name}${amount}`
-          textPart = `${text} (cheer message)`
-          text = `${cheerText} ${textPart}`
+          {
+            const amount =
+              TEST_CHEER_AMOUNTS[
+                randomInteger(0, TEST_CHEER_AMOUNTS.length - 1)
+              ]
+            const name = 'Cheer'
+            messageType = {
+              type,
+              cheer: {
+                amount,
+              },
+            }
+            const cheerText = `${name}${amount}`
+            textPart = `${text} (cheer message)`
+            text = `${cheerText} ${textPart}`
 
-          parts.unshift({ type: 'text', text: ' ' })
-          parts.unshift({
-            type: 'cheer',
-            text: cheerText,
-            cheer: cheermotes!.get(name, amount),
-          })
+            parts.unshift({ type: 'text', text: ' ' })
+            parts.unshift({
+              type: 'cheer',
+              text: cheerText,
+              cheer: cheermotes!.get(name, amount),
+            })
+          }
           break
 
         case 'reply':
-          messageType = {
-            type,
-            reply: {
-              id: `test-reply-${date.getTime()}`,
-              text: 'test message being replied to',
-              user: {
-                id: `test-user-reply-${date.getTime()}`,
-                userName: 'testreplyuser',
-                displayName: 'testReplyUser',
+          {
+            messageType = {
+              type,
+              reply: {
+                id: `test-reply-${date.getTime()}`,
+                text: 'test message being replied to',
+                user: {
+                  id: `test-user-reply-${date.getTime()}`,
+                  userName: 'testreplyuser',
+                  displayName: 'testReplyUser',
+                },
               },
-            },
+            }
+            text = `${text} (reply message)`
+            textPart = text
           }
-          text = `${text} (reply message)`
-          textPart = text
           break
 
         case 'redeem':
-          messageType = {
-            type,
-            redeem: {
-              id: `test-redeem-${date.getTime()}`,
-              name: 'Test Redeem',
-              image:
-                'https://static-cdn.jtvnw.net/custom-reward-images/default-4.png',
-              color: '#FFC6FF',
-              cost: randomInteger(1, 10000),
-            },
+          {
+            messageType = {
+              type,
+              redeem: {
+                id: `test-redeem-${date.getTime()}`,
+                name: 'Test Redeem',
+                image:
+                  'https://static-cdn.jtvnw.net/custom-reward-images/default-4.png',
+                color: '#FFC6FF',
+                cost: randomInteger(1, 10000),
+              },
+            }
+            text = `${text} (channel point redemption requiring text)`
+            textPart = text
           }
-          text = `${text} (channel point redemption requiring text)`
-          textPart = text
           break
 
         case 'resub':
-          messageType = {
-            type,
-            resub: {
-              months: randomInteger(1, 24),
-              tier: TEST_RESUB_TIERS[
-                randomInteger(0, TEST_RESUB_TIERS.length - 1)
-              ],
-            },
+          {
+            messageType = {
+              type,
+              resub: {
+                months: randomInteger(1, 24),
+                tier: TEST_RESUB_TIERS[
+                  randomInteger(0, TEST_RESUB_TIERS.length - 1)
+                ],
+              },
+            }
+            text = `${text} (resub message)`
+            textPart = text
           }
-          text = `${text} (resub message)`
-          textPart = text
           break
 
         case 'announcement':
-          if (role === 'broadcaster' || role === 'moderator') {
-            messageType = {
-              type,
-              announcement: {
-                color:
-                  TEST_ANNOUNCEMENT_COLORS[
-                    randomInteger(0, TEST_ANNOUNCEMENT_COLORS.length - 1)
-                  ],
-              },
+          {
+            if (role === 'broadcaster' || role === 'moderator') {
+              messageType = {
+                type,
+                announcement: {
+                  color:
+                    TEST_ANNOUNCEMENT_COLORS[
+                      randomInteger(0, TEST_ANNOUNCEMENT_COLORS.length - 1)
+                    ],
+                },
+              }
+              text = `${text} (announcement message)`
+              textPart = text
             }
-            text = `${text} (announcement message)`
-            textPart = text
           }
           break
 

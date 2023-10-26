@@ -1,5 +1,5 @@
-import { useClient } from '@/contexts/ClientContext'
-import { useMessageListDispatch } from '@/contexts/MessageListContext'
+import { useClient } from '@/contexts/client/useContext'
+import { useMessageListDispatch } from '@/contexts/message-list/MessageListContext'
 import type { Listener } from '@d-fischer/typed-event-emitter'
 import { useEffect } from 'react'
 import useMessage from './transforms/useMessage'

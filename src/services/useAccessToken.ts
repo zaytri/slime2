@@ -1,58 +1,60 @@
-import settings, { infiniteCache } from '@/services/settings'
+import { useClient } from '@/contexts/client/useContext'
+import { infiniteCache } from '@/services/settings'
 import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
+import { useEffect, useState } from 'react'
 
 const slime2Api = axios.create({
   baseURL: 'https://slime2.stream/api',
 })
 
-export default function useAccessToken(platform: Slime2.Platform) {
-  const { key } = settings[platform]
+export default function useAccessToken(authProvider: Slime2.AuthProvider) {
+  const key = useClient().key[authProvider]
+  const [ready, setReady] = useState(false)
+
+  useEffect(() => {
+    function onReady() {
+      setReady(true)
+    }
+
+    addEventListener('slime2:ready', onReady)
+
+    return () => {
+      removeEventListener('slime2:ready', onReady)
+    }
+  }, [])
 
   return useQuery({
-    queryKey: [platform, 'accessToken', key],
+    enabled: ready,
+    queryKey: [authProvider, 'accessToken', key],
     queryFn: async () => {
-      return getAccessToken(platform)
+      return getAccessToken(authProvider, key)
     },
     ...infiniteCache,
   })
 }
 
-async function getAccessToken(platform: Slime2.Platform): Promise<string> {
-  const { key } = settings[platform]
-
-  if (!key) throw new KeyNotFoundError(`Key not found for platform ${platform}`)
+async function getAccessToken(
+  authProvider: Slime2.AuthProvider,
+  key?: string,
+): Promise<string> {
+  if (!key)
+    throw new KeyNotFoundError(`Key not found for platform ${authProvider}`)
 
   return slime2Api
-    .get<Slime2.Api.TokenResponse>(
-      `/auth/${platformUrlTransformer(platform)}/token`,
-      {
-        headers: { Authorization: `Bearer ${settings[platform].key}` },
-      },
-    )
+    .get<Slime2.Api.TokenResponse>(`/auth/${authProvider}/token`, {
+      headers: { Authorization: `Bearer ${key}` },
+    })
     .then(response => response.data.token)
     .catch(error => {
-      const errorMessage = `Invalid key for platform ${platform}, download a new one from https://slime2.stream/account`
+      const errorMessage = `Invalid key for platform ${authProvider}, download a new one from https://slime2.stream/account`
       console.error(errorMessage, error)
 
       throw new KeyInvalidError(
-        `Invalid key for platform ${platform}, download a new one from https://slime2.stream/account`,
+        `Invalid key for platform ${authProvider}, download a new one from https://slime2.stream/account`,
         { cause: error },
       )
     })
-}
-
-function platformUrlTransformer(platform: Slime2.Platform): Slime2.Provider {
-  switch (platform) {
-    case 'twitch':
-      return 'twitch'
-    case 'youtube':
-      return 'google'
-    default:
-      throw Error(
-        `Unhandled platform "${platform}" in slime2 Platform URL Transformer`,
-      )
-  }
 }
 
 export class KeyNotFoundError extends Error {

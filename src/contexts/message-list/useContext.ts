@@ -1,6 +1,5 @@
-import React, { createContext, useContext, useReducer } from 'react'
-
-const initialState: Slime2.Event.Message[] = []
+import React, { createContext, useContext } from 'react'
+import { emptyFunction } from '../common'
 
 export function useMessageList(): Slime2.Event.Message[] {
   return useContext(MessageListContext)
@@ -10,23 +9,15 @@ export function useMessageListDispatch() {
   return useContext(MessageListDispatchContext)
 }
 
-export function MessageListProvider({ children }: React.PropsWithChildren) {
-  const [messageList, dispatch] = useReducer(messageListReducer, initialState)
-  return (
-    <MessageListContext.Provider value={messageList}>
-      <MessageListDispatchContext.Provider value={dispatch}>
-        {children}
-      </MessageListDispatchContext.Provider>
-    </MessageListContext.Provider>
-  )
-}
+export const initialState: Slime2.Event.Message[] = []
 
-const MessageListContext = createContext<Slime2.Event.Message[]>(initialState)
+export const MessageListContext =
+  createContext<Slime2.Event.Message[]>(initialState)
 
-const MessageListDispatchContext =
+export const MessageListDispatchContext =
   createContext<React.Dispatch<MessageListAction>>(emptyFunction)
 
-function messageListReducer(
+export function messageListReducer(
   state: Slime2.Event.Message[],
   action: MessageListAction,
 ): Slime2.Event.Message[] {
@@ -58,8 +49,6 @@ function messageListReducer(
     }
   }
 }
-
-function emptyFunction() {}
 
 type MessageListAddAction = {
   type: 'add'

@@ -1,6 +1,5 @@
-const settings: Slime2.Settings = {
+export const auth: Slime2.AuthSettings = {
   twitch: {
-    key: import.meta.env.VITE_TWITCH_KEY,
     clientId: 'xrjkdmui65qd33jdx8itfslt61qys8',
     scopes: [
       'chat:read',
@@ -8,23 +7,12 @@ const settings: Slime2.Settings = {
       'moderator:read:followers',
     ],
   },
-  youtube: {
-    key: import.meta.env.VITE_GOOGLE_KEY,
+  google: {
     clientId:
       '932208815805-oq2sevf3ida5idi4k84tlsh03nqc35cs.apps.googleusercontent.com',
     scopes: ['https://www.googleapis.com/auth/youtube.readonly'],
   },
 }
-
-if (typeof slime2key_twitch !== 'undefined') {
-  settings.twitch.key = slime2key_twitch
-}
-
-if (typeof slime2key_google !== 'undefined') {
-  settings.youtube.key = slime2key_google
-}
-
-export default settings
 
 export const infiniteCache = {
   gcTime: Infinity,

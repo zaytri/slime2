@@ -1,5 +1,5 @@
 import useTwitchApi from '@/services/platforms/twitch/useApi'
-import settings, { infiniteCache } from '@/services/settings'
+import { auth, infiniteCache } from '@/services/settings'
 import useAccessToken from '@/services/useAccessToken'
 import { useQuery } from '@tanstack/react-query'
 import { getTokenInfo } from '@twurple/auth'
@@ -12,7 +12,7 @@ export default function useTwitchBroadcaster() {
     enabled: !!accessToken,
     queryKey: ['twitch', 'broadcaster', accessToken!],
     queryFn: async () => {
-      const { clientId } = settings.twitch
+      const { clientId } = auth.twitch
       const { userId } = await getTokenInfo(accessToken!, clientId)
       if (!userId) throw Error('Twitch broadcaster not found')
 

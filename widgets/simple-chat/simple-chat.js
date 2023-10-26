@@ -28,7 +28,7 @@ const userData = {}
  * Chat Handler *
  ****************/
 
-$(function () {
+addEventListener('slime2:ready', () => {
   slime2.onEvent(event => {
     if (event.type !== 'message') return
 
