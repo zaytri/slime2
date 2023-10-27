@@ -41,7 +41,6 @@ export default function useMessage() {
       parts: transformText(text, twurpleMessage.emoteOffsets, type === 'cheer'),
       user: await transformUser(twurpleMessage.userInfo),
       tags: twurpleMessage.tags,
-      source: 'twitch',
       ...typeData,
     }
 
