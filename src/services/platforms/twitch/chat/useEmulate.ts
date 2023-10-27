@@ -39,7 +39,7 @@ const TEST_CHEER_AMOUNTS = [1, 5, 10, 50, 100, 500, 1000, 5000, 10000]
 
 const TEST_PUNCTUATION = ['', '.', '...', '!', '?', '!!', '!?', '?!']
 
-export default function useEmulate() {
+export default function useEmulateTwitchMessage() {
   const dispatch = useEventListDispatch()
   const { data: thirdPartyEmoteMap } = useThirdPartyEmotes()
   const { data: channelEmotes } = useChannelEmotes()
@@ -276,6 +276,7 @@ export default function useEmulate() {
         type: 'message',
         data: message,
         source: 'twitch',
+        emulated: true,
       },
     })
   }

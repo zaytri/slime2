@@ -67,8 +67,10 @@ namespace Slime2 {
   }
 
   type BasicEvent = {
+    emulated?: true
     remove?: () => void
   }
+
   type RenderableEvent = Twitch.RenderableEvent
 
   type Event = Twitch.Event

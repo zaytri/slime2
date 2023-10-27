@@ -1,4 +1,4 @@
-import useEmulate from '@/services/platforms/twitch/chat/useEmulate'
+import useEmulateTwitchMessage from '@/services/platforms/twitch/chat/useEmulate'
 import { useEffect, useState } from 'react'
 
 type Style = {
@@ -21,7 +21,7 @@ export default function Controls() {
   })
   const [visible, setVisible] = useState(false)
 
-  const emulate = useEmulate()
+  const emulate = useEmulateTwitchMessage()
 
   useEffect(() => {
     function onMouseMove(event: MouseEvent) {
