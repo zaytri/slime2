@@ -1,7 +1,6 @@
 namespace Slime2 {
   type Client = {
     onEvent: Client.OnEvent
-    onModMessageDelete: Client.OnModMessageDelete
     keys: {
       [key in AuthProvider]?: string
     }
@@ -23,7 +22,6 @@ namespace Slime2 {
 
   namespace Client {
     type OnEvent = (data: Event) => OnEventReturn | Promise<OnEventReturn>
-    type OnModMessageDelete = (data: ModMessageDelete) => void
 
     type OnEventReturn =
       | { fragment?: Fragment; callback?: AfterRenderCallback }
@@ -33,11 +31,6 @@ namespace Slime2 {
 
     type Fragment = DocumentFragment | JQuery<DocumentFragment>
     type AfterRenderCallback = (div: HTMLElement) => void
-
-    type ModMessageDelete =
-      | { type: 'single'; id: string }
-      | { type: 'user'; id: string }
-      | { type: 'all'; id: null }
 
     type Storage = {
       use: (widgetName: string) => void
@@ -60,12 +53,6 @@ namespace Slime2 {
 
   type Platform = 'twitch' | 'youtube'
 
-  type BasicEvent = {
-    remove: () => void
-  }
-
-  type Event = Twitch.Event
-
   type BasicUser = {
     id: string
     displayName: string
@@ -79,14 +66,22 @@ namespace Slime2 {
     } & BasicUser
   }
 
+  type BasicEvent = {
+    remove?: () => void
+  }
+  type RenderableEvent = Twitch.RenderableEvent
+
+  type Event = Twitch.Event
+
   namespace Event {
-    type BasicMessage = {
+    type BasicData = {
       id: string
-      date: Date
-      text: string
     }
 
-    type Message = Twitch.Event.Message
+    type BasicMessage = {
+      date: Date
+      text: string
+    } & BasicData
 
     namespace Message {
       type Emote = {

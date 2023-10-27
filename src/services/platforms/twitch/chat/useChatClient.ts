@@ -1,5 +1,5 @@
 import { useClient } from '@/contexts/client/useContext'
-import { useMessageListDispatch } from '@/contexts/message-list/useContext'
+import { useEventListDispatch } from '@/contexts/event-list/useContext'
 import { usePlatformReady } from '@/contexts/platform-ready/useContext'
 import type { Listener } from '@d-fischer/typed-event-emitter'
 import { ChatClient } from '@twurple/chat'
@@ -7,11 +7,13 @@ import { useEffect, useRef } from 'react'
 import useTwitchBroadcaster from '../useBroadcaster'
 import useMessage from './transforms/useMessage'
 
+const source = 'twitch'
+
 export default function useChatClient() {
   const { data: broadcaster } = useTwitchBroadcaster()
   const [platformReady] = usePlatformReady('twitch')
   const client = useClient()
-  const dispatch = useMessageListDispatch()
+  const dispatch = useEventListDispatch()
   const transformMessage = useMessage()
   const chatClientRef = useRef(new ChatClient())
 
@@ -31,19 +33,46 @@ export default function useChatClient() {
     function addMessage(message?: Twitch.Event.Message) {
       if (!message) return
       debugLog(message)
-      dispatch({ type: 'add', payload: message })
+      dispatch({
+        type: 'add',
+        event: {
+          type: 'message',
+          data: message,
+          source,
+        },
+      })
     }
 
-    function clearMessages(userId: string | null = null) {
-      dispatch({ type: 'clear', payload: userId })
-      client.onModMessageDelete(
-        userId ? { type: 'user', id: userId } : { type: 'all', id: null },
-      )
+    function clearMessages(userId?: string | null) {
+      if (userId) clearUserMessages(userId)
+      else clearAllMessages()
+    }
+
+    function clearAllMessages() {
+      dispatch({ type: 'clear-all-messages' })
+      client.onEvent({
+        type: 'message-delete',
+        data: { type: 'all' },
+        source,
+      })
+    }
+
+    function clearUserMessages(userId: string) {
+      dispatch({ type: 'clear-user-messages', userId })
+      client.onEvent({
+        type: 'message-delete',
+        data: { type: 'user', userId },
+        source,
+      })
     }
 
     function removeMessage(messageId: string) {
-      dispatch({ type: 'remove', payload: messageId })
-      client.onModMessageDelete({ type: 'single', id: messageId })
+      dispatch({ type: 'remove', eventType: 'message', eventId: messageId })
+      client.onEvent({
+        type: 'message-delete',
+        data: { type: 'one', messageId },
+        source,
+      })
     }
 
     // -----------------
@@ -121,7 +150,7 @@ export default function useChatClient() {
         if (listener) chatClient.removeListener(listener)
       })
     }
-  }, [platformReady, client, dispatch, transformMessage])
+  }, [platformReady, client, dispatch, transformMessage, broadcaster])
 }
 
 function debugLog(message: Twitch.Event.Message) {

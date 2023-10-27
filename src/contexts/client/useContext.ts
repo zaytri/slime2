@@ -11,7 +11,6 @@ export function useClientDispatch() {
 
 export const initialState: Slime2.Client = {
   onEvent: emptyFunction,
-  onModMessageDelete: emptyFunction,
   keys: {
     twitch: import.meta.env.VITE_TWITCH_KEY,
     google: import.meta.env.VITE_GOOGLE_KEY,
@@ -30,8 +29,6 @@ export function clientReducer(
   switch (action.type) {
     case 'event':
       return { ...state, onEvent: action.setFunction }
-    case 'modMessageDelete':
-      return { ...state, onModMessageDelete: action.setFunction }
     case 'key':
       return {
         ...state,
@@ -40,19 +37,11 @@ export function clientReducer(
   }
 }
 
-type ClientAction =
-  | ClientActionEvent
-  | ClientActionModMessageDelete
-  | ClientActionKey
+type ClientAction = ClientActionEvent | ClientActionKey
 
 type ClientActionEvent = {
   type: 'event'
   setFunction: Slime2.Client.OnEvent
-}
-
-type ClientActionModMessageDelete = {
-  type: 'modMessageDelete'
-  setFunction: Slime2.Client.OnModMessageDelete
 }
 
 type ClientActionKey = {

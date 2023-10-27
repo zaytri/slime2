@@ -1,17 +1,23 @@
 namespace Twitch {
-  type Event = Event.Type & Slime2.BasicEvent
+  type Event = Event.Type & { source: 'twitch' } & Slime2.BasicEvent
+  type RenderableEvent = Exclude<Event, { type: 'message-delete' }>
 
   namespace Event {
-    type Type = { type: 'message'; message: Message }
-    type Source = 'twitch'
+    type Type =
+      | { type: 'message'; data: Message }
+      | { type: 'message-delete'; data: MessageDelete }
+
+    type MessageDelete =
+      | { type: 'one'; messageId: string }
+      | { type: 'user'; userId: string }
+      | { type: 'all' }
 
     type Message = {
-      user: User
+      user: Message.User
       text: string
       first: boolean
       parts: Message.Part[]
       tags: Map<string, string>
-      source: Source
     } & Message.Type &
       Slime2.Event.BasicMessage
 
@@ -78,6 +84,7 @@ namespace Twitch {
           subscriber: boolean
         }
 
+        // undefined if the user hasn't followed
         followDate?: Date
       } & Slime2.BasicUser
 

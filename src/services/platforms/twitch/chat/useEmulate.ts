@@ -1,4 +1,4 @@
-import { useMessageListDispatch } from '@/contexts/message-list/useContext'
+import { useEventListDispatch } from '@/contexts/event-list/useContext'
 import { usePlatformReady } from '@/contexts/platform-ready/useContext'
 import useBadges from '../useBadges'
 import useChannelEmotes from '../useChannelEmotes'
@@ -40,7 +40,7 @@ const TEST_CHEER_AMOUNTS = [1, 5, 10, 50, 100, 500, 1000, 5000, 10000]
 const TEST_PUNCTUATION = ['', '.', '...', '!', '?', '!!', '!?', '?!']
 
 export default function useEmulate() {
-  const dispatch = useMessageListDispatch()
+  const dispatch = useEventListDispatch()
   const { data: thirdPartyEmoteMap } = useThirdPartyEmotes()
   const { data: channelEmotes } = useChannelEmotes()
   const { data: cheermotes } = useCheermotes()
@@ -267,11 +267,17 @@ export default function useEmulate() {
       user,
       text,
       parts,
-      source: 'twitch',
       tags: new Map<string, string>([['test', '1']]),
     }
 
-    dispatch({ type: 'add', payload: message })
+    dispatch({
+      type: 'add',
+      event: {
+        type: 'message',
+        data: message,
+        source: 'twitch',
+      },
+    })
   }
 
   return emulate

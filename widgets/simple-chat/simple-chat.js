@@ -24,96 +24,99 @@ const FALLBACK_USER_COLORS = [
 let messages = []
 const userData = {}
 
+addEventListener('slime2:ready', () => {
+  slime2.onEvent(event => {
+    switch (event.type) {
+      case 'message':
+        return onMessage(event.data, event.remove)
+      case 'message-delete':
+        return onMessageDelete(event.data)
+    }
+  })
+})
+
 /****************
  * Chat Handler *
  ****************/
 
-addEventListener('slime2:ready', () => {
-  slime2.onEvent(event => {
-    if (event.type !== 'message') return
-
-    const { message } = event
-    // extract the necessary data from the message
-    const { parts, user } = message
-
-    // clone the main message template to insert the message data into
-    // the templates are all defined in the HTML file
-    const messageClone = cloneTemplate('message-template')
-
-    // create the elements for the user and message content within the clone
-    // this uses the element builder functions defined below
-    messageClone.find('.user').append(buildUser(user))
-    messageClone.find('.content').append(buildContent(parts))
-
-    const userColor = getUserColor(user)
-    const userColorBrightness = textBrightness(userColor)
-
-    // add user's name color and add class to determine name color brightness
-    messageClone
-      .find('.user')
-      .css('--userColor', userColor)
-      .addClass(userColorBrightness === 'dark' ? 'user-dark' : 'user-light')
-
-    // set emote size
-    const emoteSize = calculateEmoteSize(parts)
-    messageClone.find('.content').addClass(`emote-${emoteSize}`)
-
-    // defines what happens after the message has been fully rendered
-    // can be used to delete messages over time, get message dimensions, etc.
-    function callback(messageElement) {
-      /*******************
-       * Delete Handling *
-       *******************/
-      const { remove } = event
-
-      // keeping track of messages
-      messages.push({ ...message, remove })
-
-      // when there's over 100 messages, delete the oldest one
-      // doing this keeps the memory usage low, by removing offscreen messages
-      if (messages.length > 100) {
-        const oldestMessage = messages.shift()
-        oldestMessage.remove()
-      }
-
-      // delete messages after X seconds
-      function deleteMessageAfter(seconds) {
-        setTimeout(() => {
-          messages = messages.filter(
-            messageItem => messageItem.id !== message.id,
-          )
-          remove()
-        }, seconds * 1000) // time in milliseconds
-      }
-
-      // remove the comment slashes below to delete messages after 10 seconds
-      // deleteMessageAfter(10)
+function onMessageDelete(data) {
+  switch (data.type) {
+    case 'all': {
+      messages = []
+      break
     }
 
-    // return the message and the callback,
-    // which renders the messages and runs the callback function
-    return { fragment: messageClone, callback }
-  })
-
-  slime2.onModMessageDelete(({ type, id }) => {
-    switch (type) {
-      case 'all': {
-        messages = []
-        break
-      }
-
-      case 'user': {
-        messages = messages.filter(message => message.user.id !== id)
-        break
-      }
-
-      case 'single': {
-        messages = messages.filter(message => message.id !== id)
-        break
-      }
+    case 'user': {
+      messages = messages.filter(message => message.user.id !== data.userId)
+      break
     }
-  })
-})
+
+    case 'one': {
+      messages = messages.filter(message => message.id !== data.messageId)
+      break
+    }
+  }
+}
+
+function onMessage(data, remove) {
+  // extract the necessary data from the message
+  const { parts, user } = data
+
+  // clone the main message template to insert the message data into
+  // the templates are all defined in the HTML file
+  const messageClone = cloneTemplate('message-template')
+
+  // create the elements for the user and message content within the clone
+  // this uses the element builder functions defined below
+  messageClone.find('.user').append(buildUser(user))
+  messageClone.find('.content').append(buildContent(parts))
+
+  const userColor = getUserColor(user)
+  const userColorBrightness = textBrightness(userColor)
+
+  // add user's name color and add class to determine name color brightness
+  messageClone
+    .find('.user')
+    .css('--userColor', userColor)
+    .addClass(userColorBrightness === 'dark' ? 'user-dark' : 'user-light')
+
+  // set emote size
+  const emoteSize = calculateEmoteSize(parts)
+  messageClone.find('.content').addClass(`emote-${emoteSize}`)
+
+  // defines what happens after the message has been fully rendered
+  // can be used to delete messages over time, get message dimensions, etc.
+  function callback(messageElement) {
+    /*******************
+     * Delete Handling *
+     *******************/
+
+    // keeping track of messages
+    messages.push({ ...data, remove })
+
+    // when there's over 100 messages, delete the oldest one
+    // doing this keeps the memory usage low, by removing offscreen messages
+    if (messages.length > 100) {
+      const oldestMessage = messages.shift()
+      oldestMessage.remove()
+    }
+
+    // delete messages after X seconds
+    function deleteMessageAfter(seconds) {
+      setTimeout(() => {
+        messages = messages.filter(messageItem => messageItem.id !== data.id)
+        remove()
+      }, seconds * 1000) // time in milliseconds
+    }
+
+    // remove the comment slashes below to delete messages after 10 seconds
+    // deleteMessageAfter(10)
+  }
+
+  // return the message and the callback,
+  // which renders the messages and runs the callback function
+  return { fragment: messageClone, callback }
+}
 
 /********************
  * Element Builders *

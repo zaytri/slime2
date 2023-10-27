@@ -1,10 +1,10 @@
 import { useEffect, useRef } from 'react'
 import Controls from './components/Controls'
-import MessageList from './components/MessageList'
+import EventList from './components/EventList'
 import ErrorBanner from './components/banner/ErrorBanner'
 import LoadingBanner from './components/banner/LoadingBanner'
 import { useClientDispatch } from './contexts/client/useContext'
-import { MessageListProvider } from './contexts/message-list/Provider'
+import { EventListProvider } from './contexts/event-list/Provider'
 import Twitch from './services/platforms/twitch/Twitch'
 import { widgetStorage } from './services/storage'
 import useAccessToken, {
@@ -27,12 +27,6 @@ export default function App() {
       dispatch({ type: 'event', setFunction })
     }
 
-    function setOnModMessageDelete(
-      setFunction: Slime2.Client.OnModMessageDelete,
-    ) {
-      dispatch({ type: 'modMessageDelete', setFunction })
-    }
-
     function setKey(provider: Slime2.Auth.Provider, key: string) {
       dispatch({ type: 'key', provider, key })
     }
@@ -40,7 +34,6 @@ export default function App() {
     // allow client to use these functions
     globalThis.slime2 = {
       onEvent: setOnEvent,
-      onModMessageDelete: setOnModMessageDelete,
       setKey: setKey,
       storage: widgetStorage,
     }
@@ -77,12 +70,12 @@ export default function App() {
   }
 
   return (
-    <MessageListProvider>
+    <EventListProvider>
       <div className='absolute inset-x-0'>
         <Twitch />
       </div>
       <Controls />
-      <MessageList />
-    </MessageListProvider>
+      <EventList />
+    </EventListProvider>
   )
 }
