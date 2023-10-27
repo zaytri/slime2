@@ -2,7 +2,7 @@ import LoadingBanner from '@/components/banner/LoadingBanner'
 import SuccessBanner from '@/components/banner/SuccessBanner'
 import { usePlatformReady } from '@/contexts/platform-ready/useContext'
 import { useEffect } from 'react'
-import ChatHandler from './chat'
+import useChatClient from './chat/useChatClient'
 import useBadges from './useBadges'
 import useTwitchBroadcaster from './useBroadcaster'
 import useChannelEmotes from './useChannelEmotes'
@@ -21,6 +21,7 @@ export default function TwitchLoader() {
   const { status: allPronounsStatus } = useAllPronouns()
   const { status: thirdPartyEmotesStatus } = useThirdPartyEmotes()
   const [platformReady, setPlatformReady] = usePlatformReady('twitch')
+  useChatClient()
 
   const loading = [
     broadcasterStatus,
@@ -66,10 +67,5 @@ export default function TwitchLoader() {
     )
   }
 
-  return (
-    <>
-      <SuccessBanner broadcaster={broadcaster!} staticPosition />
-      <ChatHandler />
-    </>
-  )
+  return <SuccessBanner broadcaster={broadcaster!} staticPosition />
 }
