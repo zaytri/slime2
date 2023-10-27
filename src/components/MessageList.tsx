@@ -2,10 +2,10 @@ import { useMessageList } from '@/contexts/message-list/useContext'
 import Message from './Message'
 
 export default function MessageList() {
-  const chat = useMessageList()
+  const messageList = useMessageList()
 
   function renderMessages() {
-    return chat.map(messageData => {
+    return messageList.map(messageData => {
       return <Message key={messageData.id} {...messageData} />
     })
   }
