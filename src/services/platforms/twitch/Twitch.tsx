@@ -11,7 +11,7 @@ import useCheermotes from './useCheermotes'
 import { useAllPronouns } from './usePronouns'
 import useThirdPartyEmotes from './useThirdPartyEmotes'
 
-export default function TwitchLoader() {
+export default function Twitch() {
   const { data: broadcaster, status: broadcasterStatus } =
     useTwitchBroadcaster()
   const { status: badgesStatus } = useBadges()

@@ -5,7 +5,7 @@ import ErrorBanner from './components/banner/ErrorBanner'
 import LoadingBanner from './components/banner/LoadingBanner'
 import { useClientDispatch } from './contexts/client/useContext'
 import { MessageListProvider } from './contexts/message-list/Provider'
-import Twitch from './services/platforms/twitch'
+import Twitch from './services/platforms/twitch/Twitch'
 import { widgetStorage } from './services/storage'
 import useAccessToken, {
   KeyInvalidError,
