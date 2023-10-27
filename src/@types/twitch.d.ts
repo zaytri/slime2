@@ -68,7 +68,7 @@ namespace Twitch {
       type User = {
         // identifiers
         userName: string
-        pronouns?: string
+        pronouns: string | null
 
         // cosmetics
         badges: User.Badge[]
@@ -84,8 +84,8 @@ namespace Twitch {
           subscriber: boolean
         }
 
-        // undefined if the user hasn't followed
-        followDate?: Date
+        // null if the user hasn't followed
+        followDate: Date | null
       } & Slime2.BasicUser
 
       namespace User {

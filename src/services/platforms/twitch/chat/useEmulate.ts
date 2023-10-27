@@ -86,7 +86,7 @@ export default function useEmulate() {
       userName: 'testuser',
       displayName: 'testUser',
       pronouns: randomInteger(0, 1) // 50% chance of showing pronouns
-        ? undefined
+        ? null
         : allPronouns[randomInteger(0, allPronouns.length - 1)],
       badges: [],
       roles: {

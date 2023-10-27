@@ -14,12 +14,12 @@ export default function useFollowDate() {
    * If the user ID matches the broadcaster, `new Date(0)` is returned to
    * act as if the broadcaster is the oldest possible follower
    *
-   * Returns `undefined` if the user isn't a follower
+   * Returns `null` if the user isn't a follower
    *
    * Result is cached for 1 hour per user
    */
-  async function getFollowDate(userId: string): Promise<Date | undefined> {
-    if (!broadcaster) return
+  async function getFollowDate(userId: string): Promise<Date | null> {
+    if (!broadcaster) return null
 
     return await queryClient.fetchQuery({
       queryKey: ['twitch', 'followDate', userId],
@@ -32,7 +32,9 @@ export default function useFollowDate() {
         )
 
         const [follower] = followers.data
-        return follower?.followDate // follower could be undefined
+        if (!follower) return null // follower could be undefined
+
+        return follower.followDate
       },
       staleTime: 1 * 60 * 60 * 1000, // cache for 1 hour
       gcTime: 2 * 60 * 60 * 1000, // garbage collected after 2 hours,

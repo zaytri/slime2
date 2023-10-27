@@ -6,14 +6,14 @@ export default function usePronouns() {
   const { data: pronounsMap } = useAllPronouns()
   const queryClient = useQueryClient()
 
-  async function getPronouns(userName: string): Promise<string | undefined> {
-    if (!pronounsMap) return
+  async function getPronouns(userName: string): Promise<string | null> {
+    if (!pronounsMap) return null
 
     return await queryClient.fetchQuery({
       queryKey: ['twitch', 'pronouns', 'user', userName],
       queryFn: async () => {
         const pronounsId = await getUserPronouns(userName)
-        if (!pronounsId) return undefined
+        if (!pronounsId) return null
 
         return pronounsMap!.get(pronounsId)
       },
@@ -42,19 +42,19 @@ const pronounsApi = axios.create({
 
 export async function getUserPronouns(
   userName: string,
-): Promise<string | undefined> {
+): Promise<string | null> {
   const data = await pronounsApi
     .get<Pronouns.User[]>(`/users/${userName}`)
     .then(response => response.data)
-    .catch(() => undefined)
+    .catch(() => null)
 
-  if (!data) return undefined // if Alejo's server is down
+  if (!data) return null // if Alejo's server is down
 
   // pronouns API returns either
   // an array that contains a single User
   // or an empty array if that user hasn't set pronouns
   const [user] = data
-  if (!user) return undefined // no pronouns set
+  if (!user) return null // no pronouns set
 
   return user.pronoun_id
 }
