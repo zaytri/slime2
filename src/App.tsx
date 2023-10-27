@@ -4,7 +4,7 @@ import MessageList from './components/MessageList'
 import ErrorBanner from './components/banner/ErrorBanner'
 import LoadingBanner from './components/banner/LoadingBanner'
 import { useClientDispatch } from './contexts/client/useContext'
-import { MessageListProvider } from './contexts/message-list/Provder'
+import { MessageListProvider } from './contexts/message-list/Provider'
 import Twitch from './services/platforms/twitch'
 import { widgetStorage } from './services/storage'
 import useAccessToken, {
