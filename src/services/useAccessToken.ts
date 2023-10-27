@@ -8,8 +8,9 @@ const slime2Api = axios.create({
   baseURL: 'https://slime2.stream/api',
 })
 
-export default function useAccessToken(authProvider: Slime2.AuthProvider) {
-  const key = useClient().key[authProvider]
+export default function useAccessToken(provider: Slime2.Auth.Provider) {
+  const { keys } = useClient()
+  const key = keys[provider]
   const [ready, setReady] = useState(false)
 
   useEffect(() => {
@@ -26,32 +27,31 @@ export default function useAccessToken(authProvider: Slime2.AuthProvider) {
 
   return useQuery({
     enabled: ready,
-    queryKey: [authProvider, 'accessToken', key],
+    queryKey: [provider, 'accessToken', key],
     queryFn: async () => {
-      return getAccessToken(authProvider, key)
+      return getAccessToken(provider, key)
     },
     ...infiniteCache,
   })
 }
 
-async function getAccessToken(
-  authProvider: Slime2.AuthProvider,
+export async function getAccessToken(
+  provider: Slime2.Auth.Provider,
   key?: string,
 ): Promise<string> {
-  if (!key)
-    throw new KeyNotFoundError(`Key not found for platform ${authProvider}`)
+  if (!key) throw new KeyNotFoundError(`Key not found for platform ${provider}`)
 
   return slime2Api
-    .get<Slime2.Api.TokenResponse>(`/auth/${authProvider}/token`, {
+    .get<Slime2.Api.TokenResponse>(`/auth/${provider}/token`, {
       headers: { Authorization: `Bearer ${key}` },
     })
     .then(response => response.data.token)
     .catch(error => {
-      const errorMessage = `Invalid key for platform ${authProvider}, download a new one from https://slime2.stream/account`
+      const errorMessage = `Invalid key for platform ${provider}, download a new one from https://slime2.stream/account`
       console.error(errorMessage, error)
 
       throw new KeyInvalidError(
-        `Invalid key for platform ${authProvider}, download a new one from https://slime2.stream/account`,
+        `Invalid key for platform ${provider}, download a new one from https://slime2.stream/account`,
         { cause: error },
       )
     })

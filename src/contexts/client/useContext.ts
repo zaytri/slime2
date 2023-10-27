@@ -12,7 +12,7 @@ export function useClientDispatch() {
 export const initialState: Slime2.Client = {
   onEvent: emptyFunction,
   onModMessageDelete: emptyFunction,
-  key: {
+  keys: {
     twitch: import.meta.env.VITE_TWITCH_KEY,
     google: import.meta.env.VITE_GOOGLE_KEY,
   },
@@ -35,7 +35,7 @@ export function clientReducer(
     case 'key':
       return {
         ...state,
-        key: { ...state.key, [action.authProvider]: action.key },
+        keys: { ...state.keys, [action.provider]: action.key },
       }
   }
 }
@@ -57,6 +57,6 @@ type ClientActionModMessageDelete = {
 
 type ClientActionKey = {
   type: 'key'
-  authProvider: Slime2.AuthProvider
+  provider: Slime2.Auth.Provider
   key: string
 }

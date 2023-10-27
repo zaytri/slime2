@@ -1,4 +1,4 @@
-export const auth: Slime2.AuthSettings = {
+export const auth: Slime2.Auth.Settings = {
   twitch: {
     clientId: 'xrjkdmui65qd33jdx8itfslt61qys8',
     scopes: [

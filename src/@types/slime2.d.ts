@@ -2,20 +2,22 @@ namespace Slime2 {
   type Client = {
     onEvent: Client.OnEvent
     onModMessageDelete: Client.OnModMessageDelete
-    key: {
+    keys: {
       [key in AuthProvider]?: string
     }
   }
 
-  type AuthSettings = {
-    [key in AuthProvider]: AuthProvider.Settings
-  }
-
-  type AuthProvider = 'twitch' | 'google'
-  namespace AuthProvider {
+  namespace Auth {
     type Settings = {
-      clientId: string
-      scopes: string[]
+      [key in Provider]: Provider.Settings
+    }
+
+    type Provider = 'twitch' | 'google'
+    namespace Provider {
+      type Settings = {
+        clientId: string
+        scopes: string[]
+      }
     }
   }
 
@@ -36,6 +38,24 @@ namespace Slime2 {
       | { type: 'single'; id: string }
       | { type: 'user'; id: string }
       | { type: 'all'; id: null }
+
+    type Storage = {
+      use: (widgetName: string) => void
+      get: <T = any>(key: string) => Promise<T | undefined>
+      getMany: <T = any>(keys: string[]) => Promise<T[]>
+      set: (key: string, value: any) => Promise<void>
+      setMany: (entries: [string, any][]) => Promise<void>
+      update: <T = any>(
+        key: string,
+        updater: (oldValue: T | undefined) => T,
+      ) => Promise<void>
+      del: (key: string) => Promise<void>
+      delMany: (keys: string[]) => Promise<void>
+      clear: () => Promise<void>
+      keys: () => Promise<string[]>
+      values: <T = any>() => Promise<T[]>
+      entries: <T = any>() => Promise<[string, T][]>
+    }
   }
 
   type Platform = 'twitch' | 'youtube'

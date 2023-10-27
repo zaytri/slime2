@@ -6,7 +6,7 @@ import LoadingBanner from './components/banner/LoadingBanner'
 import { useClientDispatch } from './contexts/client/useContext'
 import { MessageListProvider } from './contexts/message-list/Provder'
 import Twitch from './services/platforms/twitch'
-import { clientStorage } from './services/storage'
+import { widgetStorage } from './services/storage'
 import useAccessToken, {
   KeyInvalidError,
   KeyNotFoundError,
@@ -33,8 +33,8 @@ export default function App() {
       dispatch({ type: 'modMessageDelete', setFunction })
     }
 
-    function setKey(authProvider: Slime2.AuthProvider, key: string) {
-      dispatch({ type: 'key', authProvider, key })
+    function setKey(provider: Slime2.Auth.Provider, key: string) {
+      dispatch({ type: 'key', provider, key })
     }
 
     // allow client to use these functions
@@ -42,7 +42,7 @@ export default function App() {
       onEvent: setOnEvent,
       onModMessageDelete: setOnModMessageDelete,
       setKey: setKey,
-      storage: clientStorage,
+      storage: widgetStorage,
     }
 
     dispatchEvent(new CustomEvent('slime2:ready'))
