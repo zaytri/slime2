@@ -46,8 +46,9 @@ export default function App() {
 
   if (twitchStatus === 'error' || youtubeStatus === 'error') {
     if (
-      twitchError instanceof KeyNotFoundError &&
-      youtubeError instanceof KeyNotFoundError
+      [twitchError, youtubeError].every(
+        error => error instanceof KeyNotFoundError,
+      )
     ) {
       return <ErrorBanner message='No key found.' />
     }
