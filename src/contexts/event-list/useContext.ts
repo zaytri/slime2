@@ -30,7 +30,7 @@ export function eventListReducer(
     case 'remove':
       return state.filter(
         event =>
-          event.type !== action.eventType && event.data.id !== action.eventId,
+          event.type !== action.eventType || event.data.id !== action.eventId,
       )
 
     // clear chat was used
@@ -41,8 +41,7 @@ export function eventListReducer(
     case 'clear-user-messages':
       return state.filter(
         event =>
-          event.type !== 'message' ||
-          (event.type === 'message' && event.data.user.id !== action.userId),
+          event.type !== 'message' || event.data.user.id !== action.userId,
       )
   }
 }
