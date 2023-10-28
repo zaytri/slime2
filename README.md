@@ -18,7 +18,7 @@ Built with [Vite](https://vitejs.dev/) using [React](https://react.dev/)
 
 ## If you want to use this repo to build widgets
 
-It's not necessary to build widgets using this, but if you do then you get the added benefit of hot reloading and using `.env.local` for your tokens instead of directly including them in `TOKEN.js`.
+It's not necessary to build widgets using this, but if you do then you get the added benefit of hot reloading and using `.env.local` for your tokens instead of directly including them in `SLIME2_*_KEY.js`.
 
 1.  You'll need to install:
 
@@ -57,7 +57,7 @@ It's not necessary to build widgets using this, but if you do then you get the a
     ...
     ```
 
-6.  Duplicate the `.env.production` file, renaming the copy to `.env.local`. In the file, set the values to the keys that you can download from https://slime2.stream/account. For example, setting the Twitch key would look like this:
+6.  Duplicate the `.env.example` file, renaming the copy to `.env.local`. In the file, set the values to the keys that you can download from https://slime2.stream/account. For example, setting the Twitch key would look like this:
 
     ```shell
     VITE_TWITCH_KEY = 'yourKeyHere'
