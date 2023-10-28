@@ -27,7 +27,7 @@ export default function SuccessBanner({
     <Banner
       status='success'
       staticPosition={staticPosition}
-      className='flex-col gap-1'
+      className='slime2-banner-fade'
     >
       <div className='flex items-center justify-center'>
         Connected to
@@ -52,7 +52,6 @@ export default function SuccessBanner({
         </a>
         {broadcaster.displayName}
       </div>
-      <p>Hover to send test messages!</p>
     </Banner>
   )
 }

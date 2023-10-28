@@ -20,7 +20,6 @@ export default function Banner({
           status === 'error'
             ? 'bg-rose-900 font-radiocanada text-white'
             : 'bg-emerald-800 font-grandstander text-lime-100',
-          status === 'success' && 'slime2-loader-success',
           !staticPosition && 'absolute inset-x-0',
           className,
         )}
