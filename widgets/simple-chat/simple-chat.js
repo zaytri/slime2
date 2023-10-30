@@ -1,9 +1,4 @@
 addEventListener('slime2:ready', () => {
-  // slime2.setEventExpiration(1 * 1000, {
-  //   animationTime: 1000,
-  //   animationClass: 'fade',
-  // })
-
   slime2.onEvent(event => {
     switch (event.type) {
       case 'message':
@@ -16,9 +11,9 @@ addEventListener('slime2:ready', () => {
  * Chat Handler *
  ****************/
 
-function onMessage(data) {
+function onMessage(message) {
   // extract the necessary data from the message
-  const { parts, user } = data
+  const { parts, user } = message
 
   // clone the main message template to insert the message data into
   // the templates are all defined in the HTML file
@@ -30,7 +25,11 @@ function onMessage(data) {
   messageClone.find('.content').append(buildContent(parts))
 
   // add user's name color
-  messageClone.find('.user').css('--userColor', slime2.color.light(user.color))
+  if (user.color) {
+    messageClone
+      .find('.user')
+      .css('--userColor', slime2.color.light(user.color))
+  }
 
   // set emote size
   const emoteSize = calculateEmoteSize(parts)
@@ -46,7 +45,7 @@ function onMessage(data) {
 
 // insert in the user data
 function buildUser(user) {
-  const { displayName, userName, badges, pronouns } = user
+  const { displayName, userName, badges = [], pronouns } = user
 
   const userClone = $(slime2.cloneTemplate('user-template'))
   userClone.find('.badges').append(buildBadges(badges))
@@ -55,7 +54,7 @@ function buildUser(user) {
 
   // handle localized display names
   // https://blog.twitch.tv/en/2016/08/22/localized-display-names-e00ee8d3250a/
-  if (displayName.toLowerCase() !== userName.toLowerCase()) {
+  if (userName && displayName.toLowerCase() !== userName.toLowerCase()) {
     name = `${displayName} (${userName})`
   }
 
