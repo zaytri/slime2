@@ -10,7 +10,7 @@ export default function useTwitchBroadcaster() {
 
   return useQuery<Slime2.User.Broadcaster>({
     enabled: !!accessToken,
-    queryKey: ['twitch', 'broadcaster', accessToken!],
+    queryKey: ['twitch', 'broadcaster', accessToken || null],
     queryFn: async () => {
       const { clientId } = auth.twitch
       const { userId } = await getTokenInfo(accessToken!, clientId)

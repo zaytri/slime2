@@ -1,55 +1,25 @@
-import { useEventListDispatch } from '@/contexts/event-list/useContext'
-import { usePlatformReady } from '@/contexts/platform-ready/useContext'
+import { useEventListDispatch } from '@/contexts/event-list/useEventList'
+import { usePlatformReady } from '@/contexts/platform-ready/usePlatformReady'
+import Random from '@/services/random'
 import useBadges from '../useBadges'
 import useChannelEmotes from '../useChannelEmotes'
 import useCheermotes from '../useCheermotes'
 import { useAllPronouns } from '../usePronouns'
 import useThirdPartyEmotes from '../useThirdPartyEmotes'
-
-const TEST_ROLES: (keyof Twitch.Event.Message.User['roles'])[] = [
-  'broadcaster',
-  'moderator',
-  'artist',
-  'vip',
-  'founder',
-  'subscriber',
-]
-
-const TEST_MESSAGE_TYPES: Twitch.Event.Message.Type['type'][] = [
-  'action',
-  'highlight',
-  'cheer',
-  'reply',
-  'redeem',
-  'resub',
-  'announcement',
-]
-
-const TEST_RESUB_TIERS = ['1000', '2000', '3000', 'Prime']
-
-const TEST_ANNOUNCEMENT_COLORS = [
-  'PRIMARY',
-  'BLUE',
-  'GREEN',
-  'ORANGE',
-  'PURPLE',
-]
-
-const TEST_CHEER_AMOUNTS = [1, 5, 10, 50, 100, 500, 1000, 5000, 10000]
-
-const TEST_PUNCTUATION = ['', '.', '...', '!', '?', '!!', '!?', '?!']
+import useUserColor from './transforms/useUserColor'
 
 export default function useEmulateTwitchMessage() {
-  const dispatch = useEventListDispatch()
+  const { addEvent } = useEventListDispatch()
   const { data: thirdPartyEmoteMap } = useThirdPartyEmotes()
   const { data: channelEmotes } = useChannelEmotes()
   const { data: cheermotes } = useCheermotes()
   const { data: badges } = useBadges()
   const { data: pronounsMap } = useAllPronouns()
-  const platformReady = usePlatformReady('twitch')
+  const { isPlatformReady } = usePlatformReady()
+  const transformUserColor = useUserColor()
 
-  function emulate() {
-    if (!platformReady) return
+  async function emulate() {
+    if (!isPlatformReady('twitch')) return
 
     const allPronouns = Array.from(pronounsMap!.values())
     const emotes = [
@@ -58,7 +28,7 @@ export default function useEmulateTwitchMessage() {
     ]
 
     const date = new Date()
-    const first = !randomInteger(0, 19) // 5% chance of being first time chat
+    const first = Random.percent(5) // 5% chance of being first time chat
 
     const testMessage = 'test message'
     const longTestMessage = `long test message${' long test message'.repeat(5)}`
@@ -67,13 +37,11 @@ export default function useEmulateTwitchMessage() {
     let text = testMessage
 
     // 5% chance of being longTestMessage or connectedLongTestMessage
-    if (!randomInteger(0, 19)) text = longTestMessage
-    if (!randomInteger(0, 19)) text = connectedLongTestMessage
+    if (Random.percent(5)) text = longTestMessage
+    if (Random.percent(5)) text = connectedLongTestMessage
 
     // add in randomized punctuation
-    text = `${text}${
-      TEST_PUNCTUATION[randomInteger(0, TEST_PUNCTUATION.length - 1)]
-    }`
+    text = `${text}${Random.item(TEST_PUNCTUATION)}`
     let textPart = text
 
     if (first) {
@@ -85,10 +53,11 @@ export default function useEmulateTwitchMessage() {
       id: `test-user-${date.getTime()}`,
       userName: 'testuser',
       displayName: 'testUser',
-      pronouns: randomInteger(0, 1) // 50% chance of showing pronouns
+      pronouns: Random.boolean() // 50% chance of showing pronouns
         ? null
-        : allPronouns[randomInteger(0, allPronouns.length - 1)],
+        : Random.item(allPronouns),
       badges: [],
+      color: await transformUserColor('testuser'),
       roles: {
         broadcaster: false,
         moderator: false,
@@ -100,9 +69,9 @@ export default function useEmulateTwitchMessage() {
       followDate: new Date(0),
     }
 
-    const role = randomInteger(0, 1) // 50% chance of having a special role
+    const role = Random.boolean() // 50% chance of having a special role
       ? 'user'
-      : TEST_ROLES[randomInteger(0, TEST_ROLES.length - 1)]
+      : Random.item(TEST_ROLES)
     const badge = badges!.get(role === 'artist' ? 'artist-badge' : role)
 
     if (role !== 'user' && badge) {
@@ -116,14 +85,14 @@ export default function useEmulateTwitchMessage() {
 
       user.userName = `test${role}`
       user.displayName = `test${role.charAt(0).toUpperCase()}${role.slice(1)}`
+      user.color = await transformUserColor(user.userName)
     }
 
     let messageType: Twitch.Event.Message.Type = { type: 'basic' }
 
-    if (randomInteger(0, 1)) {
+    if (Random.boolean()) {
       // 50% chance of being a special type
-      const type =
-        TEST_MESSAGE_TYPES[randomInteger(0, TEST_MESSAGE_TYPES.length - 1)]
+      const type = Random.item(TEST_MESSAGE_TYPES)
 
       switch (type) {
         case 'action':
@@ -144,10 +113,7 @@ export default function useEmulateTwitchMessage() {
 
         case 'cheer':
           {
-            const amount =
-              TEST_CHEER_AMOUNTS[
-                randomInteger(0, TEST_CHEER_AMOUNTS.length - 1)
-              ]
+            const amount = Random.item(TEST_CHEER_AMOUNTS)
             const name = 'Cheer'
             messageType = {
               type,
@@ -197,7 +163,7 @@ export default function useEmulateTwitchMessage() {
                 image:
                   'https://static-cdn.jtvnw.net/custom-reward-images/default-4.png',
                 color: '#FFC6FF',
-                cost: randomInteger(1, 10000),
+                cost: Random.integer(1, 10000),
               },
             }
             text = `${text} (channel point redemption requiring text)`
@@ -210,10 +176,8 @@ export default function useEmulateTwitchMessage() {
             messageType = {
               type,
               resub: {
-                months: randomInteger(1, 24),
-                tier: TEST_RESUB_TIERS[
-                  randomInteger(0, TEST_RESUB_TIERS.length - 1)
-                ],
+                months: Random.integer(1, 24),
+                tier: Random.item(TEST_RESUB_TIERS),
               },
             }
             text = `${text} (resub message)`
@@ -227,10 +191,7 @@ export default function useEmulateTwitchMessage() {
               messageType = {
                 type,
                 announcement: {
-                  color:
-                    TEST_ANNOUNCEMENT_COLORS[
-                      randomInteger(0, TEST_ANNOUNCEMENT_COLORS.length - 1)
-                    ],
+                  color: Random.item(TEST_ANNOUNCEMENT_COLORS),
                 },
               }
               text = `${text} (announcement message)`
@@ -244,15 +205,15 @@ export default function useEmulateTwitchMessage() {
     }
 
     // 50% chance of using a channel emote, if the user has any
-    if (randomInteger(0, 1) && emotes.length) {
-      const emote = emotes[randomInteger(0, emotes.length - 1)]
+    if (Random.boolean() && emotes.length) {
+      const emote = Random.item(emotes)
       parts.unshift({ type: 'text', text: ' ' })
       parts.unshift({ type: 'emote', emote, text: emote.name })
       text = `${emote.name} ${text}`
     }
 
     // 20% chance of converting any basic message to just say "hi"
-    if (messageType.type === 'basic' && !randomInteger(0, 4)) {
+    if (messageType.type === 'basic' && Random.percent(20)) {
       text = 'hi'
       textPart = text
     }
@@ -270,21 +231,48 @@ export default function useEmulateTwitchMessage() {
       tags: new Map<string, string>([['test', '1']]),
     }
 
-    dispatch({
-      type: 'add',
-      event: {
-        type: 'message',
-        data: message,
-        source: 'twitch',
-        emulated: true,
-      },
+    addEvent({
+      type: 'message',
+      id: message.id,
+      userId: message.user.id,
+      message,
+      source: 'twitch',
+      emulated: true,
     })
   }
 
   return emulate
 }
 
-// generate a random integer between min (included) and max (included)
-function randomInteger(min: number, max: number) {
-  return Math.floor(Math.random() * (max - min + 1)) + min
-}
+const TEST_ROLES: (keyof Twitch.Event.Message.User['roles'])[] = [
+  'broadcaster',
+  'moderator',
+  'artist',
+  'vip',
+  'founder',
+  'subscriber',
+]
+
+const TEST_MESSAGE_TYPES: Twitch.Event.Message.Type['type'][] = [
+  'action',
+  'highlight',
+  'cheer',
+  'reply',
+  'redeem',
+  'resub',
+  'announcement',
+]
+
+const TEST_RESUB_TIERS = ['1000', '2000', '3000', 'Prime']
+
+const TEST_ANNOUNCEMENT_COLORS = [
+  'PRIMARY',
+  'BLUE',
+  'GREEN',
+  'ORANGE',
+  'PURPLE',
+]
+
+const TEST_CHEER_AMOUNTS = [1, 5, 10, 50, 100, 500, 1000, 5000, 10000]
+
+const TEST_PUNCTUATION = ['', '.', '...', '!', '?', '!!', '!?', '?!']

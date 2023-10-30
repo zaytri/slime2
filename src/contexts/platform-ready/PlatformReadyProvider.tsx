@@ -4,7 +4,7 @@ import {
   PlatformReadyDispatchContext,
   initialState,
   platformReadyReducer,
-} from './useContext'
+} from './usePlatformReady'
 
 export default function PlatformReadyProvider({
   children,

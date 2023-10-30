@@ -1,4 +1,4 @@
-import { useClient } from '@/contexts/client/useContext'
+import { useClient } from '@/contexts/client/useClient'
 import { infiniteCache } from '@/services/settings'
 import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'

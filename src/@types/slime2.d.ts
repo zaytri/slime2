@@ -1,6 +1,10 @@
 namespace Slime2 {
   type Client = {
-    onEvent: Client.OnEvent
+    sendEvent: Client.OnEvent
+    maxEvents: number
+    eventDelay?: number
+    eventExpiration?: number
+    eventExpirationOptions?: Client.EventExpirationOptions
     keys: {
       [key in AuthProvider]?: string
     }
@@ -32,6 +36,12 @@ namespace Slime2 {
     type Fragment = DocumentFragment | JQuery<DocumentFragment>
     type AfterRenderCallback = (div: HTMLElement) => void
 
+    type EventExpirationOptions = {
+      animationTime?: number
+      animationClass?: string
+      animationFunction?: AfterRenderCallback
+    }
+
     type Storage = {
       use: (widgetName: string) => void
       get: <T = any>(key: string) => Promise<T | undefined>
@@ -48,6 +58,13 @@ namespace Slime2 {
       keys: () => Promise<string[]>
       values: <T = any>() => Promise<T[]>
       entries: <T = any>() => Promise<[string, T][]>
+    }
+
+    type Color = {
+      light: (color: string) => string
+      dark: (color: string) => string
+      accessibleBackground: (color: string) => 'black' | 'white'
+      accessibleForeground: (color: string) => 'black' | 'white'
     }
   }
 
@@ -66,24 +83,25 @@ namespace Slime2 {
     } & BasicUser
   }
 
-  type BasicEvent = {
+  type BasicRenderableEvent = {
+    id: string
+    userId: string
+    renderable: true
     emulated?: true
-    remove?: () => void
+    remove: () => void
   }
 
-  type RenderableEvent = Twitch.RenderableEvent
+  type RenderableEvent = (Twitch.RenderableEvent | YouTube.RenderableEvent) &
+    BasicRenderableEvent
 
-  type Event = Twitch.Event
+  type Event = Twitch.Event | YouTube.Event
 
   namespace Event {
-    type BasicData = {
-      id: string
-    }
-
     type BasicMessage = {
+      id: string
       date: Date
       text: string
-    } & BasicData
+    }
 
     namespace Message {
       type Emote = {

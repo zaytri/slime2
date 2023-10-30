@@ -46,17 +46,11 @@
 .user {
   padding: 5px;
   border-radius: 6px;
-  font-weight: 700;
-  background-color: var(--userColor);
+  color: var(--userColor);
 }
 
-/* Added when the user's color is dark */
-.user-dark {
-}
-
-/* Added when the user's color is light */
-.user-light {
-  color: black;
+.user::after {
+  content: ':';
 }
 
 /* Display name of the user */
@@ -79,7 +73,6 @@
 /* Pronoun styles */
 .pronouns {
   text-transform: lowercase;
-  font-size: 14px;
   display: inline-block;
   margin-left: 4px;
 }
@@ -191,45 +184,15 @@
  * Extra Styles *
  ****************/
 
-/* Smooth 1px text outline */
-.text-outline-1 {
-  --outlineColor: rgb(0, 0, 0);
-  --outlineColorLowOpacity: rgba(0, 0, 0, 0.2);
-  text-shadow:
-    /* 1px offset top          */
-    0 -1px var(--outlineColor),
-    /* 1px offset bottom       */ 0 1px var(--outlineColor),
-    /* 1px offset left         */ -1px 0 var(--outlineColor),
-    /* 1px offset right        */ 1px 0 var(--outlineColor),
-    /* 1px offset top left     */ -1px -1px var(--outlineColorLowOpacity),
-    /* 1px offset top right    */ 1px -1px var(--outlineColorLowOpacity),
-    /* 1px offset bottom left  */ -1px 1px var(--outlineColorLowOpacity),
-    /* 1px offset bottom right */ 1px 1px var(--outlineColorLowOpacity),
-    /* 1px blur                */ 0 0 1px var(--outlineColor);
+.fade {
+  animation: fade 1s forwards;
 }
 
-/* Smooth 2px text outline */
-.text-outline-2 {
-  --outlineColor: rgb(0, 0, 0);
-  --outlineColorLowOpacity: rgba(0, 0, 0, 0.2);
-  text-shadow:
-    /* 1px offset top          */
-    0 -1px var(--outlineColor),
-    /* 1px offset bottom       */ 0 1px var(--outlineColor),
-    /* 1px offset left         */ -1px 0 var(--outlineColor),
-    /* 1px offset right        */ 1px 0 var(--outlineColor),
-    /* 2px offset top          */ 0 -2px var(--outlineColor),
-    /* 2px offset bottom       */ 0 2px var(--outlineColor),
-    /* 2px offset left         */ -2px 0 var(--outlineColor),
-    /* 2px offset right        */ 2px 0 var(--outlineColor),
-    /* 1px offset top left     */ -1px -1px var(--outlineColor),
-    /* 1px offset top right    */ 1px -1px var(--outlineColor),
-    /* 1px offset bottom left  */ -1px 1px var(--outlineColor),
-    /* 1px offset bottom right */ 1px 1px var(--outlineColor),
-    /* 2px offset top left     */ -2px -2px var(--outlineColorLowOpacity),
-    /* 2px offset top right    */ 2px -2px var(--outlineColorLowOpacity),
-    /* 2px offset bottom left  */ -2px 2px var(--outlineColorLowOpacity),
-    /* 2px offset bottom right */ 2px 2px var(--outlineColorLowOpacity),
-    /* 1px blur                */ 0 0 1px var(--outlineColor),
-    /* 2px blur                */ 0 0 2px var(--outlineColor);
+@keyframes fade {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
 }

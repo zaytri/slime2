@@ -6,19 +6,21 @@ const providerLogoSize = 20
 
 type SuccessBannerProps = {
   broadcaster: Slime2.User.Broadcaster
+  platform: Slime2.Platform
   staticPosition?: boolean
 }
 
 export default function SuccessBanner({
   broadcaster,
   staticPosition,
+  platform,
 }: SuccessBannerProps) {
   const [hidden, setHidden] = useState(false)
 
   useEffect(() => {
     setTimeout(() => {
       setHidden(true)
-    }, 4 * 1000) // remove from DOM after 4 seconds
+    }, 3.5 * 1000) // remove from DOM after 3.5 seconds
   }, [])
 
   if (hidden) return null
@@ -42,7 +44,7 @@ export default function SuccessBanner({
             />
 
             <img
-              src='https://slime2.stream/assets/twitch-logo.svg'
+              src={`https://slime2.stream/assets/${platform}-logo.svg`}
               height={providerLogoSize}
               width={providerLogoSize}
               alt='Stream Platform Logo'

@@ -1,13 +1,15 @@
 import useYoutubeApi from '@/services/platforms/youtube/useApi'
 import { infiniteCache } from '@/services/settings'
+import useAccessToken from '@/services/useAccessToken'
 import { useQuery } from '@tanstack/react-query'
 
 export default function useYoutubeBroadcaster() {
+  const { data: accessToken } = useAccessToken('google')
   const { data: api } = useYoutubeApi()
 
   return useQuery<Slime2.User.Broadcaster>({
-    enabled: !!api,
-    queryKey: ['youtube', 'broadcaster', api?.getToken() || ''],
+    enabled: !!accessToken && !!api,
+    queryKey: ['youtube', 'broadcaster', accessToken || null],
     queryFn: async () => {
       const response = await gapi.client.youtube.channels.list({
         mine: true,
@@ -15,16 +17,14 @@ export default function useYoutubeBroadcaster() {
       })
 
       const { items } = response.result
-      if (!items) throw Error('YouTube broadcaster not found')
+      if (!items || !items.length) throw new YouTubeChannelNotFoundError()
 
       const [channel] = items
       const { id, snippet } = channel
-      if (!id || !snippet) throw Error('YouTube broadcaster not found')
+      if (!id || !snippet) throw new YouTubeChannelNotFoundError()
 
       const { title, thumbnails, customUrl } = snippet
-      if (!title) throw Error('YouTube broadcaster not found')
-
-      console.log({ id, customUrl, title, thumbnails })
+      if (!title) throw new YouTubeChannelNotFoundError()
 
       return {
         id,
@@ -40,4 +40,12 @@ export default function useYoutubeBroadcaster() {
     },
     ...infiniteCache,
   })
+}
+
+export class YouTubeChannelNotFoundError extends Error {
+  constructor() {
+    const message = 'YouTube channel not found'
+    super(message)
+    this.name = 'YouTubeChannelNotFoundError'
+  }
 }

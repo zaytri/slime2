@@ -4,7 +4,7 @@ import {
   ClientDispatchContext,
   clientReducer,
   initialState,
-} from './useContext'
+} from './useClient'
 
 export function ClientProvider({ children }: React.PropsWithChildren) {
   const [client, dispatch] = useReducer(clientReducer, initialState)

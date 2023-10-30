@@ -1,4 +1,4 @@
-import { useClient } from '@/contexts/client/useContext'
+import { useClient } from '@/contexts/client/useClient'
 import useAccessToken from '@/services/useAccessToken'
 import { ApiClient } from '@twurple/api'
 import { CustomAuthProvider } from './customAuthProvider'

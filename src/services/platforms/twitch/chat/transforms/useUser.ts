@@ -2,6 +2,7 @@ import type { ChatUser } from '@twurple/chat'
 import useBadges from '../../useBadges'
 import useFollowDate from '../../useFollowDate'
 import usePronouns from '../../usePronouns'
+import useUserColor from './useUserColor'
 
 /**
  * Hook that returns the function {@link transform}
@@ -10,6 +11,7 @@ export default function useUser() {
   const { getPronouns } = usePronouns()
   const { getFollowDate } = useFollowDate()
   const { data: badges } = useBadges()
+  const transformUserColor = useUserColor()
 
   /**
    * Transform {@link ChatUser} into {@link Twitch.Event.Message.User},
@@ -36,7 +38,7 @@ export default function useUser() {
       displayName,
       pronouns: await getPronouns(userName),
       badges: badges!.transform(twurpleBadges),
-      color,
+      color: await transformUserColor(userId, color),
       roles: {
         broadcaster: isBroadcaster,
         moderator: isMod,

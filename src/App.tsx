@@ -3,9 +3,12 @@ import Controls from './components/Controls'
 import EventList from './components/EventList'
 import ErrorBanner from './components/banner/ErrorBanner'
 import LoadingBanner from './components/banner/LoadingBanner'
-import { useClientDispatch } from './contexts/client/useContext'
-import { EventListProvider } from './contexts/event-list/Provider'
+import { useClientDispatch } from './contexts/client/useClient'
+import { EventListProvider } from './contexts/event-list/EventListProvider'
+import Slime2Color from './services/color'
 import Twitch from './services/platforms/twitch/Twitch'
+import YouTube from './services/platforms/youtube/YouTube'
+import Random from './services/random'
 import { widgetStorage } from './services/storage'
 import useAccessToken, {
   KeyInvalidError,
@@ -17,25 +20,28 @@ export default function App() {
   const { status: youtubeStatus, error: youtubeError } =
     useAccessToken('google')
   const clientReady = useRef(false)
-  const dispatch = useClientDispatch()
+  const { onEvent, setKey, setMaxEvents, setEventDelay, setEventExpiration } =
+    useClientDispatch()
 
   // set functions for global var slime2
   useEffect(() => {
     if (clientReady.current) return
 
-    function setOnEvent(setFunction: Slime2.Client.OnEvent) {
-      dispatch({ type: 'event', setFunction })
-    }
-
-    function setKey(provider: Slime2.Auth.Provider, key: string) {
-      dispatch({ type: 'key', provider, key })
-    }
-
-    // allow client to use these functions
+    // create client to allow widget to use these functions
     globalThis.slime2 = {
-      onEvent: setOnEvent,
-      setKey: setKey,
-      storage: widgetStorage,
+      onEvent,
+      setKey,
+      setMaxEvents,
+      setEventDelay,
+      setEventExpiration,
+      storage: {
+        permanent: widgetStorage,
+        /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+        temporary: new Map<string, any>(),
+      },
+      color: Slime2Color,
+      random: Random,
+      cloneTemplate,
     }
 
     dispatchEvent(new CustomEvent('slime2:ready'))
@@ -73,10 +79,20 @@ export default function App() {
   return (
     <EventListProvider>
       <div className='absolute inset-x-0'>
-        <Twitch />
+        {twitchStatus === 'success' && <Twitch />}
+        {youtubeStatus === 'success' && <YouTube />}
       </div>
       <Controls />
       <EventList />
     </EventListProvider>
   )
+}
+
+function cloneTemplate(id: string): DocumentFragment {
+  const element = document.getElementById(id) as HTMLTemplateElement
+  if (!element) throw Error(`Template with id "${id}" not found.`)
+  if (element.tagName !== 'TEMPLATE')
+    throw Error(`Element with id "${id}" is not a template.`)
+
+  return element.content.cloneNode(true) as DocumentFragment
 }

@@ -1,4 +1,6 @@
+import { usePlatformReady } from '@/contexts/platform-ready/usePlatformReady'
 import useEmulateTwitchMessage from '@/services/platforms/twitch/chat/useEmulate'
+import clsx from 'clsx'
 import { useEffect, useState } from 'react'
 
 type Style = {
@@ -22,6 +24,8 @@ export default function Controls() {
   const [visible, setVisible] = useState(false)
 
   const emulate = useEmulateTwitchMessage()
+  const { isPlatformReady } = usePlatformReady()
+  const ready = isPlatformReady('twitch')
 
   useEffect(() => {
     function onMouseMove(event: MouseEvent) {
@@ -122,11 +126,17 @@ export default function Controls() {
   return (
     <button
       onClick={emulate}
-      className='btn-shadow-i !fixed z-[999] flex justify-center gap-2 overflow-hidden rounded-2xl border-2 border-emerald-800 bg-gradient-to-b from-lime-600 to-emerald-700 px-3 py-1 text-center hover:from-lime-500 hover:to-emerald-600 focus:outline-offset-8'
+      className={clsx(
+        '!fixed z-[999] flex justify-center gap-2 overflow-hidden rounded-2xl border-2 border-emerald-800 bg-gradient-to-b from-lime-600 to-emerald-700 px-3 py-1 text-center',
+        ready &&
+          'btn-shadow-i hover:from-lime-500 hover:to-emerald-600 focus:outline-offset-8',
+        !ready && 'grayscale',
+      )}
+      disabled={!ready}
       style={{ ...style }}
     >
       <span className='font-grandstander font-semibold text-lime-100 text-shadow text-shadow-c-black/75 text-shadow-y-px'>
-        Send Test Message
+        {ready ? 'Send Test Message' : 'Loading...'}
       </span>
     </button>
   )

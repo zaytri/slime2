@@ -1,20 +1,27 @@
 namespace Twitch {
-  type Event = Event.Type & { source: 'twitch' } & Slime2.BasicEvent
-  type RenderableEvent = Exclude<Event, { type: 'message-delete' }>
+  type Event = Event.Type & { source: 'twitch' }
+  type RenderableEvent = Exclude<
+    Event,
+    { type: 'remove-user' | 'remove-message' | 'remove-messages' }
+  >
 
   namespace Event {
     type Type =
-      | { type: 'message'; data: Message }
-      | { type: 'message-delete'; data: MessageDelete }
+      | { type: 'message'; message: Message }
+      | { type: 'remove-user'; userId: string }
+      | { type: 'remove-message'; messageId: string }
+      | { type: 'remove-messages' }
 
-    type MessageDelete =
-      | { type: 'one'; messageId: string }
-      | { type: 'user'; userId: string }
-      | { type: 'all' }
+    type RemoveMessage = {
+      messageId: string
+    }
+
+    type RemoveUser = {
+      userId: string
+    }
 
     type Message = {
       user: Message.User
-      text: string
       first: boolean
       parts: Message.Part[]
       tags: Map<string, string>
@@ -72,7 +79,7 @@ namespace Twitch {
 
         // cosmetics
         badges: User.Badge[]
-        color?: string
+        color: string
 
         // roles
         roles: {

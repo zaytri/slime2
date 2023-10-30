@@ -1,6 +1,6 @@
-import { useClient } from '@/contexts/client/useContext'
-import { useEventListDispatch } from '@/contexts/event-list/useContext'
-import { usePlatformReady } from '@/contexts/platform-ready/useContext'
+import { useClient } from '@/contexts/client/useClient'
+import { useEventListDispatch } from '@/contexts/event-list/useEventList'
+import { usePlatformReady } from '@/contexts/platform-ready/usePlatformReady'
 import type { Listener } from '@d-fischer/typed-event-emitter'
 import { ChatClient } from '@twurple/chat'
 import { useEffect, useRef } from 'react'
@@ -11,17 +11,19 @@ const source = 'twitch'
 
 export default function useChatClient() {
   const { data: broadcaster } = useTwitchBroadcaster()
-  const [platformReady] = usePlatformReady('twitch')
+  const { isPlatformReady } = usePlatformReady()
   const client = useClient()
-  const dispatch = useEventListDispatch()
+  const { addEvent, removeEvent, removeUser, removeMessages } =
+    useEventListDispatch()
   const transformMessage = useMessage()
   const chatClientRef = useRef(new ChatClient())
+  const platformReady = isPlatformReady('twitch')
 
   useEffect(() => {
     if (!platformReady) return
 
     const chatClient = chatClientRef.current
-    if (!chatClient.isConnected) {
+    if (!chatClient.isConnected && !chatClient.isConnecting) {
       chatClient.connect()
       chatClient.join(broadcaster!.userName)
     }
@@ -33,44 +35,38 @@ export default function useChatClient() {
     function addMessage(message?: Twitch.Event.Message) {
       if (!message) return
       debugLog(message)
-      dispatch({
-        type: 'add',
-        event: {
-          type: 'message',
-          data: message,
-          source,
-        },
-      })
-    }
-
-    function clearMessages(userId?: string | null) {
-      if (userId) clearUserMessages(userId)
-      else clearAllMessages()
-    }
-
-    function clearAllMessages() {
-      dispatch({ type: 'clear-all-messages' })
-      client.onEvent({
-        type: 'message-delete',
-        data: { type: 'all' },
-        source,
-      })
-    }
-
-    function clearUserMessages(userId: string) {
-      dispatch({ type: 'clear-user-messages', userId })
-      client.onEvent({
-        type: 'message-delete',
-        data: { type: 'user', userId },
+      addEvent({
+        type: 'message',
+        id: message.id,
+        userId: message.user.id,
+        message: message,
         source,
       })
     }
 
     function removeMessage(messageId: string) {
-      dispatch({ type: 'remove', eventType: 'message', eventId: messageId })
-      client.onEvent({
-        type: 'message-delete',
-        data: { type: 'one', messageId },
+      removeEvent('message', messageId)
+      client.sendEvent({
+        type: 'remove-message',
+        messageId,
+        source,
+      })
+    }
+
+    function removeAllMessages() {
+      removeMessages()
+      client.sendEvent({
+        type: 'remove-messages',
+        source,
+      })
+    }
+
+    function removeUserMessages(userId: string | null) {
+      if (!userId) return
+      removeUser(userId)
+      client.sendEvent({
+        type: 'remove-user',
+        userId,
         source,
       })
     }
@@ -129,15 +125,15 @@ export default function useChatClient() {
       // --------------------------
 
       chatClient.onChatClear(() => {
-        clearMessages()
+        removeAllMessages()
       }),
 
       chatClient.onTimeout((_, __, ___, msg) => {
-        clearMessages(msg.targetUserId)
+        removeUserMessages(msg.targetUserId)
       }),
 
       chatClient.onBan((_, __, msg) => {
-        clearMessages(msg.targetUserId)
+        removeUserMessages(msg.targetUserId)
       }),
 
       chatClient.onMessageRemove((_, messageId) => {
@@ -150,7 +146,16 @@ export default function useChatClient() {
         if (listener) chatClient.removeListener(listener)
       })
     }
-  }, [platformReady, client, dispatch, transformMessage, broadcaster])
+  }, [
+    platformReady,
+    client,
+    addEvent,
+    removeEvent,
+    removeUser,
+    removeMessages,
+    transformMessage,
+    broadcaster,
+  ])
 }
 
 function debugLog(message: Twitch.Event.Message) {

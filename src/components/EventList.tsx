@@ -1,4 +1,4 @@
-import { useEventList } from '@/contexts/event-list/useContext'
+import { useEventList } from '@/contexts/event-list/useEventList'
 import Message from './Event'
 
 export default function EventList() {
@@ -6,7 +6,8 @@ export default function EventList() {
 
   function renderEvents() {
     return renderableEvents.map(event => {
-      return <Message key={event.data.id} {...event} />
+      const key = `${event.type}-${event.id}`
+      return <Message key={key} {...event} />
     })
   }
 

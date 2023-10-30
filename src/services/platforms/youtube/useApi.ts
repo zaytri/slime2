@@ -1,6 +1,7 @@
 import { infiniteCache } from '@/services/settings'
 import useAccessToken from '@/services/useAccessToken'
 import { useQuery } from '@tanstack/react-query'
+import { loadGapiInsideDOM } from 'gapi-script'
 
 export default function useYoutubeApi() {
   const { data: accessToken } = useAccessToken('google')
@@ -23,14 +24,16 @@ async function gapiClientLoad(): Promise<void> {
   if (gapiClientLoadPromise) return gapiClientLoadPromise
 
   gapiClientLoadPromise = new Promise<void>(resolve => {
-    gapi.load('client', () => {
-      gapi.client
-        .init({
-          discoveryDocs: [
-            'https://youtube.googleapis.com/$discovery/rest?version=v3',
-          ],
-        })
-        .then(() => resolve())
+    loadGapiInsideDOM().then(() => {
+      gapi.load('client', () => {
+        gapi.client
+          .init({
+            discoveryDocs: [
+              'https://youtube.googleapis.com/$discovery/rest?version=v3',
+            ],
+          })
+          .then(() => resolve())
+      })
     })
   })
 

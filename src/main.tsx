@@ -2,8 +2,8 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App'
-import { ClientProvider } from './contexts/client/Provider'
-import PlatformReadyProvider from './contexts/platform-ready/Provider'
+import { ClientProvider } from './contexts/client/ClientProvider'
+import PlatformReadyProvider from './contexts/platform-ready/PlatformReadyProvider'
 import './main.css'
 
 const root = ReactDOM.createRoot(

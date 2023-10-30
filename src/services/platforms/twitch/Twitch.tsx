@@ -1,6 +1,9 @@
 import LoadingBanner from '@/components/banner/LoadingBanner'
 import SuccessBanner from '@/components/banner/SuccessBanner'
-import { usePlatformReady } from '@/contexts/platform-ready/useContext'
+import {
+  usePlatformReady,
+  usePlatformReadyDispatch,
+} from '@/contexts/platform-ready/usePlatformReady'
 import { useEffect } from 'react'
 import useChatClient from './chat/useChatClient'
 import useBadges from './useBadges'
@@ -20,7 +23,8 @@ export default function Twitch() {
   const { status: cheermotesStatus } = useCheermotes()
   const { status: allPronounsStatus } = useAllPronouns()
   const { status: thirdPartyEmotesStatus } = useThirdPartyEmotes()
-  const [platformReady, setPlatformReady] = usePlatformReady('twitch')
+  const { isPlatformReady } = usePlatformReady()
+  const { setPlatformReady } = usePlatformReadyDispatch()
   useChatClient()
 
   const loading = [
@@ -33,17 +37,13 @@ export default function Twitch() {
     thirdPartyEmotesStatus,
   ].some(status => status === 'pending')
 
-  // keep LoadingBanner shown for 1.5 extra seconds
-  // also ensure that LoadingBanner isn't shown again after initial load
+  // ensure that LoadingBanner isn't shown again after initial load
   useEffect(() => {
-    if (!loading) {
-      setTimeout(() => {
-        setPlatformReady()
-      }, 1.5 * 1000)
-    }
-  }, [loading, setPlatformReady])
+    if (!loading) setPlatformReady('twitch')
+    /* eslint-disable-next-line react-hooks/exhaustive-deps */
+  }, [loading])
 
-  if (!platformReady) {
+  if (!isPlatformReady('twitch')) {
     return (
       <LoadingBanner
         staticPosition
@@ -67,5 +67,11 @@ export default function Twitch() {
     )
   }
 
-  return <SuccessBanner broadcaster={broadcaster!} staticPosition />
+  return (
+    <SuccessBanner
+      broadcaster={broadcaster!}
+      platform='twitch'
+      staticPosition
+    />
+  )
 }

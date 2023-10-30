@@ -1,17 +1,24 @@
 import { createContext, useContext } from 'react'
 import { emptyFunction } from '../common'
 
-export function usePlatformReady(
-  platform: Slime2.Platform,
-): [boolean, () => void] {
+export function usePlatformReady() {
   const platformReady = useContext(PlatformReadyContext)
+
+  function isPlatformReady(platform: Slime2.Platform): boolean {
+    return !!platformReady[platform]
+  }
+
+  return { isPlatformReady }
+}
+
+export function usePlatformReadyDispatch() {
   const dispatch = useContext(PlatformReadyDispatchContext)
 
-  function setPlatformReady() {
+  function setPlatformReady(platform: Slime2.Platform) {
     dispatch({ type: platform })
   }
 
-  return [!!platformReady[platform], setPlatformReady]
+  return { setPlatformReady }
 }
 
 export const initialState: PlatformReadyState = {}

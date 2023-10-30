@@ -4,7 +4,7 @@ import {
   EventListDispatchContext,
   eventListReducer,
   initialState,
-} from './useContext'
+} from './useEventList'
 
 export function EventListProvider({ children }: React.PropsWithChildren) {
   const [messageList, dispatch] = useReducer(eventListReducer, initialState)
