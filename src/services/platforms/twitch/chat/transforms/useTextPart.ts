@@ -27,11 +27,8 @@ export function useTextPart() {
       if (part === '') return
 
       const emote = emoteMap!.get(part)
-      if (emote) {
-        parts.push({ type: 'emote', text: part, emote })
-      }
-
-      parts.push({ type: 'text', text: part })
+      if (emote) parts.push({ type: 'emote', text: part, emote })
+      else parts.push({ type: 'text', text: part })
     })
 
     return parts
