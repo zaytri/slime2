@@ -1,5 +1,6 @@
 import { useClient } from '@/contexts/client/useClient'
 import { useEventListDispatch } from '@/contexts/event-list/useEventList'
+import { generateInnerHTML } from '@/services/settings'
 import imagesLoaded from 'imagesloaded'
 import { memo, useEffect, useRef, useState } from 'react'
 
@@ -99,18 +100,3 @@ function Event(renderableEvent: Slime2.RenderableEvent) {
 // when the message list is updated
 const MemoEvent = memo(Event)
 export default MemoEvent
-
-function generateInnerHTML(clientFragment: Slime2.Client.Fragment): string {
-  const fragment =
-    clientFragment instanceof DocumentFragment
-      ? clientFragment // DocumentFragment
-      : clientFragment[0] // JQuery<DocumentFragment>
-
-  // create a temporary element to get the innerHTML of the fragment,
-  // because it's not possible to directly get that from a DocumentFragment
-  const tempRoot = document.createElement('div')
-  tempRoot.appendChild(fragment)
-  const innerHTML = tempRoot.innerHTML
-  tempRoot.remove()
-  return innerHTML
-}

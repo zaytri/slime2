@@ -5,6 +5,7 @@ namespace Slime2 {
     eventDelay?: number
     eventExpiration?: number
     eventExpirationOptions?: Client.EventExpirationOptions
+    settingsPage?: Client.Fragment
     keys: {
       [key in AuthProvider]?: string
     }

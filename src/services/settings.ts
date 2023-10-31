@@ -23,3 +23,22 @@ export const infiniteCache = {
   refetchOnWindowFocus: false,
   refetchOnReconnect: false,
 }
+
+export function generateInnerHTML(
+  clientFragment: Slime2.Client.Fragment,
+): string {
+  const fragment =
+    clientFragment instanceof DocumentFragment
+      ? clientFragment // DocumentFragment
+      : clientFragment[0] // JQuery<DocumentFragment>
+
+  const clone = fragment.cloneNode(true)
+
+  // create a temporary element to get the innerHTML of the fragment,
+  // because it's not possible to directly get that from a DocumentFragment
+  const tempRoot = document.createElement('div')
+  tempRoot.appendChild(clone)
+  const innerHTML = tempRoot.innerHTML
+  tempRoot.remove()
+  return innerHTML
+}

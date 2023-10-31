@@ -25,7 +25,8 @@ html {
   box-shadow: none;
 }
 
-.btn-shadow-i::after {
+.btn-shadow-i::after,
+.title-shadow-i::after {
   content: '';
   position: absolute;
   top: 0;
@@ -37,6 +38,13 @@ html {
 
 .btn-shadow-i:active::after {
   display: none;
+}
+
+.title-shadow-i {
+  box-shadow: inset 0 theme(spacing.px) 0 theme(spacing.px)
+    theme(colors.white / 25%);
+
+  position: relative;
 }
 
 .slime2-banner-fade {

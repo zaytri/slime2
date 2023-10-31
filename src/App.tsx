@@ -20,8 +20,14 @@ export default function App() {
   const { status: youtubeStatus, error: youtubeError } =
     useAccessToken('google')
   const clientReady = useRef(false)
-  const { onEvent, setKey, setMaxEvents, setEventDelay, setEventExpiration } =
-    useClientDispatch()
+  const {
+    onEvent,
+    setKey,
+    setMaxEvents,
+    setEventDelay,
+    setEventExpiration,
+    setWidgetSettingsPage,
+  } = useClientDispatch()
 
   // set functions for global var slime2
   useEffect(() => {
@@ -34,6 +40,7 @@ export default function App() {
       setMaxEvents,
       setEventDelay,
       setEventExpiration,
+      setWidgetSettingsPage,
       storage: {
         permanent: widgetStorage,
         /* eslint-disable-next-line @typescript-eslint/no-explicit-any */

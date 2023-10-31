@@ -2,110 +2,19 @@ import { usePlatformReady } from '@/contexts/platform-ready/usePlatformReady'
 import useEmulateTwitchMessage from '@/services/platforms/twitch/chat/useEmulate'
 import clsx from 'clsx'
 import { useEffect, useState } from 'react'
-
-type Style = {
-  top?: string
-  bottom?: string
-  left?: string
-  right?: string
-  transform?: string
-}
-
-const oneThird = 1 / 3
-const halfPercent = '50%'
-const sixthPercent = `${100 / 6}%`
+import SettingsWindow from './SettingsWindow'
 
 export default function Controls() {
-  const [style, setStyle] = useState<Style>({
-    top: halfPercent,
-    left: halfPercent,
-    transform: 'translate(-50%, -50%)',
-  })
   const [visible, setVisible] = useState(false)
+  const [displaySettings, setDisplaySettings] = useState(false)
 
   const emulate = useEmulateTwitchMessage()
   const { isPlatformReady } = usePlatformReady()
   const ready = isPlatformReady('twitch')
 
   useEffect(() => {
-    function onMouseMove(event: MouseEvent) {
+    function onMouseMove() {
       setVisible(true)
-      const windowWidth = window.innerWidth
-      const windowHeight = window.innerHeight
-
-      const mouseX = event.clientX
-      const mouseY = event.clientY
-
-      if (mouseY < windowHeight * oneThird) {
-        if (mouseX < windowWidth * oneThird) {
-          // top left
-          setStyle({
-            top: sixthPercent,
-            left: sixthPercent,
-            transform: 'translate(-50%, -50%)',
-          })
-        } else if (mouseX < windowWidth * oneThird * 2) {
-          // top center
-          setStyle({
-            top: sixthPercent,
-            left: halfPercent,
-            transform: 'translate(-50%, -50%)',
-          })
-        } else {
-          // top right
-          setStyle({
-            top: sixthPercent,
-            right: sixthPercent,
-            transform: 'translate(50%, -50%)',
-          })
-        }
-      } else if (mouseY < windowHeight * oneThird * 2) {
-        if (mouseX < windowWidth * oneThird) {
-          // center left
-          setStyle({
-            top: halfPercent,
-            left: sixthPercent,
-            transform: 'translate(-50%, -50%)',
-          })
-        } else if (mouseX < windowWidth * oneThird * 2) {
-          // center
-          setStyle({
-            top: halfPercent,
-            left: halfPercent,
-            transform: 'translate(-50%, -50%)',
-          })
-        } else {
-          // center right
-          setStyle({
-            top: halfPercent,
-            right: sixthPercent,
-            transform: 'translate(50%, -50%)',
-          })
-        }
-      } else {
-        if (mouseX < windowWidth * oneThird) {
-          // bottom left
-          setStyle({
-            bottom: sixthPercent,
-            left: sixthPercent,
-            transform: 'translate(-50%, 50%)',
-          })
-        } else if (mouseX < windowWidth * oneThird * 2) {
-          // bottom center
-          setStyle({
-            bottom: sixthPercent,
-            left: halfPercent,
-            transform: 'translate(-50%, 50%)',
-          })
-        } else {
-          // bottom right
-          setStyle({
-            bottom: sixthPercent,
-            right: sixthPercent,
-            transform: 'translate(50%, 50%)',
-          })
-        }
-      }
     }
 
     function onMouseLeave() {
@@ -121,23 +30,43 @@ export default function Controls() {
     }
   }, [emulate])
 
+  if (displaySettings)
+    return <SettingsWindow close={() => setDisplaySettings(false)} />
+
   if (!visible) return null
 
   return (
-    <button
-      onClick={emulate}
-      className={clsx(
-        '!fixed z-[999] flex justify-center gap-2 overflow-hidden rounded-2xl border-2 border-emerald-800 bg-gradient-to-b from-lime-600 to-emerald-700 px-3 py-1 text-center',
-        ready &&
-          'btn-shadow-i hover:from-lime-500 hover:to-emerald-600 focus:outline-offset-8',
-        !ready && 'grayscale',
-      )}
-      disabled={!ready}
-      style={{ ...style }}
-    >
-      <span className='font-grandstander font-semibold text-lime-100 text-shadow text-shadow-c-black/75 text-shadow-y-px'>
-        {ready ? 'Send Test Message' : 'Loading...'}
-      </span>
-    </button>
+    <>
+      <div className='!fixed z-[999] flex justify-center flex-col gap-2 top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2'>
+        <button
+          onClick={emulate}
+          className={clsx(
+            'flex justify-center overflow-hidden rounded-2xl border-2 border-emerald-800 bg-gradient-to-b from-lime-600 to-emerald-700 px-3 py-1 text-center',
+            ready &&
+              'btn-shadow-i hover:from-lime-500 hover:to-emerald-600 focus:outline-offset-8',
+            !ready && 'grayscale',
+          )}
+          disabled={!ready}
+        >
+          <span className='font-grandstander font-semibold text-lime-100 text-shadow text-shadow-c-black/75 text-shadow-y-px'>
+            {ready ? 'Send Test Message' : 'Loading...'}
+          </span>
+        </button>
+        <button
+          onClick={() => setDisplaySettings(true)}
+          className={clsx(
+            'flex justify-center overflow-hidden rounded-2xl border-2 border-emerald-800 bg-gradient-to-b from-lime-600 to-emerald-700 px-3 py-1 text-center',
+            ready &&
+              'btn-shadow-i hover:from-lime-500 hover:to-emerald-600 focus:outline-offset-8',
+            !ready && 'grayscale',
+          )}
+          disabled={!ready}
+        >
+          <span className='font-grandstander font-semibold text-lime-100 text-shadow text-shadow-c-black/75 text-shadow-y-px'>
+            {ready ? 'Settings' : 'Loading...'}
+          </span>
+        </button>
+      </div>
+    </>
   )
 }

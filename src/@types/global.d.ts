@@ -10,6 +10,7 @@ declare var slime2: {
     options?: Slime2.Client.EventExpirationOptions,
   ) => void
   setKey: (provider: Slime2.AuthProvider, key: string) => void
+  setWidgetSettingsPage: (fragment: Slime2.Client.Fragment) => void
 
   // helpers
   storage: {

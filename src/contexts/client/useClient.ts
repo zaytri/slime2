@@ -31,7 +31,18 @@ export function useClientDispatch() {
     dispatch({ type: 'set-event-expiration', expiration, options })
   }
 
-  return { onEvent, setKey, setMaxEvents, setEventDelay, setEventExpiration }
+  function setWidgetSettingsPage(fragment: Slime2.Client.Fragment) {
+    dispatch({ type: 'set-widget-settings-page', fragment })
+  }
+
+  return {
+    onEvent,
+    setKey,
+    setMaxEvents,
+    setEventDelay,
+    setEventExpiration,
+    setWidgetSettingsPage,
+  }
 }
 
 export const initialState: Slime2.Client = {
@@ -76,6 +87,11 @@ export function clientReducer(
         ...state,
         eventDelay: action.delay,
       }
+    case 'set-widget-settings-page':
+      return {
+        ...state,
+        settingsPage: action.fragment,
+      }
   }
 }
 
@@ -85,6 +101,7 @@ type ClientAction =
   | ClientActionSetMaxEvents
   | ClientActionSetEventExpiration
   | ClientActionSetEventDelay
+  | ClientActionSetWidgetSettingsPage
 
 type ClientActionSetOnEvent = {
   type: 'set-on-event'
@@ -111,4 +128,9 @@ type ClientActionSetEventExpiration = {
 type ClientActionSetEventDelay = {
   type: 'set-event-delay'
   delay: number
+}
+
+type ClientActionSetWidgetSettingsPage = {
+  type: 'set-widget-settings-page'
+  fragment: Slime2.Client.Fragment
 }
