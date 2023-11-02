@@ -22,7 +22,6 @@
     "axios": "^1.5.1",
     "clsx": "^2.0.0",
     "colorjs.io": "^0.4.5",
-    "gapi-script": "^1.2.0",
     "idb-keyval": "^6.2.1",
     "imagesloaded": "^5.0.0",
     "jquery": "^3.7.1",

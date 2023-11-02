@@ -14,7 +14,7 @@ export default function useLiveChat() {
     enabled: !!api && !!liveChatId,
     queryKey: ['youtube', 'liveChat', liveChatId || null],
     queryFn: async ({ pageParam: pageToken }): Promise<LiveChatResponse> => {
-      const response = await api!.youtube.liveChatMessages.list({
+      const response = await api!.liveChatMessages.list({
         liveChatId: liveChatId!,
         part: ['id', 'snippet', 'authorDetails'],
         pageToken,

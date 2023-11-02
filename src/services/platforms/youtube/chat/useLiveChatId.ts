@@ -12,7 +12,7 @@ export default function useLiveChatId() {
     enabled: !!api,
     queryKey: ['youtube', 'liveChatId', broadcaster?.id],
     queryFn: async () => {
-      const response = await api!.youtube.liveBroadcasts.list({
+      const response = await api!.liveBroadcasts.list({
         mine: true,
         part: ['snippet', 'status'],
         maxResults: 1,

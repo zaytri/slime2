@@ -11,7 +11,7 @@ export default function useYoutubeBroadcaster() {
     enabled: !!accessToken && !!api,
     queryKey: ['youtube', 'broadcaster', accessToken || null],
     queryFn: async () => {
-      const response = await gapi.client.youtube.channels.list({
+      const response = await api!.channels.list({
         mine: true,
         part: ['id', 'snippet'],
       })
