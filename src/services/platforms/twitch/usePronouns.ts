@@ -1,4 +1,4 @@
-import { infiniteCache } from '@/services/settings'
+import { infiniteCache } from '@/services/helpers'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import axios from 'axios'
 

@@ -2,7 +2,10 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App'
+import EventList from './components/event/EventList'
+import Settings from './components/settings/WindowList'
 import { ClientProvider } from './contexts/client/ClientProvider'
+import { EventListProvider } from './contexts/event-list/EventListProvider'
 import PlatformReadyProvider from './contexts/platform-ready/PlatformReadyProvider'
 import './main.css'
 
@@ -17,7 +20,11 @@ root.render(
     <ClientProvider>
       <QueryClientProvider client={queryClient}>
         <PlatformReadyProvider>
-          <App />
+          <EventListProvider>
+            <EventList />
+            <App />
+            <Settings />
+          </EventListProvider>
         </PlatformReadyProvider>
       </QueryClientProvider>
     </ClientProvider>

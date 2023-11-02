@@ -1,4 +1,4 @@
-import Banner from '.'
+import Banner from './Banner'
 
 type ErrorBannerProps = {
   message: string

@@ -1,6 +1,6 @@
 import { useClient } from '@/contexts/client/useClient'
 import { useEventListDispatch } from '@/contexts/event-list/useEventList'
-import { generateInnerHTML } from '@/services/settings'
+import { generateInnerHTML } from '@/services/helpers'
 import imagesLoaded from 'imagesloaded'
 import { memo, useEffect, useRef, useState } from 'react'
 

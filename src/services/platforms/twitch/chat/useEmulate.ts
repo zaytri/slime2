@@ -28,7 +28,7 @@ export default function useEmulateTwitchMessage() {
     ]
 
     const date = new Date()
-    const first = Random.percent(5) // 5% chance of being first time chat
+    const first = Random.chance(5) // 5% chance of being first time chat
 
     const testMessage = 'test message'
     const longTestMessage = `long test message${' long test message'.repeat(5)}`
@@ -37,8 +37,8 @@ export default function useEmulateTwitchMessage() {
     let text = testMessage
 
     // 5% chance of being longTestMessage or connectedLongTestMessage
-    if (Random.percent(5)) text = longTestMessage
-    if (Random.percent(5)) text = connectedLongTestMessage
+    if (Random.chance(5)) text = longTestMessage
+    if (Random.chance(5)) text = connectedLongTestMessage
 
     // add in randomized punctuation
     text = `${text}${Random.item(TEST_PUNCTUATION)}`
@@ -213,7 +213,7 @@ export default function useEmulateTwitchMessage() {
     }
 
     // 20% chance of converting any basic message to just say "hi"
-    if (messageType.type === 'basic' && Random.percent(20)) {
+    if (messageType.type === 'basic' && Random.chance(20)) {
       text = 'hi'
       textPart = text
     }

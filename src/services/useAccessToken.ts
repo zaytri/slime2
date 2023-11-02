@@ -1,5 +1,5 @@
 import { useClient } from '@/contexts/client/useClient'
-import { infiniteCache } from '@/services/settings'
+import { infiniteCache } from '@/services/helpers'
 import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
 import { useEffect, useState } from 'react'
@@ -9,9 +9,11 @@ const slime2Api = axios.create({
 })
 
 export default function useAccessToken(provider: Slime2.Auth.Provider) {
-  const { keys } = useClient()
+  const { keys, platforms } = useClient()
   const key = keys[provider]
   const [ready, setReady] = useState(false)
+  const platform: Slime2.Platform = provider === 'google' ? 'youtube' : provider
+  const platformSet = platforms.includes(platform)
 
   useEffect(() => {
     function onReady() {
@@ -27,8 +29,10 @@ export default function useAccessToken(provider: Slime2.Auth.Provider) {
 
   return useQuery({
     enabled: ready,
-    queryKey: [provider, 'accessToken', key],
+    queryKey: [provider, platformSet, 'accessToken', key],
     queryFn: async () => {
+      // throw error just to prevent fetching the access token
+      if (!platformSet) throw Error('Not an actual error')
       return getAccessToken(provider, key)
     },
     ...infiniteCache,

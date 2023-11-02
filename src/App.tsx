@@ -1,11 +1,9 @@
 import { useEffect, useRef } from 'react'
-import Controls from './components/Controls'
-import EventList from './components/EventList'
 import ErrorBanner from './components/banner/ErrorBanner'
 import LoadingBanner from './components/banner/LoadingBanner'
-import { useClientDispatch } from './contexts/client/useClient'
-import { EventListProvider } from './contexts/event-list/EventListProvider'
+import { useClient, useClientDispatch } from './contexts/client/useClient'
 import Slime2Color from './services/color'
+import { cloneTemplate } from './services/helpers'
 import Twitch from './services/platforms/twitch/Twitch'
 import YouTube from './services/platforms/youtube/YouTube'
 import Random from './services/random'
@@ -23,11 +21,13 @@ export default function App() {
   const {
     onEvent,
     setKey,
+    setPlatform,
     setMaxEvents,
     setEventDelay,
     setEventExpiration,
     setWidgetSettingsPage,
   } = useClientDispatch()
+  const { platforms } = useClient()
 
   // set functions for global var slime2
   useEffect(() => {
@@ -37,15 +37,12 @@ export default function App() {
     globalThis.slime2 = {
       onEvent,
       setKey,
+      setPlatform,
       setMaxEvents,
       setEventDelay,
       setEventExpiration,
       setWidgetSettingsPage,
-      storage: {
-        permanent: widgetStorage,
-        /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-        temporary: new Map<string, any>(),
-      },
+      storage: widgetStorage,
       color: Slime2Color,
       random: Random,
       cloneTemplate,
@@ -57,17 +54,19 @@ export default function App() {
     /* eslint-disable-next-line react-hooks/exhaustive-deps */
   }, [])
 
-  if (twitchStatus === 'error' || youtubeStatus === 'error') {
-    if (
-      [twitchError, youtubeError].every(
-        error => error instanceof KeyNotFoundError,
-      )
-    ) {
-      return <ErrorBanner message='No key found.' />
+  if (platforms.includes('twitch')) {
+    if (twitchError instanceof KeyNotFoundError) {
+      return <ErrorBanner message='Twitch key not found.' />
     }
 
     if (twitchError instanceof KeyInvalidError) {
       return <ErrorBanner message='Twitch key expired.' />
+    }
+  }
+
+  if (platforms.includes('youtube')) {
+    if (youtubeError instanceof KeyNotFoundError) {
+      return <ErrorBanner message='YouTube key not found.' />
     }
 
     if (youtubeError instanceof KeyInvalidError) {
@@ -75,31 +74,18 @@ export default function App() {
     }
   }
 
-  const loading = [twitchStatus, youtubeStatus].some(
-    status => status === 'pending',
-  )
+  const loading =
+    !!platforms.length &&
+    [twitchStatus, youtubeStatus].some(status => status === 'pending')
 
   if (loading) {
     return <LoadingBanner message='Verifying Key...' />
   }
 
   return (
-    <EventListProvider>
-      <div className='absolute inset-x-0'>
-        {twitchStatus === 'success' && <Twitch />}
-        {youtubeStatus === 'success' && <YouTube />}
-      </div>
-      <Controls />
-      <EventList />
-    </EventListProvider>
+    <div className='absolute inset-x-0'>
+      {twitchStatus === 'success' && <Twitch />}
+      {youtubeStatus === 'success' && <YouTube />}
+    </div>
   )
-}
-
-function cloneTemplate(id: string): DocumentFragment {
-  const element = document.getElementById(id) as HTMLTemplateElement
-  if (!element) throw Error(`Template with id "${id}" not found.`)
-  if (element.tagName !== 'TEMPLATE')
-    throw Error(`Element with id "${id}" is not a template.`)
-
-  return element.content.cloneNode(true) as DocumentFragment
 }

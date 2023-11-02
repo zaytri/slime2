@@ -77,14 +77,14 @@ export default function useChatClient() {
 
 function debugLog(message: YouTube.Event.Message) {
   if (import.meta.env.DEV && import.meta.env.MODE === 'debug') {
-    console.log(
+    console.debug(
       `%c[${message.type}] ${message.user.displayName}: ${message.text}`,
       'background-color: black; color: white; padding: 5px 10px; border-radius: 100px; border: 2px solid white',
     )
 
-    console.log('Slime2 Message Data', message)
+    console.debug('Slime2 Message Data', message)
 
-    console.log(
+    console.debug(
       `%cMessage ${message.id}`,
       'background-color: black; color: white; padding: 5px 10px; border-radius: 0 0 10px 10px; display: inline-block; margin-bottom: 10px; border: 1px solid gray;',
     )

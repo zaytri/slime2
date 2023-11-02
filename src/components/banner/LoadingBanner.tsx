@@ -1,7 +1,7 @@
 import type { UseQueryResult } from '@tanstack/react-query'
 import { ScaleLoader } from 'react-spinners'
 import colors from 'tailwindcss/colors'
-import Banner from '.'
+import Banner from './Banner'
 
 type LoadingBannerProps = {
   message: string

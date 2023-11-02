@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import Banner from '.'
+import Banner from './Banner'
 
 const avatarSize = 60
 const providerLogoSize = 20

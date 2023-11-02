@@ -1,5 +1,6 @@
+import { auth } from '@/services/auth'
+import { infiniteCache } from '@/services/helpers'
 import useTwitchApi from '@/services/platforms/twitch/useApi'
-import { auth, infiniteCache } from '@/services/settings'
 import useAccessToken from '@/services/useAccessToken'
 import { useQuery } from '@tanstack/react-query'
 import { getTokenInfo } from '@twurple/auth'

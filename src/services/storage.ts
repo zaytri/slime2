@@ -13,12 +13,12 @@ class Storage {
     this._createStore(`widget-${widgetName}`)
   }
 
-  get<T = any>(key: string): Promise<T | undefined> {
+  get<T>(key: string): Promise<T | undefined> {
     this._throwIfStoreMissing()
     return idb.get<T>(key, this._store)
   }
 
-  getMany<T = any>(keys: string[]): Promise<T[]> {
+  getMany<T>(keys: string[]): Promise<T[]> {
     this._throwIfStoreMissing()
     return idb.getMany<T>(keys, this._store)
   }
@@ -33,7 +33,7 @@ class Storage {
     return idb.setMany(entries, this._store)
   }
 
-  update<T = any>(
+  update<T>(
     key: string,
     updater: (oldValue: T | undefined) => T,
   ): Promise<void> {
@@ -61,12 +61,12 @@ class Storage {
     return idb.keys<string>(this._store)
   }
 
-  values<T = any>(): Promise<T[]> {
+  values<T>(): Promise<T[]> {
     this._throwIfStoreMissing()
     return idb.values<T>(this._store)
   }
 
-  entries<T = any>(): Promise<[string, T][]> {
+  entries<T>(): Promise<[string, T][]> {
     this._throwIfStoreMissing()
     return idb.entries<string, T>(this._store)
   }

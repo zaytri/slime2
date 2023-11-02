@@ -31,7 +31,7 @@ async function run() {
   if (widget && isPrivate) widget = `${widget}/private`
 
   exec(createCommand(isBuild, widget), (error, stdout) => {
-    console.log(stdout)
+    console.error(stdout)
   })
 }
 

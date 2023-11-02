@@ -1,4 +1,4 @@
-import { auth } from '@/services/settings'
+import { auth } from '@/services/auth'
 import { getAccessToken } from '@/services/useAccessToken'
 import type { UserIdResolvable } from '@twurple/api'
 import {

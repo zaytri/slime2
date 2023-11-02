@@ -1,4 +1,6 @@
 addEventListener('slime2:ready', () => {
+  slime2.setPlatform('twitch')
+
   slime2.onEvent(event => {
     switch (event.type) {
       case 'message':

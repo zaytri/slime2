@@ -1,5 +1,5 @@
 module.exports = {
-  plugins: ['prettier-plugin-tailwindcss', 'prettier-plugin-organize-imports'],
+  plugins: ['prettier-plugin-organize-imports', 'prettier-plugin-tailwindcss'],
   arrowParens: 'avoid',
   semi: false,
   singleQuote: true,

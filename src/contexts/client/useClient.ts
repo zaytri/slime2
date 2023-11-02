@@ -12,6 +12,10 @@ export function useClientDispatch() {
     dispatch({ type: 'set-on-event', onEvent })
   }
 
+  function setPlatform(platform: Slime2.Platform | Slime2.Platform[]) {
+    dispatch({ type: 'set-platform', platform })
+  }
+
   function setKey(provider: Slime2.Auth.Provider, key: string) {
     dispatch({ type: 'set-key', provider, key })
   }
@@ -38,6 +42,7 @@ export function useClientDispatch() {
   return {
     onEvent,
     setKey,
+    setPlatform,
     setMaxEvents,
     setEventDelay,
     setEventExpiration,
@@ -48,6 +53,7 @@ export function useClientDispatch() {
 export const initialState: Slime2.Client = {
   sendEvent: emptyFunction,
   maxEvents: 100, // default to 100
+  platforms: [],
   keys: {
     twitch: import.meta.env.VITE_TWITCH_KEY,
     google: import.meta.env.VITE_GOOGLE_KEY,
@@ -64,13 +70,21 @@ export function clientReducer(
   action: ClientAction,
 ): Slime2.Client {
   switch (action.type) {
-    case 'set-on-event':
-      return { ...state, sendEvent: action.onEvent }
+    case 'set-platform':
+      return {
+        ...state,
+        platforms: Array.isArray(action.platform)
+          ? action.platform
+          : [action.platform],
+      }
+
     case 'set-key':
       return {
         ...state,
         keys: { ...state.keys, [action.provider]: action.key },
       }
+    case 'set-on-event':
+      return { ...state, sendEvent: action.onEvent }
     case 'set-max-events':
       return {
         ...state,
@@ -96,22 +110,28 @@ export function clientReducer(
 }
 
 type ClientAction =
-  | ClientActionSetOnEvent
+  | ClientActionSetPlatform
   | ClientActionSetKey
+  | ClientActionSetOnEvent
   | ClientActionSetMaxEvents
   | ClientActionSetEventExpiration
   | ClientActionSetEventDelay
   | ClientActionSetWidgetSettingsPage
 
-type ClientActionSetOnEvent = {
-  type: 'set-on-event'
-  onEvent: Slime2.Client.OnEvent
+type ClientActionSetPlatform = {
+  type: 'set-platform'
+  platform: Slime2.Platform | Slime2.Platform[]
 }
 
 type ClientActionSetKey = {
   type: 'set-key'
   provider: Slime2.Auth.Provider
   key: string
+}
+
+type ClientActionSetOnEvent = {
+  type: 'set-on-event'
+  onEvent: Slime2.Client.OnEvent
 }
 
 type ClientActionSetMaxEvents = {

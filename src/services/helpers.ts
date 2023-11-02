@@ -1,19 +1,3 @@
-export const auth: Slime2.Auth.Settings = {
-  twitch: {
-    clientId: 'xrjkdmui65qd33jdx8itfslt61qys8',
-    scopes: [
-      'chat:read',
-      'channel:read:redemptions',
-      'moderator:read:followers',
-    ],
-  },
-  google: {
-    clientId:
-      '932208815805-oq2sevf3ida5idi4k84tlsh03nqc35cs.apps.googleusercontent.com',
-    scopes: ['https://www.googleapis.com/auth/youtube.readonly'],
-  },
-}
-
 export const infiniteCache = {
   gcTime: Infinity,
   staleTime: Infinity,
@@ -41,4 +25,13 @@ export function generateInnerHTML(
   const innerHTML = tempRoot.innerHTML
   tempRoot.remove()
   return innerHTML
+}
+
+export function cloneTemplate(id: string): DocumentFragment {
+  const element = document.getElementById(id) as HTMLTemplateElement
+  if (!element) throw Error(`Template with id "${id}" not found.`)
+  if (element.tagName !== 'TEMPLATE')
+    throw Error(`Element with id "${id}" is not a template.`)
+
+  return element.content.cloneNode(true) as DocumentFragment
 }

@@ -3,26 +3,24 @@ declare var slime2: {
   onEvent: (setFunction: Slime2.Client.OnEvent) => void
 
   // settings
+  setKey: (provider: Slime2.AuthProvider, key: string) => void
+  setPlatform: (platform: Slime2.Platform | Slime2.Platform[]) => void
   setMaxEvents: (maxEvents: number) => void
   setEventDelay: (delay: number) => void
   setEventExpiration: (
     expiration: number,
     options?: Slime2.Client.EventExpirationOptions,
   ) => void
-  setKey: (provider: Slime2.AuthProvider, key: string) => void
   setWidgetSettingsPage: (fragment: Slime2.Client.Fragment) => void
 
   // helpers
-  storage: {
-    permanent: Slime2.Client.Storage
-    temporary: Map<string, any>
-  }
+  storage: Slime2.Client.Storage
   color: Slime2.Client.Color
   random: {
     number: (min: number, max: number) => number
     integer: (min: number, max: number) => number
-    percent: (percentage: number) => boolean
     boolean: () => boolean
+    chance: (percentage: number) => boolean
     index: (array: Array<any>) => number
     item: <T>(array: Array<T>) => T
   }

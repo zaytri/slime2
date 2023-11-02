@@ -1,4 +1,4 @@
-import { infiniteCache } from '@/services/settings'
+import { infiniteCache } from '@/services/helpers'
 import { useQuery } from '@tanstack/react-query'
 import type { HelixChatBadgeSet, HelixChatBadgeVersion } from '@twurple/api'
 import useTwitchApi from './useApi'

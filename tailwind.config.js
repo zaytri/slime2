@@ -13,11 +13,12 @@ module.exports = {
       fontFamily: {
         grandstander: ['Grandstander', ...fontFamily.sans],
         fredoka: ['Fredoka', ...fontFamily.sans],
-        radiocanada: ['Radio Canada', ...fontFamily.sans]
+        radiocanada: ['Radio Canada', ...fontFamily.sans],
       },
     },
   },
   plugins: [
+    require('tailwind-scrollbar')({ nocompatible: true }),
     plugin(({ addUtilities, matchUtilities, theme }) => {
       /**
        * text-shadow utilities

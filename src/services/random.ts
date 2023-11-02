@@ -9,12 +9,12 @@ export default abstract class Random {
     return Math.floor(Math.random() * (max - min + 1)) + min
   }
 
-  static boolean(): boolean {
-    return Math.random() < 0.5
+  static chance(percentage: number): boolean {
+    return Math.random() < percentage / 100
   }
 
-  static percent(percentage: number): boolean {
-    return Math.random() < percentage / 100
+  static boolean(): boolean {
+    return this.chance(50)
   }
 
   /* eslint-disable-next-line @typescript-eslint/no-explicit-any */

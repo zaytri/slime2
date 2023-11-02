@@ -1,4 +1,4 @@
-import { infiniteCache } from '@/services/settings'
+import { infiniteCache } from '@/services/helpers'
 import { useQuery } from '@tanstack/react-query'
 import { buildEmoteImageUrl } from '@twurple/chat'
 import useTwitchApi from './useApi'

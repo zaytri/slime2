@@ -1,4 +1,4 @@
-import { infiniteCache } from '@/services/settings'
+import { infiniteCache } from '@/services/helpers'
 import useAccessToken from '@/services/useAccessToken'
 import { useQuery } from '@tanstack/react-query'
 import { loadGapiInsideDOM } from 'gapi-script'
