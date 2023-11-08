@@ -65,7 +65,7 @@ export default function SelectInput() {
                   value={option.label}
                   name={idString}
                   onChange={onChange}
-                  className='peer sr-only'
+                  className='peer appearance-none'
                   checked={checked}
                   type={
                     'multiple' in setting && setting.multiple
@@ -76,7 +76,7 @@ export default function SelectInput() {
                 <span
                   className={clsx(
                     'mb-2 mr-2 inline-block rounded border-2 p-1 peer-focus:outline peer-focus:outline-2 peer-focus:outline-offset-2 peer-focus:outline-emerald-800 hover:outline hover:outline-2 hover:outline-offset-2 hover:outline-emerald-800',
-                    !checked && 'border-slate-400',
+                    !checked && 'border-slate-400 text-slate-500',
                     checked && 'border-emerald-800 bg-green-700 text-white',
                   )}
                 >

@@ -32,7 +32,7 @@ export default function BooleanInput() {
         <input
           id={idString}
           name={idString}
-          className='sr-only'
+          className='appearance-none'
           type='checkbox'
           onChange={onChange}
           checked={!!value}
