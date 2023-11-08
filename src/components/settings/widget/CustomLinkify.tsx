@@ -19,6 +19,7 @@ export default function CustomLinkify(
           'inline rounded-[2px] underline outline-none focus:border-none focus:ring-2',
           linkClassName,
         ),
+        nl2br: true,
       }}
     />
   )
