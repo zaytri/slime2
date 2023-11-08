@@ -37,7 +37,7 @@ export default function useFollowDate() {
         return follower.followDate
       },
       staleTime: 1 * 60 * 60 * 1000, // cache for 1 hour
-      gcTime: 2 * 60 * 60 * 1000, // garbage collected after 2 hours,
+      gcTime: 2 * 60 * 60 * 1000, // garbage collected after 2 hours
       retry: 1,
     })
   }
