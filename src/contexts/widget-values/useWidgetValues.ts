@@ -270,7 +270,22 @@ function transformDefaults(
       ? {}
       : (JSON.parse(JSON.stringify(values)) as Widget.ValueGroup)
 
+  const duplicateCheck = new Map<string, boolean>()
+
   for (const setting of settings) {
+    if (!setting.id)
+      throw Error(
+        'A widget setting is missing an ID! All widget settings must have a unique ID.',
+      )
+
+    if (duplicateCheck.get(setting.id)) {
+      throw Error(
+        `Two widget settings have the same ID of '${setting.id}'! All widget settings must have a unique ID.`,
+      )
+    }
+
+    duplicateCheck.set(setting.id, true)
+
     const value = transformDefault(setting, group, group[setting.id])
     if (value !== undefined) group[setting.id] = value
   }
