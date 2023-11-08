@@ -29,7 +29,7 @@ export default function Group() {
         openWindow({
           id: `slime2window.${idString}`,
           icon: FileText,
-          title: setting.name,
+          title: setting.label,
           className: 'w-96',
           children: (
             <WidgetSettingsGroupIdProvider
@@ -49,7 +49,7 @@ export default function Group() {
         event.stopPropagation()
       }}
     >
-      <ButtonText>{setting.name}</ButtonText>
+      <ButtonText>{setting.label}</ButtonText>
       <ButtonIcon>
         {multiple ? (
           <ChevronsRight {...iconProps} />

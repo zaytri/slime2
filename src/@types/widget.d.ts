@@ -22,7 +22,7 @@ namespace Widget {
     type Group = ItemType<
       'group',
       {
-        name: string
+        label: string
         items: Item[]
       }
     >
@@ -30,7 +30,7 @@ namespace Widget {
     type GroupMultiple = ItemType<
       'group',
       {
-        name: string
+        label: string
         items: Item[]
         multiple?: true
         previewIds?: string[]
