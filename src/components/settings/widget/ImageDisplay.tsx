@@ -19,6 +19,7 @@ export default function ImageDisplay() {
         className='max-h-96'
         src={setting.url}
         alt={setting.alt}
+        title={setting.alt}
         id={idString}
         aria-describedby={descriptionIdString}
       />
