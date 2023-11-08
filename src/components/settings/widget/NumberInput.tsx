@@ -73,7 +73,7 @@ function NumberSliderInput() {
         <input
           id={`${idString}.numberSliderOutput`}
           name={`${idString}.numberSliderOutput`}
-          className={clsx(inputClassName, 'w-20 pr-0.5 text-center')}
+          className={clsx(inputClassName, '!w-16 pr-0.5 text-center')}
           type='number'
           onChange={onChange}
           value={inputValue.toString()}
