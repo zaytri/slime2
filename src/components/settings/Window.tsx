@@ -60,7 +60,7 @@ export default function Window({
         ref={draggableRef}
         onClick={sendToTop}
         className={clsx(
-          'slime2-window-shadow pointer-events-auto !fixed z-[999] flex max-h-[80%] max-w-[90%] flex-col overflow-hidden rounded-md border-2 border-emerald-800 bg-lime-100 font-fredoka text-sm opacity-70 last:opacity-100 only:opacity-100 hover:opacity-100',
+          'slime2-window-shadow pointer-events-auto !fixed z-[999] flex max-h-[80%] max-w-[90%] flex-col overflow-hidden rounded-md border-2 border-emerald-800 bg-lime-100 font-fredoka text-sm opacity-90 last:opacity-100 only:opacity-100 hover:opacity-100',
           className,
         )}
       >
