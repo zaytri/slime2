@@ -18,6 +18,8 @@ export default function Settings() {
     function onMouseLeave() {
       clearTimeout(timer)
       timer = setTimeout(() => {
+        if (import.meta.env.DEV) return
+
         setHidden(true)
       }, 1000)
     }
