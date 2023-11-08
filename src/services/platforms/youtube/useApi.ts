@@ -9,6 +9,7 @@ export default function useYoutubeApi() {
     enabled: !!accessToken,
     queryKey: ['youtube', 'api', accessToken!],
     queryFn: async () => {
+      throw Error('YouTube is not ready.')
       await gapiClientLoad()
       gapi.client.setToken({ access_token: accessToken! })
       return gapi.client.youtube
@@ -26,6 +27,8 @@ async function gapiClientLoad(): Promise<void> {
     const topScriptElement = document.getElementsByTagName('script')[0]
     const gapiScriptElement = document.createElement('script')
     gapiScriptElement.src = 'https://apis.google.com/js/api.js'
+    gapiScriptElement.async = true
+    gapiScriptElement.defer = true
     topScriptElement.parentNode?.insertBefore(
       gapiScriptElement,
       topScriptElement,

@@ -4,14 +4,28 @@ declare var slime2: {
 
   // settings
   setKey: (provider: Slime2.AuthProvider, key: string) => void
-  setPlatform: (platform: Slime2.Platform | Slime2.Platform[]) => void
   setMaxEvents: (maxEvents: number) => void
   setEventDelay: (delay: number) => void
   setEventExpiration: (
     expiration: number,
     options?: Slime2.Client.EventExpirationOptions,
   ) => void
-  setWidgetSettingsPage: (fragment: Slime2.Client.Fragment) => void
+
+  // widget settings
+  widget: {
+    loadPlatform: (
+      platform: Slime2.Platform | Slime2.Platform[],
+    ) => Promise<boolean>
+    loadSettings: (
+      dataFileName: string,
+      settings: Widget.Setting[],
+    ) => Promise<void>
+    setData: (values: Widget.ValueGroup) => void
+    getData: (
+      groupId?: Widget.Setting.GroupId,
+      id?: string,
+    ) => Widget.ValueGroup | Widget.ValueGroup['key'] | null
+  }
 
   // helpers
   storage: Slime2.Client.Storage

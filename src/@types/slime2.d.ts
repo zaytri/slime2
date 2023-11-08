@@ -5,35 +5,12 @@ namespace Slime2 {
     eventDelay?: number
     eventExpiration?: number
     eventExpirationOptions?: Client.EventExpirationOptions
-    settingsPage?: Client.Fragment
+    widgetSettings: Widget.Setting[]
+    widgetDataFileName: string
     platforms: Slime2.Platform[]
     keys: {
       [key in AuthProvider]?: string
     }
-  }
-
-  type WidgetField = MappedOmit<WidgetField.Type, 'keyName'> & {
-    key: string
-  }
-
-  type WidgetFieldProps = WidgetField.Type
-
-  type BasicWidgetField = {
-    keyName: string
-    label?: string
-    defaultValue?: string
-  }
-
-  namespace WidgetField {
-    type Type = TextInput | TextArea
-
-    type TextInput = {
-      type: 'text-input'
-    } & BasicWidgetField
-
-    type TextArea = {
-      type: 'text-area-input'
-    } & BasicWidgetField
   }
 
   namespace Auth {

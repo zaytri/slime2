@@ -25,11 +25,16 @@
     "idb-keyval": "^6.2.1",
     "imagesloaded": "^5.0.0",
     "jquery": "^3.7.1",
+    "linkify-react": "^4.1.1",
+    "linkifyjs": "^4.1.1",
+    "nanoid": "^5.0.2",
     "react": "^18.2.0",
+    "react-colorful": "^5.6.1",
     "react-dom": "^18.2.0",
     "react-draggable": "^4.4.6",
     "react-feather": "^2.0.10",
     "react-spinners": "^0.13.8",
+    "react-textarea-autosize": "^8.5.3",
     "vite-tsconfig-paths": "^4.2.1"
   },
   "devDependencies": {

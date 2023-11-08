@@ -34,26 +34,56 @@ export default function SuccessBanner({
       <div className='flex items-center justify-center'>
         Connected to
         <a href={broadcaster.url} target='_blank'>
-          <div className='relative mx-3 inline-block'>
-            <img
-              src={broadcaster.image}
-              alt='Your Profile Picture'
-              width={avatarSize}
-              height={avatarSize}
-              className='inline rounded-full'
-            />
-
-            <img
-              src={`https://slime2.stream/assets/${platform}-logo.svg`}
-              height={providerLogoSize}
-              width={providerLogoSize}
-              alt='Stream Platform Logo'
-              className='absolute -bottom-px -right-1'
-            />
-          </div>
+          <ProfilePicture image={broadcaster.image} platform={platform} />
         </a>
         {broadcaster.displayName}
       </div>
     </Banner>
+  )
+}
+
+type ProfilePictureProps = {
+  image: string
+  platform: Slime2.Platform
+}
+
+function ProfilePicture({ image, platform }: ProfilePictureProps) {
+  const [imageError, setImageError] = useState(false)
+
+  function onError() {
+    setImageError(true)
+  }
+
+  if (imageError) {
+    return (
+      <img
+        src={`https://slime2.stream/assets/${platform}-logo.svg`}
+        height={providerLogoSize}
+        width={providerLogoSize}
+        alt='Stream Platform Logo'
+        className='mx-3 inline-block'
+      />
+    )
+  }
+
+  return (
+    <div className='relative mx-3 inline-block'>
+      <img
+        src={image}
+        alt='Your Profile Picture'
+        width={avatarSize}
+        height={avatarSize}
+        className='inline rounded-full'
+        onError={onError}
+      />
+
+      <img
+        src={`https://slime2.stream/assets/${platform}-logo.svg`}
+        height={providerLogoSize}
+        width={providerLogoSize}
+        alt='Stream Platform Logo'
+        className='absolute -bottom-px -right-1'
+      />
+    </div>
   )
 }

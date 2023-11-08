@@ -41,10 +41,5 @@ export function platformReadyReducer(
   }
 }
 
-type PlatformReadyAction = {
-  type: Slime2.Platform
-}
-
-type PlatformReadyState = {
-  [key in Slime2.Platform]?: boolean
-}
+type PlatformReadyAction = { type: Slime2.Platform }
+type PlatformReadyState = { [key in Slime2.Platform]?: boolean }

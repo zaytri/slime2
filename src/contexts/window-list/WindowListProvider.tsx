@@ -1,15 +1,24 @@
-import MainSettings from '@/components/settings/MainSettings'
+import Tools from '@/components/settings/Tools'
 import { useReducer } from 'react'
+import { Tool } from 'react-feather'
 import {
   WindowListContext,
   WindowListDispatchContext,
   windowListReducer,
+  type WindowProps,
 } from './useWindowList'
 
 export function WindowListProvider({ children }: React.PropsWithChildren) {
-  const [windowList, dispatch] = useReducer(windowListReducer, [
-    { id: 'main', title: 'Settings', children: <MainSettings /> },
-  ])
+  const initialState: WindowProps[] = [
+    {
+      id: 'slime2window.tools',
+      icon: Tool,
+      title: 'Tools',
+      children: <Tools />,
+    },
+  ]
+
+  const [windowList, dispatch] = useReducer(windowListReducer, initialState)
   return (
     <WindowListContext.Provider value={windowList}>
       <WindowListDispatchContext.Provider value={dispatch}>

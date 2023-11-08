@@ -3,30 +3,47 @@ import {
   useWindowListDispatch,
 } from '@/contexts/window-list/useWindowList'
 import clsx from 'clsx'
-import { useRef } from 'react'
+import { forwardRef, useRef } from 'react'
 import Draggable from 'react-draggable'
-import { X } from 'react-feather'
+import { X, type Icon } from 'react-feather'
 
 export default function Window({
   id,
   title,
   children,
+  header,
+  footer,
   className,
   initialMousePosition,
+  icon,
 }: WindowProps) {
   const { closeWindow, sendWindowToTop } = useWindowListDispatch()
   const draggableRef = useRef(null)
+  const contentRef = useRef<HTMLDivElement>(null)
 
   const defaultPosition = initialMousePosition
-    ? { x: Math.min(initialMousePosition.x + 20, window.innerWidth / 2), y: 20 }
+    ? {
+        x: Math.floor(
+          Math.min(initialMousePosition.x + 20, window.innerWidth / 2),
+        ),
+        y: Math.floor(
+          Math.min(initialMousePosition.y - 100, window.innerHeight / 8),
+        ),
+      }
     : { x: 40, y: 40 }
 
   function close() {
     closeWindow(id)
   }
 
-  function onMouseDown() {
+  function sendToTop() {
+    const scrollY = contentRef.current?.scrollTop
     sendWindowToTop(id)
+    // for some reason sending window to top resets the scroll...
+    // so doing this sets it back to where it should be
+    setTimeout(() => {
+      if (scrollY) contentRef.current?.scrollTo(0, scrollY)
+    }, 0)
   }
 
   return (
@@ -35,47 +52,65 @@ export default function Window({
       cancel='.draggable-cancel'
       defaultPosition={defaultPosition}
       nodeRef={draggableRef}
-      onMouseDown={onMouseDown}
+      onStart={sendToTop}
       bounds={'parent'}
     >
       <div
+        id={id}
         ref={draggableRef}
+        onClick={sendToTop}
         className={clsx(
-          'window-shadow pointer-events-auto !fixed z-[999] flex max-h-[80%] max-w-[90%] flex-col overflow-hidden rounded-md border-2 border-emerald-800 bg-lime-100 font-fredoka opacity-50 last:opacity-100 only:opacity-100 hover:opacity-100',
+          'slime2-window-shadow pointer-events-auto !fixed z-[999] flex max-h-[80%] max-w-[90%] flex-col overflow-hidden rounded-md border-2 border-emerald-800 bg-lime-100 font-fredoka text-sm opacity-70 last:opacity-100 only:opacity-100 hover:opacity-100',
           className,
         )}
       >
-        <WindowTitle close={initialMousePosition ? close : undefined}>
+        <WindowTitle
+          icon={icon}
+          close={initialMousePosition ? close : undefined}
+        >
           {title}
         </WindowTitle>
-        <WindowContent>{children}</WindowContent>
+        {header}
+        <WindowContent ref={contentRef}>{children}</WindowContent>
+        {footer}
       </div>
     </Draggable>
   )
 }
 
 type WindowTitleProps = {
+  icon?: Icon
   close?: () => void
 }
 
 function WindowTitle({
+  icon: Icon,
   children,
   close,
 }: React.PropsWithChildren<WindowTitleProps>) {
   return (
-    <div className=' title-shadow-i pointer-events-none flex rounded-t-lg  '>
-      <div className=' draggable-handle pointer-events-auto flex-1 cursor-move items-center gap-2 rounded-tl-sm bg-gradient-to-b from-lime-600 to-emerald-700 py-0.5 pl-2 pr-1 text-lime-100'>
-        <p className=' font-medium text-shadow text-shadow-c-black/75 text-shadow-y-px'>
+    <div className='title-shadow-i pointer-events-none flex divide-x divide-emerald-800 rounded-t-sm'>
+      <div className='draggable-handle pointer-events-auto flex-1 cursor-move items-center gap-2 rounded-tl-sm bg-gradient-to-b from-lime-600 to-emerald-700 py-1 pl-[8px] pr-1 text-lime-100'>
+        <p className='-mt-0.5 font-medium text-shadow text-shadow-c-black/75 text-shadow-y-px'>
+          {Icon && (
+            <Icon
+              className='-mt-0.5 mr-1 inline drop-shadow drop-shadow-c-black/75 drop-shadow-y-px'
+              size={24}
+            />
+          )}
           {children}
         </p>
       </div>
       {close && (
         <button
-          className='draggable-cancel pointer-events-auto flex items-center justify-center bg-gradient-to-b from-rose-600 to-red-700 px-2 py-px text-rose-100 hover:from-red-400 hover:to-rose-600'
-          onClick={close}
+          className='draggable-cancel pointer-events-auto flex items-center justify-center border-l border-l-emerald-800 bg-gradient-to-b from-lime-600 to-emerald-700 px-[8px] py-px text-white hover:from-rose-600 hover:to-red-900 focus:from-rose-600 focus:to-red-900 focus:outline-none'
+          onClick={(event: React.MouseEvent) => {
+            close()
+            event.stopPropagation()
+          }}
         >
           <X
-            size={30}
+            size={24}
             strokeWidth={3}
             className='drop-shadow drop-shadow-c-black/75 drop-shadow-y-px'
           />
@@ -85,10 +120,18 @@ function WindowTitle({
   )
 }
 
-function WindowContent({ children }: React.PropsWithChildren) {
+const WindowContent = forwardRef<
+  HTMLDivElement,
+  React.HTMLProps<HTMLDivElement>
+>(function WindowContent(props, ref) {
   return (
-    <div className='scrollbar active:scrollbar-thumb-emerald-600 hover:scrollbar-thumb-emerald-700 scrollbar-track-rounded-full scrollbar-thumb-rounded-full scrollbar-track-emerald-800/25 scrollbar-thumb-emerald-800 m-1 flex-1 overflow-auto'>
-      {children}
-    </div>
+    <div
+      {...props}
+      className={clsx(
+        'draggable-cancel m-1 flex-1 overflow-auto font-radiocanada scrollbar-thin scrollbar-track-emerald-800/25 scrollbar-thumb-emerald-800 scrollbar-track-rounded-full scrollbar-thumb-rounded-full hover:scrollbar-thumb-emerald-700 active:scrollbar-thumb-emerald-600',
+        props.className,
+      )}
+      ref={ref}
+    />
   )
-}
+})

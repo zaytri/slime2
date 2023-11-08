@@ -35,3 +35,24 @@ export function cloneTemplate(id: string): DocumentFragment {
 
   return element.content.cloneNode(true) as DocumentFragment
 }
+
+export async function loadScript(id: string, src: string) {
+  return new Promise<boolean>(resolve => {
+    // if it already exists, remove it
+    document.getElementById(id)?.remove()
+
+    const [head] = document.getElementsByTagName('head')
+
+    const newScript = document.createElement('script')
+    newScript.id = `slime2script.${id}`
+    newScript.src = `${src}?loadedAt=${Date.now()}`
+    newScript.async = true
+    head.appendChild(newScript)
+    newScript.onload = async () => {
+      resolve(true)
+    }
+    newScript.onerror = async () => {
+      resolve(false)
+    }
+  })
+}

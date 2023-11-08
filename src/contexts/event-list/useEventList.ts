@@ -83,28 +83,12 @@ export function eventListReducer(
   }
 }
 
-type EventListAddAction = {
-  type: 'add'
-  event: Slime2.RenderableEvent
-}
-
-type EventListRemoveAction = {
-  type: 'remove'
-  eventId: string
-  eventType: Slime2.RenderableEvent['type']
-}
-
-type EventListRemoveUserAction = {
-  type: 'remove-user'
-  userId: string
-}
-
-type EventListRemoveMessagesAction = {
-  type: 'remove-messages'
-}
-
 type EventListAction =
-  | EventListAddAction
-  | EventListRemoveAction
-  | EventListRemoveMessagesAction
-  | EventListRemoveUserAction
+  | { type: 'add'; event: Slime2.RenderableEvent }
+  | {
+      type: 'remove'
+      eventId: string
+      eventType: Slime2.RenderableEvent['type']
+    }
+  | { type: 'remove-user'; userId: string }
+  | { type: 'remove-messages' }

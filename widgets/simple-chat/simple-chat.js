@@ -1,5 +1,5 @@
-addEventListener('slime2:ready', () => {
-  slime2.setPlatform('twitch')
+addEventListener('slime2:ready', async function () {
+  await slime2.widget.loadPlatform('twitch')
 
   slime2.onEvent(event => {
     switch (event.type) {

@@ -1,5 +1,5 @@
-import useMousePosition from '@/components/settings/useCursorPosition'
-import { createContext, useContext } from 'react'
+import { createContext, useContext, useEffect, useState } from 'react'
+import type { Icon } from 'react-feather'
 import { emptyFunction } from '../common'
 
 export function useWindowList(): WindowProps[] {
@@ -8,13 +8,20 @@ export function useWindowList(): WindowProps[] {
 
 export function useWindowListDispatch() {
   const dispatch = useContext(WindowListDispatchContext)
-  const mousePosition = useMousePosition()
+  const { getMousePosition } = useMousePosition()
 
-  function openWindow(window: MappedOmit<WindowProps, 'initialMousePosition'>) {
+  function openWindow(
+    window: MappedOmit<WindowProps, 'initialMousePosition'>,
+    position?: Position,
+  ) {
     dispatch({
       type: 'add',
-      window: { ...window, initialMousePosition: mousePosition },
+      window: {
+        ...window,
+        initialMousePosition: position || getMousePosition(),
+      },
     })
+    dispatch({ type: 'top', id: window.id })
   }
 
   function closeWindow(id: string) {
@@ -26,6 +33,28 @@ export function useWindowListDispatch() {
   }
 
   return { openWindow, closeWindow, sendWindowToTop }
+}
+
+function useMousePosition() {
+  const [mousePosition, setMousePosition] = useState<Position>({ x: 0, y: 0 })
+
+  useEffect(() => {
+    function onMouseMove(event: MouseEvent) {
+      setMousePosition({ x: event.clientX, y: event.clientY })
+    }
+
+    addEventListener('mousemove', onMouseMove)
+
+    return () => {
+      removeEventListener('mousemove', onMouseMove)
+    }
+  }, [])
+
+  function getMousePosition() {
+    return mousePosition
+  }
+
+  return { getMousePosition }
 }
 
 export const initialState: WindowProps[] = []
@@ -64,32 +93,22 @@ export function windowListReducer(
   }
 }
 
-type WindowListAddAction = {
-  type: 'add'
-  window: WindowProps
-}
-
-type WindowListRemoveAction = {
-  type: 'remove'
-  id: string
-}
-
-type WindowListTopAction = {
-  type: 'top'
-  id: string
-}
-
 type WindowListAction =
-  | WindowListAddAction
-  | WindowListTopAction
-  | WindowListRemoveAction
+  | { type: 'add'; window: WindowProps }
+  | { type: 'remove'; id: string }
+  | { type: 'top'; id: string }
 
 export type WindowProps = React.PropsWithChildren<{
   id: string
   title: string
+  icon?: Icon
+  header?: React.ReactNode
+  footer?: React.ReactNode
   className?: string
-  initialMousePosition?: {
-    x: number
-    y: number
-  }
+  initialMousePosition?: Position
 }>
+
+type Position = {
+  x: number
+  y: number
+}

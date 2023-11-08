@@ -1,26 +1,32 @@
-import { WindowListProvider } from '@/contexts/window-list/WindowListProvider'
 import { useWindowList } from '@/contexts/window-list/useWindowList'
 import clsx from 'clsx'
 import { useEffect, useState } from 'react'
 import Window from './Window'
 
-function Settings() {
+export default function Settings() {
   const [hidden, setHidden] = useState<boolean>()
   const windowList = useWindowList()
 
   useEffect(() => {
+    let timer: NodeJS.Timeout
+
     function onMouseMove() {
+      clearTimeout(timer)
       setHidden(false)
     }
 
     function onMouseLeave() {
-      setHidden(true)
+      clearTimeout(timer)
+      timer = setTimeout(() => {
+        setHidden(true)
+      }, 1000)
     }
 
     document.addEventListener('mousemove', onMouseMove)
     document.addEventListener('mouseleave', onMouseLeave)
 
     return () => {
+      clearTimeout(timer)
       document.removeEventListener('mousemove', onMouseMove)
       document.removeEventListener('mouseleave', onMouseLeave)
     }
@@ -40,13 +46,5 @@ function Settings() {
         <Window {...windowProps} key={windowProps.id} />
       ))}
     </div>
-  )
-}
-
-export default function WindowedSettings() {
-  return (
-    <WindowListProvider>
-      <Settings />
-    </WindowListProvider>
   )
 }
