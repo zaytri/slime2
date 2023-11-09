@@ -7,7 +7,15 @@ let soundVolume = 50
 addEventListener('slime2:ready', () => {
   slime2.widget.loadPlatform('twitch')
   slime2.widget.loadSettings('simple-chat-data.js', [
-    defineSetting('Simple Chat v3.0.0 by Zaytri', 'title', 'text-display'),
+    defineSetting(
+      [
+        'Simple Chat v3.0.0 by Zaytri: https://zaytri.com/',
+        '',
+        'Questions and Support: https://forums.slime2.stream/threads/20/',
+      ].join('\n'),
+      'title',
+      'text-display',
+    ),
     animationSettings,
     badgeSettings,
     alignmentSettings,
@@ -17,12 +25,6 @@ addEventListener('slime2:ready', () => {
     pronounsSettings,
     soundSettings,
     textSettings,
-    defineSetting(
-      'For any questions and support: https://forums.slime2.stream/threads/20/',
-      'help',
-      'text-display',
-    ),
-    defineSetting('Zaytri: https://zaytri.com/', 'author', 'text-display'),
   ])
 
   slime2.onEvent(event => {
@@ -502,8 +504,8 @@ const userFilterSettings = defineSetting(
     items: [
       defineSetting(
         'Show messages from these types of users',
-        'select-input',
         'types',
+        'select-input',
         {
           multiple: true,
           defaultValue: ['all', 'subs', 'mods', 'vips', 'followers', 'artists'],
