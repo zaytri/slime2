@@ -27,7 +27,7 @@ export default function Window({
           Math.min(initialMousePosition.x + 20, window.innerWidth / 2),
         ),
         y: Math.floor(
-          Math.min(initialMousePosition.y - 100, window.innerHeight / 8),
+          Math.min(initialMousePosition.y - 100, window.innerHeight / 2),
         ),
       }
     : { x: 40, y: 40 }
