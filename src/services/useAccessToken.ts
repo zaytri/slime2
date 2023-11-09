@@ -29,7 +29,7 @@ export default function useAccessToken(provider: Slime2.Auth.Provider) {
 
   return useQuery({
     enabled: ready,
-    queryKey: [provider, platformSet, 'accessToken', key],
+    queryKey: [provider, platformSet, 'accessToken', key || null],
     queryFn: async () => {
       // throw error just to prevent fetching the access token
       if (!platformSet) throw Error('Not an actual error')
