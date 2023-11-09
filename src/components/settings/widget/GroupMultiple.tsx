@@ -52,7 +52,7 @@ export default function GroupMultiple() {
           value={{
             type: 'text-display',
             id: `${setting.id}.description`,
-            text: setting.description,
+            label: setting.description,
           }}
         >
           <TextDisplay />

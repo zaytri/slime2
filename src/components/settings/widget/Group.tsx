@@ -29,7 +29,7 @@ export default function Group() {
         openWindow({
           id: `slime2window.${idString}`,
           icon: FileText,
-          title: setting.label,
+          title: setting.label || '',
           className: 'w-96',
           children: (
             <WidgetSettingsGroupIdProvider
