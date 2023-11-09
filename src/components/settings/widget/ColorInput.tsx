@@ -14,7 +14,7 @@ export default function ColorInput() {
     useWidgetSetting()
   const { openWindow } = useWindowListDispatch()
 
-  if (!setting || setting.type !== 'input-color') return null
+  if (!setting || setting.type !== 'color-input') return null
 
   function onChange(event: React.ChangeEvent<HTMLInputElement>) {
     setValue(event.target.value)

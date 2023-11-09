@@ -10,7 +10,7 @@ export default function VideoInput() {
     useWidgetSetting()
   const fileInputRef = useRef<HTMLInputElement>(null)
 
-  if (!setting || setting.type !== 'input-video') return null
+  if (!setting || setting.type !== 'video-input') return null
 
   function add(urlStrings: string[]) {
     if (!setting || !urlStrings) return

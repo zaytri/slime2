@@ -50,7 +50,7 @@ export default function GroupMultiple() {
       {setting.description && (
         <WidgetSettingProvider
           value={{
-            type: 'display-text',
+            type: 'text-display',
             id: `${setting.id}.description`,
             text: setting.description,
           }}

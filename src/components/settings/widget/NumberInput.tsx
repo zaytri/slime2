@@ -6,7 +6,7 @@ import inputClassName from './input/inputClassName'
 export default function NumberInput() {
   const { setting, idString, descriptionIdString, value, setValue } =
     useWidgetSetting()
-  if (!setting || setting.type !== 'input-number') return null
+  if (!setting || setting.type !== 'number-input') return null
 
   function onChange(event: React.ChangeEvent<HTMLInputElement>) {
     const newValue = Number.parseInt(event.target.value)
@@ -39,7 +39,7 @@ export default function NumberInput() {
 function NumberSliderInput() {
   const { setting, idString, descriptionIdString, value, setValue } =
     useWidgetSetting()
-  if (!setting || setting.type !== 'input-number') return null
+  if (!setting || setting.type !== 'number-input') return null
 
   function onChange(event: React.ChangeEvent<HTMLInputElement>) {
     const newValue = Number.parseFloat(event.target.value)

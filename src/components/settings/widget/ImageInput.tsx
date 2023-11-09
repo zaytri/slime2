@@ -13,7 +13,7 @@ export default function ImageInput() {
   const [textInputValue, setTextInputValue] = useState('')
   const fileInputRef = useRef<HTMLInputElement>(null)
 
-  if (!setting || setting.type !== 'input-image') return null
+  if (!setting || setting.type !== 'image-input') return null
 
   function textInputAdd() {
     if (!setting) return

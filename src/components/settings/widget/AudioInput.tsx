@@ -10,7 +10,7 @@ export default function AudioInput() {
     useWidgetSetting()
   const fileInputRef = useRef<HTMLInputElement>(null)
 
-  if (!setting || setting.type !== 'input-audio') return null
+  if (!setting || setting.type !== 'audio-input') return null
 
   function add(urlStrings: string[]) {
     if (!setting || !urlStrings) return

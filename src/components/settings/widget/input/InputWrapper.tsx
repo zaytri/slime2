@@ -9,16 +9,16 @@ export default function InputWrapper({ children }: React.PropsWithChildren) {
   if (!setting) return null
 
   switch (setting.type) {
-    case 'input-text':
-    case 'input-number':
-    case 'input-boolean':
-    case 'input-font':
-    case 'input-color':
-    case 'input-select':
-    case 'input-dropdown':
-    case 'input-image':
-    case 'input-video':
-    case 'input-audio':
+    case 'text-input':
+    case 'number-input':
+    case 'boolean-input':
+    case 'font-input':
+    case 'color-input':
+    case 'select-input':
+    case 'dropdown-input':
+    case 'image-input':
+    case 'video-input':
+    case 'audio-input':
       return (
         <InputContainer>
           <InputLabel htmlFor={idString}>{setting.label}</InputLabel>

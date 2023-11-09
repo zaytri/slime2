@@ -347,7 +347,7 @@ const alignmentSettings = {
   items: [
     {
       label: 'Direction',
-      type: 'input-select',
+      type: 'select-input',
       id: 'direction',
       defaultValue: 'vertical',
       options: ['Vertical', 'Horizontal'].map(label => {
@@ -356,7 +356,7 @@ const alignmentSettings = {
     },
     {
       label: 'Corner',
-      type: 'input-select',
+      type: 'select-input',
       id: 'corner',
       defaultValue: 'bottom-left',
       placeholder: 'Command prefix',
@@ -376,7 +376,7 @@ const disappearingSettings = {
   items: [
     {
       label: 'Expiration time (seconds)',
-      type: 'input-number',
+      type: 'number-input',
       id: 'expiration',
       min: 0,
       step: 1,
@@ -386,7 +386,7 @@ const disappearingSettings = {
     },
     {
       label: 'Maximum number of messages',
-      type: 'input-number',
+      type: 'number-input',
       id: 'max',
       defaultValue: 100,
       min: 0,
@@ -405,7 +405,7 @@ const emoteSettings = {
   items: [
     {
       label: 'Static emotes',
-      type: 'input-boolean',
+      type: 'boolean-input',
       id: 'static',
       defaultValue: false,
       description:
@@ -413,7 +413,7 @@ const emoteSettings = {
     },
     {
       label: 'Dynamic emote sizing',
-      type: 'input-boolean',
+      type: 'boolean-input',
       id: 'dynamic',
       defaultValue: true,
       description:
@@ -421,7 +421,7 @@ const emoteSettings = {
     },
     {
       label: 'Dynamic emote sizing example',
-      type: 'display-image',
+      type: 'image-display',
       id: 'dynamicPreview',
       url: 'https://i.imgur.com/vfHCWjB.png',
       alt: [
@@ -441,13 +441,13 @@ const badgeSettings = {
   items: [
     {
       label: 'Show Twitch Badges',
-      type: 'input-boolean',
+      type: 'boolean-input',
       id: 'display',
       defaultValue: true,
     },
     {
       label: 'Badge Size (px)',
-      type: 'input-number',
+      type: 'number-input',
       id: 'size',
       defaultValue: 24,
       min: 0,
@@ -462,13 +462,13 @@ const pronounsSettings = {
   id: 'pronouns',
   items: [
     {
-      type: 'display-text',
+      type: 'text-display',
       id: 'link',
       label: 'Set your pronouns here: https://pronouns.alejo.io/',
     },
     {
       label: 'Pronouns Display',
-      type: 'input-select',
+      type: 'select-input',
       id: 'display',
       defaultValue: 'lowercase',
       options: ['Lowercase', 'Capitalize', 'Uppercase', 'Hidden'].map(label => {
@@ -492,7 +492,7 @@ const botFilterSettings = {
   items: [
     {
       label: 'Bots to hide',
-      type: 'input-text',
+      type: 'text-input',
       id: 'names',
       multiple: true,
       defaultValue: ['Sery_Bot', 'Nightbot', 'StreamElements', 'Streamlabs'],
@@ -501,7 +501,7 @@ const botFilterSettings = {
     },
     {
       label: 'Command prefixes to hide',
-      type: 'input-text',
+      type: 'text-input',
       id: 'prefixes',
       multiple: true,
       defaultValue: ['!'],
@@ -519,7 +519,7 @@ const userFilterSettings = {
   items: [
     {
       label: 'Show messages from these types of users',
-      type: 'input-select',
+      type: 'select-input',
       id: 'types',
       multiple: true,
       defaultValue: ['all', 'subs', 'mods', 'vips', 'followers', 'artists'],
@@ -534,7 +534,7 @@ const userFilterSettings = {
     },
     {
       label: 'Follow age (hours)',
-      type: 'input-number',
+      type: 'number-input',
       id: 'followHours',
       min: 0,
       step: 'any',
@@ -544,7 +544,7 @@ const userFilterSettings = {
     },
     {
       label: 'Always show messages from these users',
-      type: 'input-text',
+      type: 'text-input',
       id: 'users',
       multiple: true,
       placeholder: 'Username',
@@ -561,7 +561,7 @@ const messageFilterSettings = {
   items: [
     {
       label: 'Hide these message types',
-      type: 'input-select',
+      type: 'select-input',
       id: 'types',
       multiple: true,
       defaultValue: [],
@@ -580,7 +580,7 @@ const messageFilterSettings = {
     },
     {
       label: 'Hide messages containing these words',
-      type: 'input-text',
+      type: 'text-input',
       id: 'words',
       multiple: true,
       description:
@@ -603,13 +603,13 @@ const soundSettings = {
   items: [
     {
       label: 'Sound',
-      type: 'input-audio',
+      type: 'audio-input',
       id: 'audio',
       description: 'This sound effect will be played for every chat message.',
     },
     {
       label: 'Volume (%)',
-      type: 'input-number',
+      type: 'number-input',
       id: 'volume',
       defaultValue: 50,
       slider: true,
@@ -627,13 +627,13 @@ const textSettings = {
   items: [
     {
       label: 'Font Name',
-      type: 'input-font',
+      type: 'font-input',
       id: 'font',
       defaultValue: 'Nunito',
     },
     {
       label: 'Font Size (px)',
-      type: 'input-number',
+      type: 'number-input',
       id: 'size',
       defaultValue: 16,
       min: 0,
@@ -641,7 +641,7 @@ const textSettings = {
     },
     {
       label: 'Font Weight',
-      type: 'input-select',
+      type: 'select-input',
       id: 'weight',
       defaultValue: 800,
       options: ['Normal', 'Bold']
@@ -656,7 +656,7 @@ const textSettings = {
     },
     {
       label: 'Edge Style',
-      type: 'input-select',
+      type: 'select-input',
       id: 'edge',
       defaultValue: 'outline-2',
       options: [
@@ -681,7 +681,7 @@ const animationSettings = {
   items: [
     {
       label: 'Entrance Animation',
-      type: 'input-select',
+      type: 'select-input',
       id: 'enter',
       defaultValue: 'none',
       options: ['Fade', 'Fade Left', 'Fade Right', 'None'].map(label => {
@@ -690,7 +690,7 @@ const animationSettings = {
     },
     {
       label: 'Exit Animation',
-      type: 'input-select',
+      type: 'select-input',
       id: 'exit',
       defaultValue: 'none',
       options: ['Fade', 'Fade Left', 'Fade Right', 'None'].map(label => {
@@ -702,7 +702,7 @@ const animationSettings = {
 
 const widgetSettings = [
   {
-    type: 'display-text',
+    type: 'text-display',
     id: 'title',
     label: 'Simple Chat v3.0.0 by Zaytri',
   },
@@ -716,13 +716,13 @@ const widgetSettings = [
   soundSettings,
   textSettings,
   {
-    type: 'display-text',
+    type: 'text-display',
     id: 'help',
     label:
       'For any questions and support: https://forums.slime2.stream/threads/20/',
   },
   {
-    type: 'display-text',
+    type: 'text-display',
     id: 'author',
     label: 'Zaytri: https://zaytri.com/',
   },

@@ -7,7 +7,7 @@ import inputClassName from './input/inputClassName'
 export default function ColorPicker() {
   const { setting, value, setValue } = useWidgetSetting()
 
-  if (!setting || setting.type !== 'input-color') return null
+  if (!setting || setting.type !== 'color-input') return null
 
   function onChange(event: React.ChangeEvent<HTMLInputElement>) {
     setValue(event.target.value)

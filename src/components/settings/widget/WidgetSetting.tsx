@@ -22,29 +22,29 @@ export default function WidgetSetting(item: Widget.Setting) {
         return <Group />
       case 'button':
         return <WidgetButton />
-      case 'input-text':
+      case 'text-input':
         return <TextInput />
-      case 'input-number':
+      case 'number-input':
         return <NumberInput />
-      case 'input-boolean':
+      case 'boolean-input':
         return <BooleanInput />
-      case 'input-color':
+      case 'color-input':
         return <ColorInput />
-      case 'input-font':
+      case 'font-input':
         return <FontInput />
-      case 'input-image':
+      case 'image-input':
         return <ImageInput />
-      case 'input-video':
+      case 'video-input':
         return <VideoInput />
-      case 'input-audio':
+      case 'audio-input':
         return <AudioInput />
-      case 'input-select':
+      case 'select-input':
         return <SelectInput />
-      case 'input-dropdown':
+      case 'dropdown-input':
         return <DropdownInput />
-      case 'display-text':
+      case 'text-display':
         return <TextDisplay />
-      case 'display-image':
+      case 'image-display':
         return <ImageDisplay />
       default:
         return null

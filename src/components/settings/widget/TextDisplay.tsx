@@ -3,7 +3,7 @@ import CustomLinkify from './CustomLinkify'
 
 export default function TextDisplay() {
   const { setting, idString } = useWidgetSetting()
-  if (!setting || setting.type !== 'display-text' || !setting.label) return null
+  if (!setting || setting.type !== 'text-display' || !setting.label) return null
 
   return (
     <div className='slime2-group-shadow -mx-1 rounded border-2 border-emerald-800 bg-green-700 px-2 py-1 font-medium text-white text-shadow text-shadow-c-black/75 text-shadow-y-px'>

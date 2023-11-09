@@ -8,10 +8,10 @@ export default function SelectInput() {
   const { setting, idString, descriptionIdString, value, setValue } =
     useWidgetSetting()
 
-  if (!setting || setting.type !== 'input-select') return null
+  if (!setting || setting.type !== 'select-input') return null
 
   function onChange(event: React.ChangeEvent<HTMLInputElement>) {
-    if (!setting || setting.type !== 'input-select') return null
+    if (!setting || setting.type !== 'select-input') return null
 
     const selectedOption = setting.options.find(option => {
       return option.label === event.target.value

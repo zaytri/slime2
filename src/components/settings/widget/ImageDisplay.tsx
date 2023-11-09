@@ -3,7 +3,7 @@ import FallbackImage from '../FallbackImage'
 
 export default function ImageDisplay() {
   const { setting, idString, descriptionIdString } = useWidgetSetting()
-  if (!setting || setting.type !== 'display-image' || !setting.url) return null
+  if (!setting || setting.type !== 'image-display' || !setting.url) return null
 
   return (
     <div className='slime2-group-shadow flex flex-col items-center justify-center overflow-hidden rounded border-2 border-emerald-800 bg-white'>

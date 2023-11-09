@@ -332,14 +332,14 @@ function transformDefault(
   }
 
   switch (setting.type) {
-    case 'input-boolean': {
+    case 'boolean-input': {
       if (typeof existingValue === 'boolean') return existingValue
 
       return typeof setting.defaultValue === 'boolean'
         ? setting.defaultValue
         : false // default to false
     }
-    case 'input-number': {
+    case 'number-input': {
       if (typeof existingValue === 'number' || existingValue === null) {
         return existingValue
       }
@@ -348,15 +348,15 @@ function transformDefault(
         ? setting.defaultValue
         : null // default to null
     }
-    case 'input-font':
-    case 'input-color': {
+    case 'font-input':
+    case 'color-input': {
       if (typeof existingValue === 'string') return existingValue
 
       return typeof setting.defaultValue === 'string'
         ? setting.defaultValue
         : '' // default to empty string
     }
-    case 'input-text': {
+    case 'text-input': {
       if ('multiple' in setting && setting.multiple) {
         if (Array.isArray(existingValue)) {
           return existingValue.filter(validateString) as string[]
@@ -373,9 +373,9 @@ function transformDefault(
           : '' // default to empty string
       }
     }
-    case 'input-image':
-    case 'input-video':
-    case 'input-audio': {
+    case 'image-input':
+    case 'video-input':
+    case 'audio-input': {
       if ('multiple' in setting && setting.multiple) {
         if (Array.isArray(existingValue)) {
           return existingValue.filter(validateString) as string[]
@@ -394,7 +394,7 @@ function transformDefault(
           : null // default to null
       }
     }
-    case 'input-select': {
+    case 'select-input': {
       if ('multiple' in setting && setting.multiple) {
         if (Array.isArray(existingValue)) {
           return existingValue.filter(

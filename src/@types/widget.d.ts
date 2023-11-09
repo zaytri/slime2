@@ -34,11 +34,11 @@ namespace Widget {
 
     type Item =
       | ItemType<'button', { onClick: (groupId: GroupId) => void }>
-      | ItemType<'display-text'>
-      | ItemType<'display-image', { url: string; alt?: string }>
+      | ItemType<'text-display'>
+      | ItemType<'image-display', { url: string; alt?: string }>
       // https://tailwindui.com/components/application-ui/forms/input-groups#component-85e0087460af7ce9f5160485832f72b2
       | ItemType<
-          'input-text',
+          'text-input',
           MultipleInput<
             string,
             {
@@ -48,7 +48,7 @@ namespace Widget {
           >
         >
       | ItemType<
-          'input-number',
+          'number-input',
           Input<
             number,
             {
@@ -60,15 +60,15 @@ namespace Widget {
             }
           >
         >
-      | ItemType<'input-boolean', Input<boolean>>
-      | ItemType<'input-font', Input<string>>
-      | ItemType<'input-color', Input<string, { placeholder?: string }>>
+      | ItemType<'boolean-input', Input<boolean>>
+      | ItemType<'font-input', Input<string>>
+      | ItemType<'color-input', Input<string, { placeholder?: string }>>
       | ItemType<
-          'input-select',
+          'select-input',
           MultipleInput<InputValue, { options: SelectOption[] }>
         >
       | ItemType<
-          'input-dropdown',
+          'dropdown-input',
           Input<
             string,
             {
@@ -77,9 +77,9 @@ namespace Widget {
             }
           >
         >
-      | ItemType<'input-image', MultipleInput<string | null>>
-      | ItemType<'input-video', MultipleInput<string | null>>
-      | ItemType<'input-audio', MultipleInput<string | null>>
+      | ItemType<'image-input', MultipleInput<string | null>>
+      | ItemType<'video-input', MultipleInput<string | null>>
+      | ItemType<'audio-input', MultipleInput<string | null>>
 
     type SelectOption = {
       label: string

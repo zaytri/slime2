@@ -9,7 +9,7 @@ export default function BooleanInput() {
   const { setting, idString, descriptionIdString, value, setValue } =
     useWidgetSetting()
 
-  if (!setting || setting.type !== 'input-boolean') return null
+  if (!setting || setting.type !== 'boolean-input') return null
 
   function onChange(event: React.ChangeEvent<HTMLInputElement>) {
     setValue(event.target.checked)

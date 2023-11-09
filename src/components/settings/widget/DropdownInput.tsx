@@ -7,10 +7,10 @@ export default function DropdownInput() {
   const { setting, idString, descriptionIdString, value, setValue } =
     useWidgetSetting()
 
-  if (!setting || setting.type !== 'input-dropdown') return null
+  if (!setting || setting.type !== 'dropdown-input') return null
 
   function onChange(event: React.ChangeEvent<HTMLSelectElement>) {
-    if (!setting || setting.type !== 'input-dropdown') return null
+    if (!setting || setting.type !== 'dropdown-input') return null
 
     const selectedOption = setting.options.find(option => {
       return option.label === event.target.value

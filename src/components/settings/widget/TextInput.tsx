@@ -9,7 +9,7 @@ import inputClassName from './input/inputClassName'
 export default function TextInput() {
   const { setting, idString, descriptionIdString, value, setValue } =
     useWidgetSetting()
-  if (!setting || setting.type !== 'input-text') return null
+  if (!setting || setting.type !== 'text-input') return null
 
   function onChange(
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,

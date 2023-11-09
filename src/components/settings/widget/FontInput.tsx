@@ -10,7 +10,7 @@ export default function FontInput() {
     useWidgetSetting()
   const [selectValue, setSelectValue] = useState('')
 
-  if (!setting || setting.type !== 'input-font') return null
+  if (!setting || setting.type !== 'font-input') return null
 
   function onChange(event: React.ChangeEvent<HTMLInputElement>) {
     setValue(event.target.value)
