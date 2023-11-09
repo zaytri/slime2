@@ -24,10 +24,10 @@ export default function Window({
   const defaultPosition = initialMousePosition
     ? {
         x: Math.floor(
-          Math.min(initialMousePosition.x + 20, window.innerWidth / 2),
+          Math.min(initialMousePosition.x + 20, window.innerWidth * 0.5),
         ),
         y: Math.floor(
-          Math.min(initialMousePosition.y - 100, window.innerHeight / 2),
+          Math.min(initialMousePosition.y - 100, window.innerHeight * 0.2),
         ),
       }
     : { x: 40, y: 40 }
@@ -53,14 +53,14 @@ export default function Window({
       defaultPosition={defaultPosition}
       nodeRef={draggableRef}
       onStart={sendToTop}
-      bounds={'parent'}
+      bounds='parent'
     >
       <div
         id={id}
         ref={draggableRef}
         onClick={sendToTop}
         className={clsx(
-          'slime2-window-shadow pointer-events-auto !fixed z-[999] flex max-h-[80%] max-w-[90%] flex-col overflow-hidden rounded-md border-2 border-emerald-800 bg-lime-100 font-fredoka text-sm opacity-90 last:opacity-100 only:opacity-100 hover:opacity-100',
+          'slime2-window-shadow pointer-events-auto !fixed z-[999] flex max-h-[80%] min-h-[100px] min-w-[350px] max-w-[90%] flex-col overflow-hidden rounded-md border-2 border-emerald-800 bg-lime-100 font-fredoka text-sm opacity-90 last:opacity-100 only:opacity-100 hover:opacity-100',
           className,
         )}
       >
