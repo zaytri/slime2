@@ -36,7 +36,6 @@ namespace Widget {
       | ItemType<'button', { onClick: (groupId: GroupId) => void }>
       | ItemType<'text-display'>
       | ItemType<'image-display', { url: string; alt?: string }>
-      // https://tailwindui.com/components/application-ui/forms/input-groups#component-85e0087460af7ce9f5160485832f72b2
       | ItemType<
           'text-input',
           MultipleInput<
@@ -86,7 +85,7 @@ namespace Widget {
       value: NonNullable<InputValue>
     }
 
-    type ItemType<Type, Data> = { type: Type } & Data & {
+    type ItemType<Type, Data = {}> = { type: Type } & Data & {
         id: string
         label?: string
         dependency?: {
