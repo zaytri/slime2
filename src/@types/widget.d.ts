@@ -19,18 +19,11 @@ namespace Widget {
     type InputValue = number | string | boolean | null
     type GroupId = { id: string; index?: number }[]
 
-    type Group = ItemType<
-      'group',
-      {
-        label: string
-        items: Item[]
-      }
-    >
+    type Group = ItemType<'group', { items: Item[] }>
 
     type GroupMultiple = ItemType<
       'group',
       {
-        label: string
         items: Item[]
         multiple?: true
         previewIds?: string[]
@@ -40,12 +33,9 @@ namespace Widget {
     >
 
     type Item =
-      | ItemType<
-          'button',
-          { label: string; onClick: (groupId: GroupId) => void }
-        >
-      | ItemType<'display-text', { text: string }>
-      | ItemType<'display-image', { url: string; alt?: string; label?: string }>
+      | ItemType<'button', { onClick: (groupId: GroupId) => void }>
+      | ItemType<'display-text'>
+      | ItemType<'display-image', { url: string; alt?: string }>
       // https://tailwindui.com/components/application-ui/forms/input-groups#component-85e0087460af7ce9f5160485832f72b2
       | ItemType<
           'input-text',
@@ -98,6 +88,7 @@ namespace Widget {
 
     type ItemType<Type, Data> = { type: Type } & Data & {
         id: string
+        label?: string
         dependency?: {
           id: string
           value: NonNullable<InputValue> | NonNullable<InputValue>[]
@@ -105,7 +96,6 @@ namespace Widget {
       }
 
     type Input<Value, Data = {}> = Data & {
-      label?: string
       defaultValue?: Value | null
       description?: string
     }
