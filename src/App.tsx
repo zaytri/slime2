@@ -90,7 +90,7 @@ export default function App() {
       if (resolve) {
         globalThis.slime2.widget.getData = getData
         resolve()
-        dispatchEvent(new CustomEvent('slime2:widget-values-update'))
+        dispatchEvent(new CustomEvent('slime2:widget-data-update'))
       }
     }
   }, [widgetValues, getData])
