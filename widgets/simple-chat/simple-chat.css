@@ -14,14 +14,18 @@
 
 /* Container for the renderable events from slime2 */
 #slime2-event-list {
+  --fontName: Nunito;
+  --fontSize: 16px;
+  --fontWeight: 800;
+  --badgeSize: 24px;
+  font-family: var(--fontName), Helvetica, Arial, sans-serif;
+  font-weight: var(--fontWeight);
+  font-size: var(--fontSize);
   display: flex;
   overflow: hidden;
   gap: 10px;
   position: absolute;
-  font-family: Nunito, Helvetica, Arial, sans-serif;
   line-height: 30px;
-  font-size: 16px;
-  font-weight: 800;
   color: white;
   padding: 20px;
   width: 100%;
@@ -53,18 +57,18 @@
   content: ':';
 }
 
-/* Display name of the user */
-.name {
-}
-
 /* Badges container */
 .badges {
   display: inline-block;
 }
 
+.hide-badges .badges {
+  display: none;
+}
+
 /* Badge style */
 .badge {
-  height: 24px;
+  height: var(--badgeSize);
   margin-right: 5px;
   display: inline-block;
   margin-top: -2px;
@@ -72,9 +76,20 @@
 
 /* Pronoun styles */
 .pronouns {
-  text-transform: lowercase;
   display: inline-block;
   margin-left: 4px;
+}
+
+.pronouns-lowercase .pronouns {
+  text-transform: lowercase;
+}
+
+.pronouns-uppercase .pronouns {
+  text-transform: uppercase;
+}
+
+.pronouns-hidden .pronouns {
+  display: none;
 }
 
 .pronouns::before {
@@ -98,9 +113,6 @@
   overflow-wrap: anywhere;
 }
 
-.text {
-}
-
 .emote,
 .cheer {
   height: 1.75em;
@@ -109,9 +121,6 @@
   vertical-align: middle;
   margin-top: -0.25em;
   margin-bottom: -0.2em;
-}
-
-.cheer-amount {
 }
 
 /***********************
@@ -123,6 +132,8 @@
 }
 
 .dynamic-emote-sizes .emote-4 .emote {
+  display: block;
+  margin: 5px;
   height: 112px;
 }
 
@@ -132,67 +143,203 @@
 
 /* Apply these classes to main in the HTML */
 
-.vertical-top-left #slime2-event-list {
+#slime2-event-list.vertical-top-left {
   flex-direction: column-reverse;
   justify-content: start;
   align-items: flex-start;
 }
 
-.vertical-top-right #slime2-event-list {
+#slime2-event-list.vertical-top-right {
   flex-direction: column-reverse;
   justify-content: start;
   align-items: flex-end;
 }
 
-.vertical-bottom-left #slime2-event-list {
+#slime2-event-list.vertical-bottom-left {
   flex-direction: column;
   justify-content: end;
   align-items: flex-start;
 }
 
-.vertical-bottom-right #slime2-event-list {
+#slime2-event-list.vertical-bottom-right {
   flex-direction: column;
   justify-content: end;
   align-items: flex-end;
 }
 
-.horizontal-top-left #slime2-event-list {
+#slime2-event-list.horizontal-top-left {
   flex-direction: row-reverse;
   justify-content: start;
   align-items: flex-start;
 }
 
-.horizontal-top-right #slime2-event-list {
+#slime2-event-list.horizontal-top-right {
   flex-direction: row;
   justify-content: end;
   align-items: flex-start;
 }
 
-.horizontal-bottom-left #slime2-event-list {
+#slime2-event-list.horizontal-bottom-left {
   flex-direction: row-reverse;
   justify-content: start;
   align-items: flex-end;
 }
 
-.horizontal-bottom-right #slime2-event-list {
+#slime2-event-list.horizontal-bottom-right {
   flex-direction: row;
   justify-content: end;
   align-items: flex-end;
 }
 
-/****************
- * Extra Styles *
- ****************/
+/********************
+ * Text Edge Styles *
+ ********************/
 
-.fade {
-  animation: fade 1s forwards;
+.text-bottom-shadow-1 .message {
+  text-shadow: 0 1px black;
 }
 
-@keyframes fade {
+.text-bottom-shadow-2 .message {
+  text-shadow: 0 2px black;
+}
+
+.text-bottom-right-shadow-1 .message {
+  text-shadow: 1px 1px black;
+}
+
+.text-bottom-right-shadow-2 .message {
+  text-shadow: 2px 2px black;
+}
+
+/* Smooth 1px text outline */
+.text-outline-1 .message {
+  --outlineColor: rgb(0, 0, 0);
+  --outlineColorLowOpacity: rgba(0, 0, 0, 0.2);
+  text-shadow:
+    /* 1px offset top          */
+    0 -1px var(--outlineColor),
+    /* 1px offset bottom       */ 0 1px var(--outlineColor),
+    /* 1px offset left         */ -1px 0 var(--outlineColor),
+    /* 1px offset right        */ 1px 0 var(--outlineColor),
+    /* 1px offset top left     */ -1px -1px var(--outlineColorLowOpacity),
+    /* 1px offset top right    */ 1px -1px var(--outlineColorLowOpacity),
+    /* 1px offset bottom left  */ -1px 1px var(--outlineColorLowOpacity),
+    /* 1px offset bottom right */ 1px 1px var(--outlineColorLowOpacity),
+    /* 1px blur                */ 0 0 1px var(--outlineColor);
+}
+
+/* Smooth 2px text outline */
+.text-outline-2 .message {
+  --outlineColor: rgb(0, 0, 0);
+  --outlineColorLowOpacity: rgba(0, 0, 0, 0.2);
+  text-shadow:
+    /* 1px offset top          */
+    0 -1px var(--outlineColor),
+    /* 1px offset bottom       */ 0 1px var(--outlineColor),
+    /* 1px offset left         */ -1px 0 var(--outlineColor),
+    /* 1px offset right        */ 1px 0 var(--outlineColor),
+    /* 2px offset top          */ 0 -2px var(--outlineColor),
+    /* 2px offset bottom       */ 0 2px var(--outlineColor),
+    /* 2px offset left         */ -2px 0 var(--outlineColor),
+    /* 2px offset right        */ 2px 0 var(--outlineColor),
+    /* 1px offset top left     */ -1px -1px var(--outlineColor),
+    /* 1px offset top right    */ 1px -1px var(--outlineColor),
+    /* 1px offset bottom left  */ -1px 1px var(--outlineColor),
+    /* 1px offset bottom right */ 1px 1px var(--outlineColor),
+    /* 2px offset top left     */ -2px -2px var(--outlineColorLowOpacity),
+    /* 2px offset top right    */ 2px -2px var(--outlineColorLowOpacity),
+    /* 2px offset bottom left  */ -2px 2px var(--outlineColorLowOpacity),
+    /* 2px offset bottom right */ 2px 2px var(--outlineColorLowOpacity),
+    /* 1px blur                */ 0 0 1px var(--outlineColor),
+    /* 2px blur                */ 0 0 2px var(--outlineColor);
+}
+
+/**************
+ * Animations *
+ **************/
+
+.animation-enter-fade.message {
+  animation: fade-in 0.5s;
+}
+
+.animation-exit-fade.message {
+  animation: fade-out 0.5s;
+}
+
+.animation-enter-fade-left.message {
+  animation:
+    fade-in 0.5s,
+    move-in-left 0.5s;
+}
+
+.animation-exit-fade-left.message {
+  animation:
+    fade-out 0.5s,
+    move-out-left 0.5s;
+}
+
+.animation-enter-fade-right.message {
+  animation:
+    fade-in 0.5s,
+    move-in-right 0.5s;
+}
+
+.animation-exit-fade-right.message {
+  animation:
+    fade-out 0.5s,
+    move-out-right 0.5s;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-out {
   from {
     opacity: 1;
   }
   to {
     opacity: 0;
+  }
+}
+
+@keyframes move-in-right {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes move-out-right {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes move-in-left {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes move-out-left {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
   }
 }
