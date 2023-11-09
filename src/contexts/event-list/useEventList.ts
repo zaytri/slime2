@@ -19,9 +19,11 @@ export function useEventListDispatch() {
   function addEvent(
     event: MappedOmit<Slime2.RenderableEvent, 'remove' | 'renderable'>,
   ) {
-    if (previousEventList.length + 1 > maxEvents) {
-      const [oldestEvent] = previousEventList
-      removeEvent(oldestEvent.type, oldestEvent.id)
+    const previousListCopy = [...previousEventList]
+    const eventOverflow = previousEventList.length + 1 - (maxEvents || 100)
+    for (let i = 0; i < eventOverflow; i++) {
+      const oldestEvent = previousListCopy.shift()
+      if (oldestEvent) removeEvent(oldestEvent.type, oldestEvent.id)
     }
 
     function dispatchAddEvent() {

@@ -39,7 +39,7 @@ function Event(renderableEvent: Slime2.RenderableEvent) {
 
   useEffect(() => {
     if (!divRef.current || !clientRenderRef.current || !innerHTML) return
-
+    const element = divRef.current.firstElementChild as HTMLElement
     const { callback } = clientRenderRef.current
 
     // remove event after expiration time
@@ -65,7 +65,6 @@ function Event(renderableEvent: Slime2.RenderableEvent) {
 
     // wait for all the images of the event to load,
     // allowing the widget to accurately get the dimensions
-    const element = divRef.current.firstElementChild as HTMLElement
     imagesLoaded(element, () => {
       // runs the widget-defined callback function
       if (callback) callback(element)
