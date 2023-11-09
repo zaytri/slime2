@@ -24,7 +24,7 @@ export default function Group() {
   return (
     <Button
       id={idString}
-      className='w-full justify-between'
+      className='-my-0.5 w-full justify-between py-2'
       onClick={(event: React.MouseEvent) => {
         openWindow({
           id: `slime2window.${idString}`,
