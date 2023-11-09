@@ -27,6 +27,9 @@ module.exports = {
         '.text-shadow': {
           'text-shadow': `var(--tw-text-shadow-x-offset, 0) var(--tw-text-shadow-y-offset, 0) var(--tw-text-shadow-blur,) var(--tw-text-shadow-color,)`,
         },
+        '.text-shadow-none': {
+          'text-shadow': 'none',
+        },
       })
 
       // text-shadow color
