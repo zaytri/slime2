@@ -19,14 +19,19 @@ export default function BooleanInput() {
     <InputContainer
       className={clsx(
         !value &&
-          'border-slate-700 bg-slate-600 focus-within:border-slate-500 focus-within:bg-slate-500 focus-within:ring-slate-500',
+          'border-slate-700 bg-slate-300 focus-within:border-slate-400 focus-within:bg-slate-300 focus-within:ring-slate-400',
       )}
     >
       <InputLabel
         htmlFor={idString}
         className={clsx('flex items-center justify-between py-1 pr-1')}
       >
-        <span className={clsx('flex-1 pr-2', !value && 'text-slate-100')}>
+        <span
+          className={clsx(
+            'flex-1 pr-2',
+            !value && 'text-shadow-none text-slate-600',
+          )}
+        >
           {setting.label}
         </span>
         <input
@@ -52,7 +57,9 @@ export default function BooleanInput() {
         </div>
       </InputLabel>
       <InputDescription
-        className={clsx(!value && 'bg-slate-100 text-slate-600')}
+        className={clsx(
+          !value && 'border-slate-400 bg-slate-100 text-slate-600',
+        )}
         id={descriptionIdString}
       >
         {setting.description}
