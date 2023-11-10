@@ -33,7 +33,7 @@ namespace Widget {
     >
 
     type Item =
-      | ItemType<'button', { onClick: (groupId: GroupId) => void }>
+      | ItemType<'button', { onClick: (groupId: GroupId, id: string) => void }>
       | ItemType<'text-display'>
       | ItemType<'image-display', { url: string; alt?: string }>
       | ItemType<

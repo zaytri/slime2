@@ -9,7 +9,7 @@ export default function WidgetButton() {
   return (
     <Button
       id={idString}
-      onClick={() => setting.onClick(groupId)}
+      onClick={() => setting.onClick(groupId, setting.id)}
       className='justify-center'
     >
       <ButtonIcon>
