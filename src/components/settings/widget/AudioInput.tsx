@@ -100,13 +100,13 @@ export default function AudioInput() {
       <div className='bg-white'>
         <div className='border-b border-emerald-800 p-2'>
           <Button
-            className='w-full justify-center !p-3'
+            className='w-full justify-center !px-1 !py-3'
             onClick={onButtonClick}
           >
             <ButtonText className='text-xs'>
               {`Choose ${
                 Array.isArray(value) ? 'Sounds' : 'a Sound'
-              } from your Widget Assets Folder`}
+              } from the Widget Assets Folder`}
             </ButtonText>
             <ButtonIcon>
               {Array.isArray(value) ? (
