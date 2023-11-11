@@ -394,6 +394,23 @@ function transformDefault(
           : null // default to null
       }
     }
+    case 'dropdown-input': {
+      if (
+        typeof existingValue === 'string' ||
+        typeof existingValue === 'boolean' ||
+        typeof existingValue === 'number'
+      ) {
+        return existingValue
+      }
+
+      return typeof setting.defaultValue === 'string' ||
+        typeof setting.defaultValue === 'boolean' ||
+        typeof setting.defaultValue === 'number'
+        ? setting.defaultValue
+        : setting.options.length
+        ? setting.options[0].value // default to first value
+        : null // default to null if first value doesn't exist
+    }
     case 'select-input': {
       if ('multiple' in setting && setting.multiple) {
         if (Array.isArray(existingValue)) {

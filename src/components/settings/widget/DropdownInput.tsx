@@ -16,7 +16,7 @@ export default function DropdownInput() {
       return option.label === event.target.value
     })
 
-    setValue(selectedOption ? event.target.value : null)
+    setValue(selectedOption ? selectedOption.value : null)
   }
 
   const existingValue = setting.options.find(option => {
