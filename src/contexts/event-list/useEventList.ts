@@ -46,7 +46,7 @@ export function useEventListDispatch() {
   }
 
   function removeMessages() {
-    dispatch({ type: 'remove-messages' })
+    dispatch({ type: 'clear-messages' })
   }
 
   return { removeEvent, addEvent, removeUser, removeMessages }
@@ -80,7 +80,7 @@ export function eventListReducer(
       return state.filter(event => event.userId !== action.userId)
 
     // clear chat was used, remove all message events
-    case 'remove-messages':
+    case 'clear-messages':
       return state.filter(event => event.type !== 'message')
   }
 }
@@ -93,4 +93,4 @@ type EventListAction =
       eventType: Slime2.RenderableEvent['type']
     }
   | { type: 'remove-user'; userId: string }
-  | { type: 'remove-messages' }
+  | { type: 'clear-messages' }

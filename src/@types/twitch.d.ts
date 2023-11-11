@@ -2,7 +2,7 @@ namespace Twitch {
   type Event = Event.Type & { source: 'twitch' }
   type RenderableEvent = Exclude<
     Event,
-    { type: 'remove-user' | 'remove-message' | 'remove-messages' }
+    { type: 'remove-user' | 'remove-message' | 'clear-messages' }
   >
 
   namespace Event {
@@ -10,7 +10,7 @@ namespace Twitch {
       | { type: 'message'; message: Message }
       | { type: 'remove-user'; userId: string }
       | { type: 'remove-message'; messageId: string }
-      | { type: 'remove-messages' }
+      | { type: 'clear-messages' }
 
     type RemoveMessage = {
       messageId: string

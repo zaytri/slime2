@@ -56,7 +56,7 @@ export default function useChatClient() {
     function removeAllMessages() {
       removeMessages()
       client.sendEvent({
-        type: 'remove-messages',
+        type: 'clear-messages',
         source,
       })
     }
