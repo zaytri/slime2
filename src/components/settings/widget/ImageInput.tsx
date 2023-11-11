@@ -142,7 +142,7 @@ export default function ImageInput() {
               {Array.isArray(value) ? (
                 <Grid size={22} strokeWidth={2.5} className='-mt-0.5' />
               ) : (
-                <Image size={22} className='-mt-0.5' />
+                <Image size={22} strokeWidth={2.5} className='-mt-0.5' />
               )}
             </ButtonIcon>
           </Button>
