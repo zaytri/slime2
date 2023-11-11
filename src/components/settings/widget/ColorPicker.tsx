@@ -20,17 +20,17 @@ export default function ColorPicker() {
   return (
     <div className='slime2-group-shadow m-2 overflow-hidden rounded border-2 border-emerald-800 bg-white'>
       <div
-        className=' flex flex-col items-center justify-center gap-2   pt-2'
+        className='flex flex-col justify-center gap-2 divide-y divide-black pt-2'
         style={{
           backgroundColor: hexValue,
         }}
       >
         <HexAlphaColorPicker
           color={hexValue}
-          className='drop-shadow drop-shadow-c-black/25 drop-shadow-x-0.5 drop-shadow-y-0.5'
+          className='self-center drop-shadow drop-shadow-c-black/25 drop-shadow-x-0.5 drop-shadow-y-0.5'
           onChange={color => setValue(color)}
         />
-        <div className='slime2-alpha-background border-t border-black'>
+        <div className='slime2-alpha-background'>
           <input
             className={clsx(inputClassName, 'text-center font-bold')}
             style={{
