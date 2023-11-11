@@ -98,9 +98,12 @@ export default function VideoInput() {
   return (
     <InputWrapper>
       <div className='bg-white'>
-        <div className='border-b border-emerald-800 p-1'>
-          <Button className='w-full justify-center' onClick={onButtonClick}>
-            <ButtonText className=' text-xs'>
+        <div className='border-b border-emerald-800 p-2'>
+          <Button
+            className='w-full justify-center !p-3'
+            onClick={onButtonClick}
+          >
+            <ButtonText className='text-xs'>
               {`Choose ${
                 Array.isArray(value) ? 'Videos' : 'a Video'
               } from your Widget Assets Folder`}
