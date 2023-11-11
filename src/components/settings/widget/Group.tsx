@@ -40,7 +40,7 @@ export default function Group() {
                   <GroupMultiple />
                 </WidgetSettingProvider>
               ) : (
-                <WidgetSettings settings={setting.items} />
+                <WidgetSettings settings={setting.settings} />
               )}
             </WidgetSettingsGroupIdProvider>
           ),

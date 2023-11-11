@@ -324,7 +324,7 @@ function transformDefault(
   function transformValueGroup(valueGroup: Widget.ValueGroup) {
     return {
       ...transformDefaults(
-        (setting as Widget.Setting.GroupMultiple).items,
+        (setting as Widget.Setting.GroupMultiple).settings,
         valueGroup,
       ),
       __id: generateGroupMultipleId(setting.id),
@@ -455,7 +455,7 @@ function transformDefault(
           : // default to an array with 1 element with group defaults
             [
               {
-                ...transformDefaults(setting.items),
+                ...transformDefaults(setting.settings),
                 __id: generateGroupMultipleId(setting.id),
               },
             ]
@@ -465,12 +465,12 @@ function transformDefault(
           typeof existingValue === 'object' &&
           !Array.isArray(existingValue)
         ) {
-          return transformDefaults(setting.items, existingValue)
+          return transformDefaults(setting.settings, existingValue)
         }
 
         // default to group defaults
         return transformDefaults(
-          setting.items,
+          setting.settings,
           group[setting.id] as Widget.ValueGroup,
         )
       }

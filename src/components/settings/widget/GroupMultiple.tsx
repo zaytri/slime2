@@ -164,14 +164,14 @@ export default function GroupMultiple() {
             <WidgetSettingsGroupIdProvider
               groupId={[...groupId, { id: setting.id, index }]}
             >
-              <WidgetSettings settings={setting.items} />
+              <WidgetSettings settings={setting.settings} />
             </WidgetSettingsGroupIdProvider>
           </div>
         )
       })}
       <Button
         onClick={() => {
-          addGroupMultiple(groupId, setting.id, setting.items)
+          addGroupMultiple(groupId, setting.id, setting.settings)
         }}
         className='justify-center'
       >

@@ -368,7 +368,7 @@ const alignmentSettings = defineSetting(
   'alignment',
   'group',
   {
-    items: [
+    settings: [
       defineSetting('Direction', 'direction', 'select-input', {
         defaultValue: 'vertical',
         options: ['Vertical', 'Horizontal'].map(label => {
@@ -393,7 +393,7 @@ const disappearingSettings = defineSetting(
   'disappear',
   'group',
   {
-    items: [
+    settings: [
       defineSetting('Expiration time (seconds)', 'expiration', 'number-input', {
         min: 0,
         step: 1,
@@ -414,7 +414,7 @@ const disappearingSettings = defineSetting(
 )
 
 const emoteSettings = defineSetting('Emotes', 'emotes', 'group', {
-  items: [
+  settings: [
     defineSetting('Static emotes', 'static', 'boolean-input', {
       defaultValue: false,
       description:
@@ -443,7 +443,7 @@ const emoteSettings = defineSetting('Emotes', 'emotes', 'group', {
 })
 
 const badgeSettings = defineSetting('Badges', 'badges', 'group', {
-  items: [
+  settings: [
     defineSetting('Show Twitch Badges', 'display', 'boolean-input', {
       defaultValue: true,
     }),
@@ -456,7 +456,7 @@ const badgeSettings = defineSetting('Badges', 'badges', 'group', {
 })
 
 const pronounsSettings = defineSetting('Pronouns', 'pronouns', 'group', {
-  items: [
+  settings: [
     defineSetting(
       'Set your pronouns here: https://pronouns.alejo.io/',
       'link',
@@ -479,7 +479,7 @@ const pronounsSettings = defineSetting('Pronouns', 'pronouns', 'group', {
 })
 
 const botFilterSettings = defineSetting('Bot Filters', 'botFilters', 'group', {
-  items: [
+  settings: [
     defineSetting('Bots to hide', 'names', 'text-input', {
       multiple: true,
       defaultValue: ['Sery_Bot', 'Nightbot', 'StreamElements', 'Streamlabs'],
@@ -501,7 +501,7 @@ const userFilterSettings = defineSetting(
   'userFilters',
   'group',
   {
-    items: [
+    settings: [
       defineSetting(
         'Show messages from these types of users',
         'types',
@@ -546,7 +546,7 @@ const messageFilterSettings = defineSetting(
   'messageFilters',
   'group',
   {
-    items: [
+    settings: [
       defineSetting('Hide these message types', 'types', 'select-input', {
         multiple: true,
         defaultValue: [],
@@ -578,11 +578,11 @@ const messageFilterSettings = defineSetting(
 )
 
 const filterSettings = defineSetting('Filters', 'filters', 'group', {
-  items: [botFilterSettings, userFilterSettings, messageFilterSettings],
+  settings: [botFilterSettings, userFilterSettings, messageFilterSettings],
 })
 
 const soundSettings = defineSetting('Sound Effect', 'sound', 'group', {
-  items: [
+  settings: [
     defineSetting('Sound', 'audio', 'audio-input', {
       description: 'This sound effect will be played for every chat message.',
     }),
@@ -597,7 +597,7 @@ const soundSettings = defineSetting('Sound Effect', 'sound', 'group', {
 })
 
 const textSettings = defineSetting('Text Styles', 'textStyles', 'group', {
-  items: [
+  settings: [
     defineSetting('Font Name', 'font', 'font-input', {
       defaultValue: 'Nunito',
     }),
@@ -636,7 +636,7 @@ const textSettings = defineSetting('Text Styles', 'textStyles', 'group', {
 })
 
 const animationSettings = defineSetting('Animations', 'animations', 'group', {
-  items: [
+  settings: [
     defineSetting('Entrance Animation', 'enter', 'select-input', {
       defaultValue: 'none',
       options: ['Fade', 'Fade Left', 'Fade Right', 'None'].map(label => {

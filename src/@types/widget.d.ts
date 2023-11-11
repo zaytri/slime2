@@ -19,12 +19,12 @@ namespace Widget {
     type InputValue = number | string | boolean | null
     type GroupId = { id: string; index?: number }[]
 
-    type Group = ItemType<'group', { items: Item[] }>
+    type Group = ItemType<'group', { settings: Item[] }>
 
     type GroupMultiple = ItemType<
       'group',
       {
-        items: Item[]
+        settings: Item[]
         multiple?: true
         previewIds?: string[]
         defaultValues?: ValueGroup[]
