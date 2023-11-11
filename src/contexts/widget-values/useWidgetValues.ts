@@ -273,6 +273,10 @@ function transformDefaults(
   const duplicateCheck = new Map<string, boolean>()
 
   for (const setting of settings) {
+    if (setting.id === '__id') {
+      throw Error('__id cannot be used as a setting ID!')
+    }
+
     if (!setting.id)
       throw Error(
         'A widget setting is missing an ID! All widget settings must have a unique ID.',
