@@ -1,20 +1,22 @@
-# Slime2
+# slime2
 
 Built with [Vite](https://vitejs.dev/) using [React](https://react.dev/)
 
 [<img src='https://i.imgur.com/nb9001m.png' width='300' alt='Support me on Ko-fi' />](https://ko-fi.com/zaytri)
-
-## Useful Links
-
-- Setup: https://forums.slime2.stream/resources/getting-started-with-slime2.3/
-- Customization: https://forums.slime2.stream/resources/base-chat.10/field?field=customization
-- Support: https://forums.slime2.stream/forums/help.13/
 
 ## Terms of Use
 
 - Do not claim this as your own or sell it
 - You may modify the simple-chat widget to create your own slime2 widget, and you can freely share or sell your widget
 - Feel free to post your widget here on the forums: https://forums.slime2.stream/resources/categories/themes.2/
+
+## Widget Development Docs
+
+https://docs.slime2.stream/
+
+## Support
+
+https://forums.slime2.stream/forums/help.13/
 
 ## If you want to use this repo to build widgets
 
