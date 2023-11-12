@@ -2,7 +2,7 @@
 
 Built with [Vite](https://vitejs.dev/) using [React](https://react.dev/)
 
-[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/V7V14PTBF)
+[<img src='https://i.imgur.com/nb9001m.png' width='300' alt='Support me on Ko-fi' />](https://ko-fi.com/zaytri)
 
 ## Useful Links
 
