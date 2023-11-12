@@ -1,15 +1,14 @@
-Thank you for downloading the base theme of slime2!
+Simple Chat v3.0.0 by Zaytri
 
-Use the links below to set up, customize, and ask questions!
+You'll need to download a key to connect it to your Twitch account.
+Setup intructions can be found here: https://forums.slime2.stream/resources/getting-started-with-slime2.3/
 
-Setup: https://forums.slime2.stream/resources/getting-started-with-slime2.3/
-Customization: https://forums.slime2.stream/resources/base-chat.10/field?field=customization
-Support: https://forums.slime2.stream/forums/help.13/
+If you have any question, you can ask here: https://forums.slime2.stream/forums/help.13/
 
 Terms of Use:
 - Do not claim this as your own or resell it
-- You may modify this to create your own slime2 theme, and you can freely share or sell your theme
-- Feel free to post your theme here on the forums: https://forums.slime2.stream/resources/categories/themes.2/
+- You may modify this to create your own slime2 widget, and you can freely share or sell that widget
+- Feel free to post your widget here on the forums: https://forums.slime2.stream/resources/categories/2/
 
 Made with love,
 - Zaytri

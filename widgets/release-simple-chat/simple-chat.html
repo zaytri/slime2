@@ -1,5 +1,5 @@
-<!-- simple-chat widget -->
-<!-- using slime2 version 0.2.3 -->
+<!-- Simple Chat v3.0.0 by Zaytri -->
+<!-- Using slime2 version 1.0.0 -->
 
 <!doctype html>
 <html lang="en">
@@ -12,44 +12,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <!-- title and favicon -->
-    <title>slime2 v0.2.3</title>
+    <title>Simple Chat v3.0.0</title>
     <link
       rel="icon"
       type="image/x-icon"
       href="https://slime2.stream/favicon.ico"
     />
     
-    <!-- Google API library used for YouTube -->
-    <script src="https://apis.google.com/js/api.js"></script>
-    <script src="https://accounts.google.com/gsi/client"></script>
-
-    <!-- jQuery and Color.js, used in the custom JS -->
+    <!-- jQuery, used in the custom JS -->
     <script
       src="https://code.jquery.com/jquery-3.7.1.slim.min.js"
       integrity="sha256-kmHvs0B+OpCW5GVHUNjv9rOmY0IvSIRcf7zGUDTDQM8="
       crossorigin="anonymous"
     ></script>
-    <script src="https://colorjs.io/dist/color.global.js"></script>
 
     <!-- custom JS/CSS -->
-    <script src="slime2key_twitch.js"></script>
-    <script src="slime2key_google.js"></script>
     <script src="simple-chat.js"></script>
     <link href="simple-chat.css" rel="stylesheet" />
 
     <!-- slime2 JS/CSS -->
-    <script type="module" crossorigin src="https://cdn.jsdelivr.net/gh/zaytri/slime2@0.2.3/release/slime2.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/zaytri/slime2@0.2.3/release/slime2.css">
+    <script type="module" crossorigin src="https://cdn.jsdelivr.net/gh/zaytri/slime2@1.0.0/release/slime2.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/zaytri/slime2@1.0.0/release/slime2.css">
   </head>
 
   <!-----------------------------------------------------
     HTML structure, slime2 inserts everything into main
   ------------------------------------------------------>
   <body>
-    <main
-      id="slime2-root"
-      class="vertical-bottom-left dynamic-emote-sizes"
-    ></main>
+    <main id="slime2-root"></main>
   </body>
 
   <!----------------------------------------------------------------------
@@ -59,8 +49,7 @@
   <!-- message template, inserted into main -->
   <template id="message-template">
     <div class="message">
-      <span class="user"></span>
-      <span class="content text-outline-2"></span>
+      <span class="user"></span><span class="content"></span>
     </div>
   </template>
 
