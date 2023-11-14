@@ -41,7 +41,7 @@ export default function Settings() {
       id='slime2-windows'
       className={clsx(
         hidden ? 'slime2-window-exit' : 'slime2-window-enter',
-        'pointer-events-none absolute left-0 top-0 h-screen w-screen p-2',
+        'pointer-events-none absolute left-0 top-0 z-[9999] h-screen w-screen p-2',
       )}
     >
       {windowList.map(windowProps => (
