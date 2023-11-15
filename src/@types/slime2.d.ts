@@ -30,11 +30,19 @@ namespace Slime2 {
   namespace Client {
     type OnEvent = (data: Event) => OnEventReturn | Promise<OnEventReturn>
 
-    type OnEventReturn =
-      | { fragment?: Fragment; callback?: AfterRenderCallback }
-      | null
-      | void
-      | undefined
+    type OnEventReturn = OnEventObject | null | void | undefined
+
+    type OnEventObject = {
+      fragment?: Fragment
+      callback?: AfterRenderCallback
+      parentProps?: MappedOmit<
+        React.DetailedHTMLProps<
+          React.HTMLAttributes<HTMLDivElement>,
+          HTMLDivElement
+        >,
+        'ref' | 'dangerouslySetInnerHTML'
+      >
+    }
 
     type Fragment = DocumentFragment | JQuery<DocumentFragment>
     type AfterRenderCallback = (div: HTMLElement) => void

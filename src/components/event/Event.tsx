@@ -1,6 +1,7 @@
 import { useClient } from '@/contexts/client/useClient'
 import { useEventListDispatch } from '@/contexts/event-list/useEventList'
 import { generateInnerHTML } from '@/services/helpers'
+import clsx from 'clsx'
 import imagesLoaded from 'imagesloaded'
 import { memo, useEffect, useRef, useState } from 'react'
 
@@ -11,6 +12,9 @@ function Event(renderableEvent: Slime2.RenderableEvent) {
   const clientRenderRef = useRef<Slime2.Client.OnEventReturn>()
   const eventSentRef = useRef(false)
   const [innerHTML, setInnerHTML] = useState<string>()
+  const [props, setProps] = useState<
+    NonNullable<Slime2.Client.OnEventObject['parentProps']>
+  >({})
 
   function remove() {
     removeEvent(renderableEvent.type, renderableEvent.id)
@@ -28,8 +32,9 @@ function Event(renderableEvent: Slime2.RenderableEvent) {
 
       clientRenderRef.current = eventReturn || {}
 
-      const { fragment } = clientRenderRef.current
+      const { fragment, parentProps } = clientRenderRef.current
 
+      if (parentProps) setProps(parentProps)
       setInnerHTML(fragment ? generateInnerHTML(fragment) : '')
     }
 
@@ -82,15 +87,18 @@ function Event(renderableEvent: Slime2.RenderableEvent) {
   // show nothing if innerHTML is undefined or empty string
   if (!innerHTML) return null
 
+  const { className, ...rest } = props
+
   return (
     <div
-      className='slime2-event'
+      className={clsx('slime2-event', className)}
       data-event-id={renderableEvent.id}
       data-event-type={renderableEvent.type}
       data-event-user-id={renderableEvent.userId}
       data-event-source={renderableEvent.source}
       dangerouslySetInnerHTML={{ __html: innerHTML }}
       ref={divRef}
+      {...rest}
     ></div>
   )
 }
