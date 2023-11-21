@@ -39,7 +39,12 @@ export class CustomAuthProvider implements AuthProvider {
     _user: UserIdResolvable,
     ...scopeSets: (string[] | undefined)[]
   ): Promise<AccessTokenWithUserId | null> {
-    return this._getAccessToken(scopeSets)
+    try {
+      return this._getAccessToken(scopeSets)
+    } catch {
+      // access token invalid, refresh it
+      return this.refreshAccessTokenForUser()
+    }
   }
 
   async getAnyAccessToken(): Promise<AccessTokenMaybeWithUserId> {
