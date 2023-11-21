@@ -9,7 +9,7 @@ addEventListener('slime2:ready', () => {
   slime2.widget.loadSettings('simple-chat-data.js', [
     defineSetting(
       [
-        'Simple Chat v3.0.0 by Zaytri: https://zaytri.com/',
+        'Simple Chat v3.0.1 by Zaytri: https://zaytri.com/',
         '',
         'Questions and Support: https://forums.slime2.stream/threads/20/',
       ].join('\n'),
