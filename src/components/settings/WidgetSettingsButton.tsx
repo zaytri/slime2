@@ -61,7 +61,7 @@ export default function WidgetSettingsButton() {
           id: 'widget-settings',
           icon: Settings,
           title: 'Widget Settings',
-          className: 'w-96',
+          className: 'w-[720px]',
           children: <WidgetSettings settings={widgetSettings} />,
           footer: <WidgetSettingsFooter />,
         })

@@ -4,7 +4,7 @@ import { useWidgetSetting } from '@/contexts/widget-setting/useWidgetSetting'
 import { WidgetSettingsGroupIdProvider } from '@/contexts/widget-settings-group-id/WidgetSettingsGroupIdProvider'
 import { useWidgetSettingsGroupId } from '@/contexts/widget-settings-group-id/useWidgetSettingsGroupId'
 import { useWindowListDispatch } from '@/contexts/window-list/useWindowList'
-import { ChevronRight, ChevronsRight, FileText } from 'react-feather'
+import { ChevronRight, ChevronsRight, Folder } from 'react-feather'
 import GroupMultiple from './GroupMultiple'
 import WidgetSettings from './WidgetSettings'
 
@@ -28,9 +28,9 @@ export default function Group() {
       onClick={(event: React.MouseEvent) => {
         openWindow({
           id: `slime2window.${idString}`,
-          icon: FileText,
+          icon: Folder,
           title: setting.label || '',
-          className: 'w-96',
+          className: 'w-[720px]',
           children: (
             <WidgetSettingsGroupIdProvider
               groupId={multiple ? groupId : [...groupId, { id: setting.id }]}
