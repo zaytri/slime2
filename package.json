@@ -33,8 +33,10 @@
     "react-dom": "^18.2.0",
     "react-draggable": "^4.4.6",
     "react-feather": "^2.0.10",
+    "react-markdown": "^9.0.1",
     "react-spinners": "^0.13.8",
     "react-textarea-autosize": "^8.5.3",
+    "remark-gfm": "^4.0.0",
     "vite-tsconfig-paths": "^4.2.1"
   },
   "devDependencies": {

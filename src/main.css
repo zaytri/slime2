@@ -9,10 +9,6 @@
   padding: 0;
 }
 
-html {
-  font-size: 24px;
-}
-
 /* Container for the slime2 system */
 #slime2-root {
   position: absolute;
@@ -86,6 +82,54 @@ html {
 .slime2-alpha-background {
   background-color: white;
   background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill-opacity=".05"><rect x="8" width="8" height="8"/><rect y="8" width="8" height="8"/></svg>');
+}
+
+.setting-text-display a {
+  @apply text-green-600 underline;
+}
+
+.setting-text-display h1 {
+  @apply mb-2 text-2xl font-bold;
+}
+
+.setting-text-display h2 {
+  @apply mb-2 text-xl font-semibold;
+}
+
+.setting-text-display h3 {
+  @apply mb-2 text-lg font-semibold;
+}
+
+.setting-text-display :is(p, ul, ol, pre, blockquote) {
+  @apply mb-2 text-base;
+}
+
+.setting-text-display pre {
+  @apply mb-3;
+}
+
+.setting-text-display :is(ul, ol) {
+  @apply list-outside pl-6;
+}
+
+.setting-text-display ul {
+  @apply list-disc;
+}
+
+.setting-text-display ol {
+  @apply list-decimal;
+}
+
+.setting-text-display blockquote {
+  @apply border border-l-4 border-lime-500 bg-lime-200 px-2 pt-2;
+}
+
+.setting-text-display hr {
+  @apply mb-4 h-px border-none bg-emerald-800/30;
+}
+
+.setting-text-display :is(:not(pre) > code, pre) {
+  @apply rounded border border-lime-300 bg-lime-200 px-1;
 }
 
 @keyframes slime2-window-enter {

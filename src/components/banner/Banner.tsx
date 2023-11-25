@@ -16,7 +16,7 @@ export default function Banner({
     <>
       <div
         className={clsx(
-          'm-3 flex items-center justify-center rounded-xl px-6 py-3',
+          'm-3 flex items-center justify-center rounded-xl px-6 py-3 text-xl',
           status === 'error'
             ? 'bg-rose-900 font-radiocanada text-white'
             : 'bg-emerald-800 font-grandstander text-lime-100',

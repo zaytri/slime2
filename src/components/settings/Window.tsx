@@ -60,7 +60,7 @@ export default function Window({
         ref={draggableRef}
         onClick={sendToTop}
         className={clsx(
-          'slime2-window-shadow pointer-events-auto !fixed z-[999] flex max-h-[80%] min-h-[100px] min-w-[350px] max-w-[90%] flex-col overflow-hidden rounded-md border-2 border-emerald-800 bg-lime-100 font-fredoka text-sm opacity-90 last:opacity-100 only:opacity-100 hover:opacity-100',
+          'slime2-window-shadow pointer-events-auto !fixed z-[999] flex max-h-[80%] min-h-[100px] min-w-[350px] flex-col overflow-hidden rounded-md border-2 border-emerald-800 bg-lime-100 font-fredoka text-sm opacity-90 last:opacity-100 only:opacity-100 hover:opacity-100',
           className,
         )}
       >
@@ -90,12 +90,13 @@ function WindowTitle({
 }: React.PropsWithChildren<WindowTitleProps>) {
   return (
     <div className='title-shadow-i pointer-events-none flex divide-x divide-emerald-800 rounded-t-sm'>
-      <div className='draggable-handle pointer-events-auto flex-1 cursor-move items-center gap-2 rounded-tl-sm bg-gradient-to-b from-lime-600 to-emerald-700 py-1 pl-[8px] pr-1 text-lime-100'>
-        <p className='-mt-0.5 font-medium text-shadow text-shadow-c-black/75 text-shadow-y-px'>
+      <div className='draggable-handle pointer-events-auto flex-1 cursor-move items-center gap-2 rounded-tl-sm bg-gradient-to-b from-lime-600 to-emerald-700 py-2 pl-2 pr-1 text-lime-100'>
+        <p className='-mt-1 text-xl font-medium text-shadow text-shadow-c-black/75 text-shadow-y-px'>
           {Icon && (
             <Icon
-              className='-mt-0.5 mr-1 inline drop-shadow drop-shadow-c-black/75 drop-shadow-y-px'
-              size={24}
+              className='-mt-1 mr-[6px] inline drop-shadow drop-shadow-c-black/75 drop-shadow-y-px'
+              size={22}
+              strokeWidth={2.5}
             />
           )}
           {children}
