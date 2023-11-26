@@ -1,10 +1,9 @@
-import Button, { ButtonIcon, ButtonText } from '@/components/Button'
 import { WidgetSettingProvider } from '@/contexts/widget-setting/WidgetSettingProvider'
 import { useWidgetSetting } from '@/contexts/widget-setting/useWidgetSetting'
 import { WidgetSettingsGroupIdProvider } from '@/contexts/widget-settings-group-id/WidgetSettingsGroupIdProvider'
 import { useWidgetSettingsGroupId } from '@/contexts/widget-settings-group-id/useWidgetSettingsGroupId'
 import { useWindowListDispatch } from '@/contexts/window-list/useWindowList'
-import { ChevronRight, ChevronsRight, Folder } from 'react-feather'
+import { Folder } from 'react-feather'
 import GroupMultiple from './GroupMultiple'
 import WidgetSettings from './WidgetSettings'
 
@@ -16,15 +15,15 @@ export default function Group() {
 
   const multiple = 'multiple' in setting && setting.multiple
   const iconProps = {
-    strokeWidth: 3,
-    size: 30,
+    strokeWidth: 2.5,
+    size: 25,
     className: '-mt-0.5',
   }
 
   return (
-    <Button
+    <button
       id={idString}
-      className='-my-0.5 w-full justify-between py-2'
+      className=' -my-2 flex items-center gap-2 rounded border-2 border-lime-500 bg-lime-300 bg-gradient-to-br from-lime-200 to-lime-300 px-2 py-2 text-xl font-semibold text-emerald-900 first:mt-0 last:mb-0 hover:-translate-y-1'
       onClick={(event: React.MouseEvent) => {
         openWindow({
           id: `slime2window.${idString}`,
@@ -49,14 +48,10 @@ export default function Group() {
         event.stopPropagation()
       }}
     >
-      <ButtonText>{setting.label}</ButtonText>
-      <ButtonIcon>
-        {multiple ? (
-          <ChevronsRight {...iconProps} />
-        ) : (
-          <ChevronRight {...iconProps} />
-        )}
-      </ButtonIcon>
-    </Button>
+      <p className='flex-1 text-left'>{setting.label}</p>
+      <div>
+        <Folder {...iconProps} />
+      </div>
+    </button>
   )
 }

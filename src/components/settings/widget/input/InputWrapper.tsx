@@ -22,7 +22,7 @@ export default function InputWrapper({ children }: React.PropsWithChildren) {
       return (
         <InputContainer>
           <InputLabel htmlFor={idString}>{setting.label}</InputLabel>
-          {children}
+          <div className='flex-1'>{children}</div>
           <InputDescription id={descriptionIdString}>
             {setting.description}
           </InputDescription>

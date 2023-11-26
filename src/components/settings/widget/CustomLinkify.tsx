@@ -12,13 +12,10 @@ export default function CustomLinkify(
     <Linkify
       {...rest}
       className={clsx('break-words', props.className)}
-      as='p'
+      as='blockquote'
       options={{
         target: '_blank',
-        className: clsx(
-          'inline rounded-[2px] underline outline-none focus:border-none focus:ring-2',
-          linkClassName,
-        ),
+        className: clsx('inline underline', linkClassName),
         nl2br: true,
       }}
     />

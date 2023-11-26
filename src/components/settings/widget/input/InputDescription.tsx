@@ -13,10 +13,10 @@ export default function InputDescription(
     <CustomLinkify
       {...props}
       className={clsx(
-        'border-t border-emerald-800 bg-emerald-50 px-2 py-0.5  text-xs text-emerald-700',
+        'mt-1 border border-l-4 border-lime-500 bg-lime-200 p-2 text-sm text-emerald-900',
         props.className,
       )}
-      linkClassName='text-emerald-500 focus:ring-emerald-500 focus:ring-offset-2 focus:ring-offset-white'
+      linkClassName='text-green-600'
     ></CustomLinkify>
   )
 }

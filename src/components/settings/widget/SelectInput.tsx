@@ -1,8 +1,6 @@
 import { useWidgetSetting } from '@/contexts/widget-setting/useWidgetSetting'
 import clsx from 'clsx'
-import InputContainer from './input/InputContainer'
 import InputDescription from './input/InputDescription'
-import inputClassName from './input/inputClassName'
 
 export default function SelectInput() {
   const { setting, idString, descriptionIdString, value, setValue } =
@@ -38,16 +36,15 @@ export default function SelectInput() {
   }
 
   return (
-    <InputContainer>
-      <fieldset aria-describedby={descriptionIdString}>
-        <legend
-          className={clsx(
-            '-mt-0.5 block w-full px-2 py-0.5 font-medium text-white text-shadow text-shadow-c-black/75 text-shadow-y-px',
-          )}
-        >
+    <div id={idString}>
+      <fieldset
+        className='flex justify-between gap-2'
+        aria-describedby={descriptionIdString}
+      >
+        <legend className='float-left flex-[2] text-lg font-medium text-emerald-900'>
           {setting.label}
         </legend>
-        <div className={clsx(inputClassName, 'pb-0 pt-2')}>
+        <div className='mb-1 flex flex-[3] flex-wrap gap-2'>
           {setting.options.map(option => {
             const optionIdString = `${idString}.${option.label}`
             const checked =
@@ -75,10 +72,9 @@ export default function SelectInput() {
                 />
                 <span
                   className={clsx(
-                    ' mb-2 mr-2 inline-block rounded border-2 p-1 peer-focus:outline peer-focus:outline-2 peer-focus:outline-offset-2 peer-focus:outline-emerald-800 hover:outline hover:outline-2 hover:outline-offset-2 hover:outline-emerald-800',
-                    !checked && 'border-slate-400 text-slate-500',
-                    checked &&
-                      'slime2-tag-shadow border-emerald-800 bg-green-700 text-white',
+                    'inline-flex rounded border-2 p-1 peer-focus:outline peer-focus:outline-2 peer-focus:outline-offset-2 peer-focus:outline-emerald-800 hover:outline hover:outline-2 hover:outline-offset-2 hover:outline-emerald-800',
+                    !checked && 'border-emerald-800/30 text-emerald-800/75',
+                    checked && 'border-emerald-800 bg-green-700 text-white',
                   )}
                 >
                   {option.label}
@@ -91,6 +87,6 @@ export default function SelectInput() {
       <InputDescription id={descriptionIdString}>
         {setting.description}
       </InputDescription>
-    </InputContainer>
+    </div>
   )
 }
