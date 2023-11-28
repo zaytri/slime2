@@ -17,31 +17,32 @@ body {
 }
 
 #dvd {
-  height: var(--height);
-  width: var(--width);
   opacity: var(--opacity);
   position: absolute;
 }
 
 #image,
 #video,
-#text-box {
+#text {
   display: none;
 }
 
 .media-image #image,
 .media-video #video,
-.media-text #text-box {
-  display: flex;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+.media-text #text {
+  display: block;
+  transform-origin: top left;
 }
 
 #image {
   content: var(--image);
+  transform: scale(var(--imageScale));
+}
+
+#video {
+  transform: scale(var(--videoScale));
 }
 
 #text {
-  flex: 1;
+  white-space: break-spaces;
 }
