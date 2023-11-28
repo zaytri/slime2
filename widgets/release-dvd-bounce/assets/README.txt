@@ -1,0 +1,1 @@
+Any media you want to add from your computer must be put into this folder before adding!

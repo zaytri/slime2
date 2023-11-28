@@ -1,0 +1,83 @@
+<!-- DVD Bounce v1.0.0 by Zaytri -->
+<!-- Using slime2 version 1.1.1 -->
+
+<!doctype html>
+<html lang="en">
+  <!------------------------------------------
+    HTML info and the files imported into it
+  ------------------------------------------->
+  <head>
+    <!-- HTML meta fields -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- title and favicon -->
+    <title>DVD Bounce v1.0.0</title>
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="https://slime2.stream/favicon.ico"
+    />
+    
+    <!-- jQuery, used in the custom JS -->
+    <script
+      src="https://code.jquery.com/jquery-3.7.1.slim.min.js"
+      integrity="sha256-kmHvs0B+OpCW5GVHUNjv9rOmY0IvSIRcf7zGUDTDQM8="
+      crossorigin="anonymous"
+    ></script>
+
+    <!-- custom JS/CSS -->
+    <script src="dvd-bounce-settings.js"></script>
+    <script src="dvd-bounce-script.js"></script>
+    <link href="dvd-bounce-styles.css" rel="stylesheet" />
+
+    <!-- slime2 JS/CSS -->
+    <script type="module" crossorigin src="https://cdn.jsdelivr.net/gh/zaytri/slime2@1.1.1/release/slime2.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/zaytri/slime2@1.1.1/release/slime2.css">
+  </head>
+
+  <!-----------------------------------------------------
+    HTML structure, slime2 inserts everything into main
+  ------------------------------------------------------>
+  <body>
+    <div id="dvd">
+      <image id="image" />
+      <video id="video" loop autoplay>
+        <source />
+      </video>
+      <p id="text"></p>
+    </div>
+    <main id="slime2-root"></main>
+  </body>
+
+  <!----------------------------------------------------------------------
+    template structures, the custom JS copies these to build the message
+  ----------------------------------------------------------------------->
+
+  <!-- message template, inserted into main -->
+  <template id="image-template">
+    <div class="image-container">
+      <img class="image" />
+    </div>
+  </template>
+
+  <!-- user template, inserted into the user class -->
+  <template id="user-template"
+    ><span class="badges"></span><span class="name"></span
+    ><span class="pronouns"></span
+  ></template>
+
+  <!-- badge template, inserted into the badges class -->
+  <template id="badge-template"><img class="badge" /></template>
+
+  <!-- emote template, inserted into the content class -->
+  <template id="content-emote-template"><img class="emote" /></template>
+
+  <!-- cheer template, inserted into the content class -->
+  <template id="content-cheer-template"
+    ><img class="emote" /><span class="cheer-amount"></span
+  ></template>
+
+  <!-- text template, inserted into the content class -->
+  <template id="content-text-template"><span class="text"></span></template>
+</html>
