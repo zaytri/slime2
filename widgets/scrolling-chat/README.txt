@@ -1,7 +1,9 @@
-DVD Bounce v1.0.0
+Scrolling Chat v2.0.0
 
+You'll need to download a key to connect it to your Twitch account.
 Setup instructions can be found here: https://forums.slime2.stream/resources/setting-up-slime2-widgets.3/
-(Since this doesn't connect to Twitch, you don't need to make an account or download the key, just skip to the Widget Settings step)
+
+If you have any questions, you can ask here: https://forums.slime2.stream/threads/scrolling-chat.27/
 
 Terms of Use:
 - Do not claim this as your own or resell it
