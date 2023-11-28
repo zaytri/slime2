@@ -1,3 +1,7 @@
+.hide {
+  display: none;
+}
+
 /*********************
  * slime2 containers *
  *********************/
@@ -7,34 +11,34 @@
   position: absolute;
   inset: 0;
   overflow: hidden;
-  white-space: nowrap;
 }
 
 /* Container for the chat message list from slime2 */
-#slime2-chat-list {
+#slime2-event-list {
+  --fontSize: 24px;
+  --color: white;
+  --fontWeight: 900;
+  --font: Avenir;
+  --edgeColor: rgb(0, 0, 0, 1);
+  --edgeColorLowOpacity: rgba(0, 0, 0, 0.2);
   position: absolute;
+  inset: 0;
   overflow: hidden;
-  gap: 10px;
+  white-space: nowrap;
   font-family:
+    var(--font),
     Avenir,
     Lato,
     -apple-system,
     BlinkMacSystemFont,
-    Helvetica Neue,
-    Hiragino Kaku Gothic ProN,
+    'Helvetica Neue',
+    'Hiragino Kaku Gothic ProN',
     Meiryo,
     メイリオ,
     sans-serif;
-  line-height: 30px;
-  font-size: 24px;
-  font-weight: 900;
-  color: white;
-  width: 100%;
-  height: 100%;
-}
-
-/* Container for each chat message from slime2 */
-#slime2-chat-message {
+  font-size: var(--fontSize);
+  font-weight: var(--fontWeight);
+  color: var(--color);
 }
 
 /* Message container */
@@ -42,6 +46,17 @@
   position: absolute;
   visibility: hidden;
   display: inline-block;
+}
+
+.text-color-user-light .message {
+  color: var(--userColorLight);
+}
+
+.text-color-user-dark .message {
+  color: var(--userColorDark);
+}
+
+.text-color-user .message {
   color: var(--userColor);
 }
 
@@ -58,6 +73,10 @@
 .user {
 }
 
+:is(.hide-user, .emote-only) .user {
+  display: none;
+}
+
 /* Display name of the user */
 .name {
 }
@@ -65,6 +84,10 @@
 /* Badges container */
 .badges {
   display: inline-block;
+}
+
+.hide-badges .badges {
+  display: none;
 }
 
 /* Badge style */
@@ -77,9 +100,16 @@
 
 /* Pronoun styles */
 .pronouns {
-  text-transform: lowercase;
   display: inline-block;
   margin-left: 4px;
+}
+
+.pronouns-lowercase .pronouns {
+  text-transform: lowercase;
+}
+
+.pronouns-uppercase .pronouns {
+  text-transform: uppercase;
 }
 
 .pronouns::before {
@@ -105,8 +135,12 @@
 .text {
 }
 
-.emote,
-.cheer {
+.emote-only .text {
+  display: none;
+}
+
+.emote {
+  content: var(--defaultEmoteImage);
   height: 1.75em;
   max-height: 112px;
   display: inline-block;
@@ -115,112 +149,74 @@
   margin-bottom: -0.2em;
 }
 
+.static-emotes .emote {
+  content: var(--staticEmoteImage);
+}
+
 .cheer-amount {
 }
 
-/******************************************************
- * Chat list axis (vertical/horizontal) and alignment *
- ******************************************************/
-
-/* Apply these classes to main in the HTML */
-
-.vertical-top-left #slime2-chat-list {
-  flex-direction: column-reverse;
-  justify-content: start;
-  align-items: flex-start;
-}
-
-.vertical-top-right #slime2-chat-list {
-  flex-direction: column-reverse;
-  justify-content: start;
-  align-items: flex-end;
-}
-
-.vertical-bottom-left #slime2-chat-list {
-  flex-direction: column;
-  justify-content: end;
-  align-items: flex-start;
-}
-
-.vertical-bottom-right #slime2-chat-list {
-  flex-direction: column;
-  justify-content: end;
-  align-items: flex-end;
-}
-
-.horizontal-top-left #slime2-chat-list {
-  flex-direction: row-reverse;
-  justify-content: start;
-  align-items: flex-start;
-}
-
-.horizontal-top-right #slime2-chat-list {
-  flex-direction: row;
-  justify-content: end;
-  align-items: flex-start;
-}
-
-.horizontal-bottom-left #slime2-chat-list {
-  flex-direction: row-reverse;
-  justify-content: start;
-  align-items: flex-end;
-}
-
-.horizontal-bottom-right #slime2-chat-list {
-  flex-direction: row;
-  justify-content: end;
-  align-items: flex-end;
-}
-
-/****************
- * Extra Styles *
- ****************/
-
-.hide {
+.emote-only .cheer-amount {
   display: none;
 }
 
+/********************
+ * Text Edge Styles *
+ ********************/
+
+.edge-bottom-shadow-1 .message {
+  text-shadow: 0 1px var(--edgeColor);
+}
+
+.edge-bottom-shadow-2 .message {
+  text-shadow: 0 2px var(--edgeColor);
+}
+
+.edge-bottom-right-shadow-1 .message {
+  text-shadow: 1px 1px var(--edgeColor);
+}
+
+.edge-bottom-right-shadow-2 .message {
+  text-shadow: 2px 2px var(--edgeColor);
+}
+
 /* Smooth 1px text outline */
-.text-outline-1 {
-  --outlineColor: rgb(0, 0, 0, 1);
-  --outlineColorLowOpacity: rgba(0, 0, 0, 0.2);
+.edge-outline-1 .message {
   text-shadow:
     /* 1px offset top          */
-    0 -1px var(--outlineColor),
-    /* 1px offset bottom       */ 0 1px var(--outlineColor),
-    /* 1px offset left         */ -1px 0 var(--outlineColor),
-    /* 1px offset right        */ 1px 0 var(--outlineColor),
-    /* 1px offset top left     */ -1px -1px var(--outlineColorLowOpacity),
-    /* 1px offset top right    */ 1px -1px var(--outlineColorLowOpacity),
-    /* 1px offset bottom left  */ -1px 1px var(--outlineColorLowOpacity),
-    /* 1px offset bottom right */ 1px 1px var(--outlineColorLowOpacity),
-    /* 1px blur                */ 0 0 1px var(--outlineColor);
+    0 -1px var(--edgeColor),
+    /* 1px offset bottom       */ 0 1px var(--edgeColor),
+    /* 1px offset left         */ -1px 0 var(--edgeColor),
+    /* 1px offset right        */ 1px 0 var(--edgeColor),
+    /* 1px offset top left     */ -1px -1px var(--edgeColorLowOpacity),
+    /* 1px offset top right    */ 1px -1px var(--edgeColorLowOpacity),
+    /* 1px offset bottom left  */ -1px 1px var(--edgeColorLowOpacity),
+    /* 1px offset bottom right */ 1px 1px var(--edgeColorLowOpacity),
+    /* 1px blur                */ 0 0 1px var(--edgeColor);
 }
 
 /* Smooth 2px text outline */
-.text-outline-2 {
-  --outlineColor: rgb(0, 0, 0, 1);
-  --outlineColorLowOpacity: rgba(0, 0, 0, 0.2);
+.edge-outline-2 .message {
   text-shadow:
     /* 1px offset top          */
-    0 -1px var(--outlineColor),
-    /* 1px offset bottom       */ 0 1px var(--outlineColor),
-    /* 1px offset left         */ -1px 0 var(--outlineColor),
-    /* 1px offset right        */ 1px 0 var(--outlineColor),
-    /* 2px offset top          */ 0 -2px var(--outlineColor),
-    /* 2px offset bottom       */ 0 2px var(--outlineColor),
-    /* 2px offset left         */ -2px 0 var(--outlineColor),
-    /* 2px offset right        */ 2px 0 var(--outlineColor),
-    /* 1px offset top left     */ -1px -1px var(--outlineColor),
-    /* 1px offset top right    */ 1px -1px var(--outlineColor),
-    /* 1px offset bottom left  */ -1px 1px var(--outlineColor),
-    /* 1px offset bottom right */ 1px 1px var(--outlineColor),
-    /* 2px offset top left     */ -2px -2px var(--outlineColorLowOpacity),
-    /* 2px offset top right    */ 2px -2px var(--outlineColorLowOpacity),
-    /* 2px offset bottom left  */ -2px 2px var(--outlineColorLowOpacity),
-    /* 2px offset bottom right */ 2px 2px var(--outlineColorLowOpacity),
-    /* 1px blur                */ 0 0 1px var(--outlineColor),
-    /* 2px blur                */ 0 0 2px var(--outlineColor);
+    0 -1px var(--edgeColor),
+    /* 1px offset bottom       */ 0 1px var(--edgeColor),
+    /* 1px offset left         */ -1px 0 var(--edgeColor),
+    /* 1px offset right        */ 1px 0 var(--edgeColor),
+    /* 2px offset top          */ 0 -2px var(--edgeColor),
+    /* 2px offset bottom       */ 0 2px var(--edgeColor),
+    /* 2px offset left         */ -2px 0 var(--edgeColor),
+    /* 2px offset right        */ 2px 0 var(--edgeColor),
+    /* 1px offset top left     */ -1px -1px var(--edgeColor),
+    /* 1px offset top right    */ 1px -1px var(--edgeColor),
+    /* 1px offset bottom left  */ -1px 1px var(--edgeColor),
+    /* 1px offset bottom right */ 1px 1px var(--edgeColor),
+    /* 2px offset top left     */ -2px -2px var(--edgeColorLowOpacity),
+    /* 2px offset top right    */ 2px -2px var(--edgeColorLowOpacity),
+    /* 2px offset bottom left  */ -2px 2px var(--edgeColorLowOpacity),
+    /* 2px offset bottom right */ 2px 2px var(--edgeColorLowOpacity),
+    /* 1px blur                */ 0 0 1px var(--edgeColor),
+    /* 2px blur                */ 0 0 2px var(--edgeColor);
 }
 
 /**************
@@ -229,9 +225,9 @@
 
 @keyframes scroll {
   from {
-    left: var(--start);
+    transform: translateX(var(--start));
   }
   to {
-    left: var(--end);
+    transform: translateX(var(--end));
   }
 }

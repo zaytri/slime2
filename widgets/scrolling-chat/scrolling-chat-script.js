@@ -1,73 +1,103 @@
-// these colors are randomly assigned to a user if they don't have a chat color,
-// and are used by by the test messages
-// dark colors are automatically lightened
-const FALLBACK_USER_COLORS = [
-  '#FFFFFF', // white
-  '#FFC6FF', // light pink
-  '#FFADAD', // light red
-  '#FFD6A5', // light orange
-  '#FDFFB6', // light yellow
-  '#CAFFBF', // light green
-  '#9BF6FF', // light cyan
-  '#A0C4FF', // light blue
-  '#BDB2FF', // light purple
-  '#830044', // dark pink
-  '#6E0000', // dark red
-  '#854A02', // dark orange
-  '#987200', // dark yellow
-  '#115D00', // dark green
-  '#006974', // dark cyan
-  '#002560', // dark blue
-  '#3C0067', // dark purple
-  '#000000', // black
-]
+// the slime2:ready event is fired once
+// indicates that the slime2 global variable is ready to use
+addEventListener('slime2:ready', () => {
+  slime2.widget.loadPlatform('twitch')
+  slime2.setMaxEvents(100)
+  slime2.onEvent(event => {
+    switch (event.type) {
+      case 'message':
+        return onMessage(event.message)
+    }
+  })
+})
 
-let messages = []
-const userData = {}
+// this event is fired every time a widget setting is changed
+// use this to update the widget live, rather than the user having to refresh
+addEventListener('slime2:widget-data-update', () => {
+  // slime2.widget.getData() will always fetch the latest data
+  const data = slime2.widget.getData()
 
-// lower this if the message scrolling lags
-const maxMessages = 30
+  const { display, pronouns, textStyles } = data
 
-// speed in pixels per second
-const scrollingSpeed = 100
+  const eventList = $('#slime2-event-list').removeClass()
+
+  // display settings
+  slime2.setMaxEvents(display.max)
+  slime2.setEventDelay(display.delay * 1000)
+  if (display.hideBadges) eventList.addClass('hide-badges')
+  if (display.hideUser) eventList.addClass('hide-user')
+  if (display.emoteOnly) eventList.addClass('emote-only')
+  if (display.static) eventList.addClass('static-emotes')
+
+  // pronouns settings
+  eventList.addClass(`pronouns-${pronouns.display}`)
+
+  // text style settings
+  eventList
+    .addClass(`text-color-${textStyles.colorOption}`)
+    .addClass(`edge-${textStyles.edge}`)
+    .css({
+      '--font': `'${textStyles.font}'`,
+      '--fontSize': `${textStyles.size}px`,
+      '--fontWeight': textStyles.weight,
+      '--color': textStyles.color,
+      '--edgeColor': textStyles.edgeColor,
+      // 20% opacity of edgeColor
+      '--edgeColorLowOpacity': slime2.color
+        .mix('transparent', textStyles.edgeColor, 0.2, {
+          space: 'srgb',
+        })
+        .toString({ format: 'rgba' }),
+    })
+})
 
 /****************
  * Chat Handler *
  ****************/
 
-var slime2Chat = {
-  // gives you the data of a chat message and the function to delete it
-  onMessage: ({ message, deleteMessage }) => {
-    // extract the necessary data from the message
-    const { parts, user } = message
+function onMessage(message) {
+  if (!evaluateFilters(message)) return
 
-    // clone the main message template to insert the message data into
-    // the templates are all defined in the HTML file
-    const messageClone = cloneTemplate('message-template')
+  const { display } = slime2.widget.getData()
 
-    // create the elements for the user and message content within the clone
-    // this uses the element builder functions defined below
-    messageClone.find('.user').append(buildUser(user))
-    messageClone.find('.content').append(buildContent(parts))
+  if (
+    display.emoteOnly &&
+    !message.parts.some(part => part.type === 'emote' || part.type === 'cheer')
+  ) {
+    // Only Show Emotes is enabled and message contains zero emotes
+    return
+  }
 
-    let userColor = getUserColor(user)
-    const userColorBrightness = textBrightness(userColor)
+  // extract the necessary data from the message
+  const { parts, user } = message
 
-    // add user's name color and add class to determine name color brightness
-    messageClone
-      .find('.message')
-      .css('--userColor', userColor)
-      .addClass(userColorBrightness === 'dark' ? 'user-dark' : 'user-light')
+  // clone the main message template to insert the message data into
+  // the templates are all defined in the HTML file
+  const messageClone = $(slime2.cloneTemplate('message-template'))
 
-    // set position
-    const position = `${random(0, 50)}%`
-    messageClone
-      .find('.message')
-      .css(randomInteger(0, 1) ? { top: position } : { bottom: position })
+  // create the elements for the user and message content within the clone
+  // this uses the element builder functions defined below
+  messageClone.find('.user').append(buildUser(user))
+  messageClone.find('.content').append(buildContent(parts))
 
-    // defines what happens after the message has been fully rendered
-    // can be used to delete messages over time, get message dimensions, etc.
-    function callback(messageElement) {
+  // add user's name color
+  if (user.color) {
+    messageClone.find('.message').css({
+      '--userColorLight': slime2.color.light(user.color),
+      '--userColor': user.color,
+      '--userColorDark': slime2.color.dark(user.color),
+    })
+  }
+
+  // set position
+  const position = `${slime2.random.integer(0, window.innerHeight / 2)}px`
+  messageClone
+    .find('.message')
+    .css(slime2.random.boolean() ? { top: position } : { bottom: position })
+
+  return {
+    fragment: messageClone,
+    callback: messageElement => {
       /*******************
        * Scroll Handling *
        *******************/
@@ -75,7 +105,7 @@ var slime2Chat = {
       const windowWidth = $(window).width()
       const extraScrollDistance = 150
       const scrollAmount = windowWidth + messageWidth + extraScrollDistance
-      const scrollTime = (scrollAmount / scrollingSpeed) * 1000
+      const scrollTime = (scrollAmount / display.speed) * 1000
 
       $(messageElement)
         .css({
@@ -88,51 +118,8 @@ var slime2Chat = {
       setTimeout(() => {
         $(messageElement).addClass('hide')
       }, scrollTime)
-
-      /*******************
-       * Delete Handling *
-       *******************/
-
-      // keeping track of messages
-      messages.push({ ...message, delete: deleteMessage })
-
-      // when there's over X messages, delete the oldest one
-      // it'll lag if there's too many on screen
-      if (messages.length > maxMessages) {
-        const oldestMessage = messages.shift()
-        oldestMessage.delete()
-      }
-    }
-
-    // uncomment below to only show messages that contain emotes or cheers
-    // if (!parts.find(part => part.type === 'emote' || part.type === 'cheer')) {
-    //   return
-    // }
-
-    // return the message and the callback,
-    // which renders the messages and runs the callback function
-    return [messageClone, callback]
-  },
-
-  // handles when a message or messages have been deleted by a mod
-  onModDelete: ({ type, id }) => {
-    switch (type) {
-      case 'all': {
-        messages = []
-        break
-      }
-
-      case 'user': {
-        messages = messages.filter(message => message.user.id !== id)
-        break
-      }
-
-      case 'single': {
-        messages = messages.filter(message => message.id !== id)
-        break
-      }
-    }
-  },
+    },
+  }
 }
 
 /********************
@@ -143,7 +130,7 @@ var slime2Chat = {
 function buildUser(user) {
   const { displayName, userName, badges, pronouns } = user
 
-  const userClone = cloneTemplate('user-template')
+  const userClone = $(slime2.cloneTemplate('user-template'))
   userClone.find('.badges').append(buildBadges(badges))
 
   let name = displayName
@@ -183,7 +170,7 @@ function buildBadges(badges) {
   return badges.map(badge => {
     const { image } = badge
 
-    const badgeClone = cloneTemplate('badge-template')
+    const badgeClone = $(slime2.cloneTemplate('badge-template'))
     badgeClone.find('.badge').attr('src', image)
 
     return badgeClone
@@ -194,8 +181,11 @@ function buildBadges(badges) {
 function buildEmote(part) {
   const { images } = part.emote
 
-  const emoteClone = cloneTemplate('content-emote-template')
-  emoteClone.find('.emote').attr('src', images.default.x4)
+  const emoteClone = $(slime2.cloneTemplate('content-emote-template'))
+  emoteClone.find('.emote').css({
+    '--defaultEmoteImage': `url(${images.default.x4})`,
+    '--staticEmoteImage': `url(${images.static.x4})`,
+  })
 
   return emoteClone
 }
@@ -204,12 +194,12 @@ function buildEmote(part) {
 function buildCheer(part) {
   const { amount, color, images } = part.cheer
 
-  const cheerClone = cloneTemplate('content-cheer-template')
-  cheerClone.find('.emote').attr('src', images.default.x4)
-  cheerClone
-    .find('.cheer-amount')
-    .text(amount)
-    .css('color', getLightColor(color))
+  const cheerClone = $(slime2.cloneTemplate('content-cheer-template'))
+  cheerClone.find('.emote').css({
+    '--defaultEmoteImage': `url(${images.default.x4})`,
+    '--staticEmoteImage': `url(${images.static.x4})`,
+  })
+  cheerClone.find('.cheer-amount').text(amount)
 
   return cheerClone
 }
@@ -218,103 +208,101 @@ function buildCheer(part) {
 function buildText(part) {
   const { text } = part
 
-  const textClone = cloneTemplate('content-text-template')
+  const textClone = $(slime2.cloneTemplate('content-text-template'))
   textClone.find('.text').text(text)
 
   return textClone
 }
 
-/*******************
- * Color Functions *
- *******************/
+/***********
+ * Filters *
+ ***********/
 
-// gets the user's name color, if they chose a color
-// if they never chose one, assign a random color from DEFAULT_USER_COLORS
-function getUserColor(user) {
-  const { userName } = user
+function evaluateFilters(message) {
+  return (
+    evaluateBotFilters(message) &&
+    evaluateUserFilters(message) &&
+    evaluateMessageFilters(message)
+  )
+}
 
-  // get the stored user data from this session
-  let storedUserData = userData[userName]
+function evaluateBotFilters(message) {
+  const { botFilters } = slime2.widget.getData().filters
+  const { text, user } = message
 
-  // if this was the first chat from the user during this session, they
-  // don't have any stored data, so create new stored data for them
-  if (!storedUserData) {
-    // if user.color exists, use that
-    // otherwise get a random color from DEFAULT_USER_COLORS
-
-    let color = user.color
-    if (!color) {
-      color =
-        FALLBACK_USER_COLORS[randomInteger(0, FALLBACK_USER_COLORS.length - 1)]
-    }
-
-    storedUserData = {
-      color: getLightColor(color),
-    }
-
-    // store the user data so that the user will always have the same color
-    // userData[userName] = storedUserData
+  for (const prefix of botFilters.prefixes) {
+    if (text.startsWith(prefix)) return false
   }
 
-  return storedUserData.color
+  for (const name of botFilters.names) {
+    if (user.userName.toLowerCase() === name.toLowerCase()) return false
+  }
+
+  return true
 }
 
-function getLightColor(color) {
-  if (textBrightness(color) === 'light') return color
+function evaluateUserFilters(message) {
+  const { userFilters } = slime2.widget.getData().filters
+  const { user } = message
 
-  return Color.mix(color, 'white', 0.75, {
-    space: 'hsv',
-    outputSpace: 'srgb',
-  }).toString({
-    format: 'hex',
-  })
+  for (const name of userFilters.users) {
+    if (user.userName.toLowerCase() === name.toLowerCase()) return true
+  }
+
+  const typeMap = new Map(userFilters.types.map(type => [type, true]))
+
+  if (typeMap.get('all')) return true
+
+  const { roles } = user
+  if (typeMap.get('subs') && roles.subscriber) return true
+  if (typeMap.get('mods') && roles.moderator) return true
+  if (typeMap.get('vips') && roles.vip) return true
+  if (typeMap.get('artists') && roles.artist) return true
+
+  if (typeMap.get('followers')) {
+    const { followDate } = user
+    if (!followDate) return false
+
+    const minFollowTime = (userFilters.followHours || 0) * 60 * 60 * 1000
+    const userFollowTime = Date.now() - followDate.getTime()
+
+    return userFollowTime > minFollowTime
+  }
+
+  return false
 }
 
-// returns either 'light' or 'dark'
-// 'light' if the given text color has better readability on a black background
-// 'dark' if the given text color has better readability on a white background
-// https://colorjs.io/docs/contrast#accessible-perceptual-contrast-algorithm-apca
-function textBrightness(color) {
-  const textColor = new Color(color)
-  const blackBackground = new Color('#000000')
-  const whiteBackground = new Color('#FFFFFF')
+function evaluateMessageFilters(message) {
+  const { messageFilters } = slime2.widget.getData().filters
 
-  const darkContrast = Math.abs(blackBackground.contrastAPCA(textColor))
-  const lightContrast = Math.abs(whiteBackground.contrastAPCA(textColor))
+  for (const word of messageFilters.words) {
+    if (message.text.includes(word)) return false
+  }
 
-  return darkContrast > lightContrast ? 'light' : 'dark'
-}
+  const typeMap = new Map(messageFilters.types.map(type => [type, true]))
+  if (!typeMap.size) return true
 
-// returns either 'light' or 'dark'
-// 'light' if black text has better readability on the given background color
-// 'dark' if white text has better readability on the given background color
-// https://colorjs.io/docs/contrast#accessible-perceptual-contrast-algorithm-apca
-function backgroundBrightness(color) {
-  const backgroundColor = new Color(color)
-  const blackText = new Color('#000000')
-  const whiteText = new Color('#FFFFFF')
+  if (typeMap.get('text') && message.parts.some(part => part.type === 'text')) {
+    return false
+  }
 
-  const darkContrast = Math.abs(backgroundColor.contrastAPCA(whiteText))
-  const lightContrast = Math.abs(backgroundColor.contrastAPCA(blackText))
+  if (
+    typeMap.get('emote') &&
+    message.parts.some(part => part.type !== 'text')
+  ) {
+    return false
+  }
 
-  return darkContrast > lightContrast ? 'dark' : 'light'
-}
+  if (typeMap.get('first') && message.first) return false
 
-/********************
- * Helper Functions *
- ********************/
+  const { type } = message
+  if (typeMap.get('action') && type === 'action') return false
+  if (typeMap.get('cheer') && type === 'cheer') return false
+  if (typeMap.get('reply') && type === 'reply') return false
+  if (typeMap.get('highlight') && type === 'highlight') return false
+  if (typeMap.get('redeem') && type === 'redeem') return false
+  if (typeMap.get('resub') && type === 'resub') return false
+  if (typeMap.get('announcement') && type === 'announcement') return false
 
-// given an ID, clone the template and wrap it with jQuery
-function cloneTemplate(id) {
-  return $(document.getElementById(id).content.cloneNode(true))
-}
-
-// generate a random integer between min (included) and max (included)
-function randomInteger(min, max) {
-  return Math.floor(Math.random() * (max - min + 1)) + min
-}
-
-// generate a random number between min (included) and max (excluded)
-function random(min, max) {
-  return Math.random() * (max - min) + min
+  return true
 }
