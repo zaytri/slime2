@@ -21,7 +21,9 @@ const settings = [
   defineSetting(
     `DVD Bounce v1.0.0 by Zaytri (https://zaytri.com/)
 
-Questions and Support: https://forums.slime2.stream/threads/20/`,
+Questions and Support: https://forums.slime2.stream/threads/45/
+
+Rate and Review: https://forums.slime2.stream/resources/16/`,
     'title',
     'text-display',
   ),

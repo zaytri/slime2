@@ -1,7 +1,10 @@
 DVD Bounce v1.0.0
 
 Setup instructions can be found here: https://forums.slime2.stream/resources/setting-up-slime2-widgets.3/
-(Since this doesn't connect to Twitch, you don't need to make an account or download the key, just skip to the Widget Settings step)
+
+(Skip to the Widget Settings step, you don't need to make an account or download the key since this doesn't connect to Twitch)
+
+For custom image/video, make sure to add them to the assets folder before loading them in the settings!
 
 Terms of Use:
 - Do not claim this as your own or resell it
