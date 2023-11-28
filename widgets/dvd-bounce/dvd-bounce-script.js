@@ -66,18 +66,25 @@ addEventListener('slime2:widget-data-update', () => {
  * Physics *
  ***********/
 
+let previousTimeStamp = null
 const position = { x: -1, y: -1 }
 const velocity = { x: 0, y: 0 }
 
 function run() {
-  setInterval(update, 10) // 100 fps
+  window.requestAnimationFrame(update)
 }
 
-function update() {
+function update(currentTimestamp) {
+  if (previousTimeStamp) move(currentTimestamp - previousTimeStamp)
+  previousTimeStamp = currentTimestamp
+  window.requestAnimationFrame(update)
+}
+
+function move(timeElapsed) {
   const { width, height, speed } = slime2.widget.getData()
   if (!speed || !width || !height) return
 
-  const pixelsPerSecond = speed / 100
+  const pixelsMoved = (speed * timeElapsed) / 1000
   const boundingWidth = window.innerWidth
   const boundingHeight = window.innerHeight
 
@@ -105,12 +112,11 @@ function update() {
     velocity.y = -1
   }
 
-  position.x += velocity.x * pixelsPerSecond
-  position.y += velocity.y * pixelsPerSecond
+  position.x += velocity.x * pixelsMoved
+  position.y += velocity.y * pixelsMoved
 
   $('#dvd').css({
-    left: position.x,
-    top: position.y,
+    transform: `translate3d(${position.x}px, ${position.y}px, 0)`,
   })
 }
 
