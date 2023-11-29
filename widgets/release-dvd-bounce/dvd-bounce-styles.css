@@ -16,6 +16,14 @@ body {
   overflow: hidden;
 }
 
+#dvd-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 1000%;
+  width: 1000%;
+}
+
 #dvd {
   opacity: var(--opacity);
   position: absolute;

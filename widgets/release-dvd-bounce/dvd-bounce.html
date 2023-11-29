@@ -1,4 +1,4 @@
-<!-- DVD Bounce v1.0.0 by Zaytri -->
+<!-- DVD Bounce v1.0.1 by Zaytri -->
 <!-- Using slime2 version 1.1.1 -->
 
 <!doctype html>
@@ -12,7 +12,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <!-- title and favicon -->
-    <title>DVD Bounce v1.0.0</title>
+    <title>DVD Bounce v1.0.1</title>
     <link
       rel="icon"
       type="image/x-icon"
@@ -40,12 +40,14 @@
     HTML structure, slime2 inserts everything into main
   ------------------------------------------------------>
   <body>
-    <div id="dvd">
-      <image id="image" />
-      <video id="video" loop autoplay>
-        <source />
-      </video>
-      <p id="text"></p>
+    <div id="dvd-container">
+      <div id="dvd">
+        <image id="image" />
+        <video id="video" loop autoplay>
+          <source />
+        </video>
+        <p id="text"></p>
+      </div>
     </div>
     <main id="slime2-root"></main>
   </body>

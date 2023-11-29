@@ -19,7 +19,7 @@ function defineOptions(options) {
 
 const settings = [
   defineSetting(
-    `DVD Bounce v1.0.0 by Zaytri (https://zaytri.com/)
+    `DVD Bounce v1.0.1 by Zaytri (https://zaytri.com/)
 
 Questions and Support: https://forums.slime2.stream/threads/45/
 

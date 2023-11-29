@@ -1,4 +1,4 @@
-DVD Bounce v1.0.0
+DVD Bounce v1.0.1
 
 Setup instructions can be found here: https://forums.slime2.stream/resources/setting-up-slime2-widgets.3/
 
