@@ -1,5 +1,8 @@
 {
   "files.readonlyInclude": {
     "**/release*/*": true
+  },
+  "files.readonlyExclude": {
+    "**/release-animated-gradient/mask.html": true
   }
 }
