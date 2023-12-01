@@ -1,0 +1,20 @@
+#container {
+  --outerGlowInset: calc(var(--glowSize) * 2);
+  position: absolute;
+  inset: 0px;
+  border-radius: var(--borderRadius);
+  border: calc(var(--borderWidth) - 1px) solid transparent;
+  overflow: hidden;
+}
+
+#container::after {
+  content: '';
+  position: absolute;
+  inset: 0px;
+  background-color: white;
+}
+
+#container.glow-edge-outer,
+#container.glow-edge-both {
+  inset: var(--outerGlowInset);
+}
