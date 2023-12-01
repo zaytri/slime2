@@ -1,7 +1,3 @@
-// the slime2:ready event is fired once
-// indicates that the slime2 global variable is ready to use
-addEventListener('slime2:ready', () => {})
-
 // this event is fired every time a widget setting is changed
 // use this to update the widget live, rather than the user having to refresh
 addEventListener('slime2:widget-data-update', () => {
