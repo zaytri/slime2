@@ -1,5 +1,5 @@
 addEventListener('slime2:ready', () => {
-  slime2.widget.loadSettings('saved-data.js', [
+  slime2.widget.loadSettings('data-animated-gradient.js', [
     defineSetting(
       `Animated Gradient v1.0.0 by Zaytri (https://zaytri.com/)
 
