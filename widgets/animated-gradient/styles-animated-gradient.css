@@ -1,21 +1,33 @@
+body {
+  overflow: hidden;
+}
+
 #container {
-  --outerGlowInset: calc(var(--glowSize) * 2);
   --mask: linear-gradient(#000, #000), linear-gradient(#000, #000);
+  --maskClip: content-box, padding-box;
+  --outerGlowInset: calc(var(--glowSize) * 2);
   position: absolute;
   inset: 0px;
+  overflow: hidden;
 }
 
 #container.fill {
   --mask: none;
 }
 
-#container.glow-edge-outer {
-  mask-clip: content-box, padding-box;
+#container.glow-edge-outer,
+.gradient {
   mask-image: var(--mask);
-  border-radius: calc(var(--borderRadius) + var(--outerGlowInset));
-  padding: calc(var(--outerGlowInset) + var(--borderWidth));
+  mask-clip: var(--maskClip);
   mask-composite: exclude;
+  -webkit-mask-image: var(--mask);
+  -webkit-mask-clip: var(--maskClip);
   -webkit-mask-composite: destination-out;
+}
+
+#container.glow-edge-outer {
+  border-radius: calc(var(--borderRadius) + var(--outerGlowInset));
+  padding: calc(var(--borderWidth) + var(--outerGlowInset));
 }
 
 #container.glow-edge-inner {
@@ -39,12 +51,8 @@
   position: absolute;
   inset: 0;
   overflow: hidden;
-  mask-clip: content-box, padding-box;
-  mask-image: var(--mask);
   border-radius: var(--borderRadius);
   padding: var(--borderWidth);
-  mask-composite: exclude;
-  -webkit-mask-composite: destination-out;
 }
 
 .gradient::after {
