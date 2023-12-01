@@ -1,0 +1,152 @@
+body {
+  overflow: hidden;
+}
+
+#container {
+  --mask: linear-gradient(#000, #000), linear-gradient(#000, #000);
+  --maskClip: content-box, padding-box;
+  --outerGlowInset: calc(var(--glowSize) * 2);
+  position: absolute;
+  inset: 0px;
+  overflow: hidden;
+}
+
+#container.fill {
+  --mask: none;
+}
+
+#container.glow-edge-outer,
+.gradient {
+  mask-image: var(--mask);
+  mask-clip: var(--maskClip);
+  mask-composite: exclude;
+  -webkit-mask-image: var(--mask);
+  -webkit-mask-clip: var(--maskClip);
+  -webkit-mask-composite: destination-out;
+}
+
+#container.glow-edge-outer {
+  border-radius: calc(var(--borderRadius) + var(--outerGlowInset));
+  padding: calc(var(--borderWidth) + var(--outerGlowInset));
+}
+
+#container.glow-edge-inner {
+  overflow: hidden;
+  border-radius: var(--borderRadius);
+}
+
+.glow {
+  position: absolute;
+  inset: 0;
+  filter: blur(var(--glowSize));
+  opacity: var(--glowOpacity);
+}
+
+.glow-zero .glow {
+  filter: none;
+  visibility: hidden;
+}
+
+.gradient {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: var(--borderRadius);
+  padding: var(--borderWidth);
+}
+
+.gradient::after {
+  content: '';
+  position: absolute;
+  animation: var(--speed) linear infinite;
+}
+
+.animation-rotate .gradient::after {
+  inset: min(-50vw, -50vh);
+  background-image: conic-gradient(from 0deg, var(--rotateColors));
+  animation-name: rotate;
+}
+
+:is(
+    .animation-vertical,
+    .animation-horizontal,
+    .animation-diagonal,
+    .animation-diagonal-alt
+  )
+  .gradient::after {
+  top: 0;
+  left: 0;
+  --linearBackgroundSize: calc((var(--colorCount) + 1) * 100%);
+  --translateAmount: calc(
+    (var(--colorCount) / (var(--colorCount) + 1)) * -100%
+  );
+  height: var(--linearBackgroundSize);
+  width: var(--linearBackgroundSize);
+  background-image: linear-gradient(var(--angle), var(--linearColors));
+}
+
+.animation-vertical .gradient::after {
+  --angle: to bottom;
+  animation-name: vertical;
+}
+
+.animation-horizontal .gradient::after {
+  --angle: to right;
+  animation-name: horizontal;
+}
+
+.animation-diagonal .gradient::after {
+  --angle: to bottom right;
+  animation-name: diagonal;
+}
+
+.animation-diagonal-alt .gradient::after {
+  --angle: to top right;
+  animation-name: diagonal-alt;
+}
+
+.animation-reverse .gradient::after {
+  animation-direction: reverse;
+}
+
+.colors-1 .gradient::after {
+  animation: none;
+}
+
+:is(.glow-edge-outer, .glow-edge-both) .outer-glow-inset {
+  inset: var(--outerGlowInset);
+}
+
+@keyframes vertical {
+  to {
+    transform: translate3d(0, var(--translateAmount), 0);
+  }
+}
+
+@keyframes horizontal {
+  to {
+    transform: translate3d(var(--translateAmount), 0, 0);
+  }
+}
+
+@keyframes diagonal {
+  to {
+    transform: translate3d(var(--translateAmount), var(--translateAmount), 0);
+  }
+}
+
+@keyframes diagonal-alt {
+  from {
+    transform: translate3d(0, var(--translateAmount), 0);
+  }
+
+  to {
+    transform: translate3d(var(--translateAmount), 0, 0);
+  }
+}
+
+@keyframes rotate {
+  to {
+    transform: rotate(360deg);
+  }
+}
