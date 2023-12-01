@@ -1,3 +1,9 @@
+body {
+  /* OBS Custom CSS overrides this with transparency, which is what we want */
+  /* background black just helps to see it in a browser */
+  background-color: black;
+}
+
 #container {
   --outerGlowInset: calc(var(--glowSize) * 2);
   position: absolute;
