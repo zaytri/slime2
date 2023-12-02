@@ -1,4 +1,4 @@
-Animated Gradient Frame v2.0.0
+Animated Gradient Frame v2.0.1
 
 Setup instructions can be found here: https://forums.slime2.stream/resources/setting-up-slime2-widgets.3/
 

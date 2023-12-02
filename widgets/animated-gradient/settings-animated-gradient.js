@@ -1,11 +1,11 @@
 addEventListener('slime2:ready', () => {
   slime2.widget.loadSettings('data-animated-gradient.js', [
     defineSetting(
-      `Animated Gradient v1.0.0 by Zaytri (https://zaytri.com/)
+      `Animated Gradient v2.0.1 by Zaytri (https://zaytri.com/)
 
-  Questions and Support: https://forums.slime2.stream/threads/45/
+  Questions and Support: https://forums.slime2.stream/threads/51/
 
-  Rate and Review: https://forums.slime2.stream/resources/16/`,
+  Rate and Review: https://forums.slime2.stream/resources/17/`,
       'title',
       'text-display',
     ),
