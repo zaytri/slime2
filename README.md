@@ -41,21 +41,23 @@ It's not necessary to build widgets using this, but if you do then you get the a
     npm install
     ```
 
-5.  In the `widgets` folder, create a copy of the `simple-chat` folder. Rename it and the `simple-chat.*` files to the name of your custom widget. The folder structure should look like this:
+5.  In the `widgets` folder, create a copy of the `slime-chat` folder. Rename it and the `slime-chat` files to the name of your custom widget. The folder structure should look like this:
 
     ```
     ...
     📁 widgets
       \_📁 custom-widget
-         \_📄 custom-widget.css
-         \_📄 custom-widget.html
-         \_📄 custom-widget.js
+         \_📄 overlay-custom-widget.html
          \_📄 README.txt
-      \_📁 simple-chat
+         \_📄 script-custom-widget.js
+         \_📄 settings-custom-widget.js
+         \_📄 styles-custom-widget.css
+      \_📁 slime-chat
+         \_📄 overlay-slime-chat.html
          \_📄 README.txt
-         \_📄 simple-chat.css
-         \_📄 simple-chat.html
-         \_📄 simple-chat.js
+         \_📄 script-slime-chat.js
+         \_📄 settings-custom-widget.js
+         \_📄 styles-slime-chat.css
     ...
     ```
 
@@ -79,27 +81,30 @@ It's not necessary to build widgets using this, but if you do then you get the a
     npm run build:widget custom-widget
     ```
 
-10. This will create a new `widgets/release-*` folder using the name of your widget, which will look like this:
+10. This will create a new `widgets/release/custom-widget` folder using the name of your widget, which will look like this:
 
     ```
     ...
     📁 widgets
-      \_📁 custom-widget
-         \_📁 release-custom-widget
-            \_📄 custom-widget.css
-            \_📄 custom-widget.html
-            \_📄 custom-widget.js
+      \_📁 release
+         \_📁 custom-widget
+            \_📄 overlay-custom-widget.html
             \_📄 README.txt
+            \_📄 script-custom-widget.js
+            \_📄 settings-custom-widget.js
+            \_📄 styles-custom-widget.css
     ...
     ```
 
 - This will automatically update the HTML file to include the JS and CSS of the repo's version of slime2, replaces all instances of `{version}` with the slime2 version number, and replaces all instances of `{widget}` with your widget name.
 - This will also automatically delete any `SLIME2_*_KEY.js` files, since they shouldn't be included in a public build.
 
-11. Zip all of the `release-*` files and name the `.zip` whatever you want. I would recommend something like `Custom-Chat-1.0.0.zip`. Whenever you make a new update, update that version number accordingly!
+11. Zip all of the `release/custom-widget` files and name the `.zip` whatever you want. I would recommend something like `Custom Widget 1.0.0.zip`. Whenever you make a new update, update that version number accordingly!
 
 12. Distribute that `.zip` file however you want! And if you just want to use your widget yourself, copy all of those files into a separate folder, copy in the `SLIME2_*_KEY*.js` file that you already downloaded from https://slime2.stream/account, and load your HTML file into a browser source in OBS as a local file!
 
+    > I personally recommend distributing via Ko-fi, because anyone who downloads/buys something from your shop there will automatically follow you, they'll always know when you put a new item into your shop, you can send a notice to all your followers when you've made an update, and buyers will always have access to the latest file! (Which doesn't happen on Etsy, where buyers can only download the file that was there at the time that they bought it.)
+
 13. **Bonus Tip**: Use the `widgets` folder itself as a git repo to easily track and version control your own widget development!
 
-14. **Bonus Tip 2**: If you create a `widgets-private` folder, you can use the commands `npm run private` and `npm run build:private` instead of `npm run widget` and `npm run build:widget`, allowing you to create widgets in there that are ignored by git.
+14. **Bonus Tip 2**: If you create a `widgets-private` folder, you can use the commands `npm run private` and `npm run build:private` instead of `npm run widget` and `npm run build:widget`, allowing you to create widgets in there that are ignored by git. You can use that folder as a private repo as well!

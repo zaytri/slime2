@@ -24,7 +24,7 @@ const entryFileNames = 'slime2.js'
 // https://vitejs.dev/config/
 export default defineConfig(({ command, mode }) => {
   let publicRoot = 'widgets'
-  let widget = 'simple-chat'
+  let widget = 'slime-chat'
   let outDir = 'release'
 
   const widgetMode = ['debug', 'production', 'development'].every(
@@ -39,11 +39,11 @@ export default defineConfig(({ command, mode }) => {
       widget = mode
     }
 
-    outDir = `${publicRoot}/release-${widget}`
+    outDir = `${publicRoot}/release/${widget}`
   }
 
   const publicDir = `${publicRoot}/${widget}`
-  const entry = `${publicDir}/${widget}.html`
+  const entry = `${publicDir}/overlay-${widget}.html`
 
   const plugins = [react(), tsconfigPaths()]
 

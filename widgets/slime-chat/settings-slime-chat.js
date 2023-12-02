@@ -1,10 +1,10 @@
 // the slime2:ready event is fired once
 // indicates that the slime2 global variable is ready to use
 addEventListener('slime2:ready', () => {
-  slime2.widget.loadSettings('simple-chat-data.js', [
+  slime2.widget.loadSettings('data-slime-chat.js', [
     defineSetting(
       [
-        'Simple Chat v3.0.1 by Zaytri: https://zaytri.com/',
+        'Slime Chat v3.0.2 by Zaytri: https://zaytri.com/',
         '',
         'Questions and Support: https://forums.slime2.stream/threads/20/',
       ].join('\n'),
