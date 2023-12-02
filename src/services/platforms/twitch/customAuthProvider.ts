@@ -14,7 +14,7 @@ export class CustomAuthProvider implements AuthProvider {
   private readonly _clientId: string = auth.twitch.clientId
   private readonly _scopes: string[] = auth.twitch.scopes
   private readonly _accessToken: AccessToken
-  private readonly _key: string
+  private _key: string
 
   constructor(accessToken: string = '', key: string = '') {
     this._accessToken = {
@@ -25,6 +25,18 @@ export class CustomAuthProvider implements AuthProvider {
       obtainmentTimestamp: Date.now(),
     }
     this._key = key
+  }
+
+  setAccessToken(accessToken: string = '') {
+    if (accessToken && !this._accessToken.accessToken) {
+      this._accessToken.accessToken = accessToken
+    }
+  }
+
+  setKey(key: string = '') {
+    if (key && !this._key) {
+      this._key = key
+    }
   }
 
   get clientId(): string {
@@ -39,12 +51,7 @@ export class CustomAuthProvider implements AuthProvider {
     _user: UserIdResolvable,
     ...scopeSets: (string[] | undefined)[]
   ): Promise<AccessTokenWithUserId | null> {
-    try {
-      return this._getAccessToken(scopeSets)
-    } catch {
-      // access token invalid, refresh it
-      return this.refreshAccessTokenForUser()
-    }
+    return this._getAccessToken(scopeSets)
   }
 
   async getAnyAccessToken(): Promise<AccessTokenMaybeWithUserId> {
@@ -52,9 +59,13 @@ export class CustomAuthProvider implements AuthProvider {
   }
 
   async refreshAccessTokenForUser(): Promise<AccessTokenWithUserId> {
+    console.info('Refreshing authorization...')
+
     const accessToken = await getAccessToken('twitch', this._key)
     this._accessToken.accessToken = accessToken
     this._accessToken.obtainmentTimestamp = Date.now()
+
+    console.info('Reauthorized!')
 
     return this._getAccessToken()
   }
@@ -62,18 +73,22 @@ export class CustomAuthProvider implements AuthProvider {
   private async _getAccessToken(
     requestedScopeSets?: Array<string[] | undefined>,
   ): Promise<AccessTokenWithUserId> {
-    this._checkScopes(requestedScopeSets)
+    try {
+      this._checkScopes(requestedScopeSets)
 
-    const {
-      [rawDataSymbol]: { expires_in: expiresIn },
-      userId,
-    } = await getTokenInfo(this._accessToken.accessToken, this._clientId)
+      const {
+        [rawDataSymbol]: { expires_in: expiresIn },
+        userId,
+      } = await getTokenInfo(this._accessToken.accessToken, this._clientId)
 
-    this._accessToken.expiresIn = expiresIn || null
+      this._accessToken.expiresIn = expiresIn || null
 
-    return {
-      ...this._accessToken,
-      userId: userId!,
+      return {
+        ...this._accessToken,
+        userId: userId!,
+      }
+    } catch {
+      return await this.refreshAccessTokenForUser()
     }
   }
 
