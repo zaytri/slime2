@@ -66,7 +66,6 @@ const displaySettings = defineSetting('Display', 'display', 'group', {
       description:
         'When enabled, badges, username, and pronouns will be hidden.',
     }),
-
     defineSetting('Emotes Only', 'emoteOnly', 'boolean-input', {
       defaultValue: false,
       description:
