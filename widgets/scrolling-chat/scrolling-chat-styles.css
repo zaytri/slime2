@@ -6,13 +6,6 @@
  * slime2 containers *
  *********************/
 
-/* Container for the slime2 system */
-#slime2-root {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-}
-
 /* Container for the chat message list from slime2 */
 #slime2-event-list {
   --fontSize: 24px;

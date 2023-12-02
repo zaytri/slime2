@@ -5,13 +5,6 @@
  * slime2 containers *
  *********************/
 
-/* Container for the slime2 system */
-#slime2-root {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-}
-
 /* Container for the renderable events from slime2 */
 #slime2-event-list {
   --fontName: Nunito;
