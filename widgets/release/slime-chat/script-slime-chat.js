@@ -1,7 +1,3 @@
-let staticEmotes = false
-let soundAudio = null
-let soundVolume = 50
-
 // the slime2:ready event is fired once
 // indicates that the slime2 global variable is ready to use
 addEventListener('slime2:ready', () => {
@@ -29,10 +25,13 @@ addEventListener('slime2:widget-data-update', () => {
     emotes,
     badges,
     pronouns,
-    sound,
+    delay,
   } = data
 
   const eventList = $('#slime2-event-list').removeClass()
+
+  // delay settings
+  slime2.setEventDelay(delay.amount * 1000)
 
   // disappear settings
   slime2.setMaxEvents(disappear.max)
@@ -47,18 +46,36 @@ addEventListener('slime2:widget-data-update', () => {
   )
 
   // emote settings
-  staticEmotes = emotes.static
-  if (emotes.dynamic) eventList.addClass('dynamic-emote-sizes')
+  if (emotes.dynamic)
+    eventList.addClass('dynamic-emote-sizes').css({
+      '--emoteMedium': `${emotes.medium}px`,
+      '--emoteLarge': `${emotes.large}px`,
+    })
 
   // alignment settings
   eventList.addClass(`${alignment.direction}-${alignment.corner}`)
 
   // text style settings
-  eventList.addClass(`text-${textStyles.edge}`).css({
-    '--fontName': `'${textStyles.font}'`,
-    '--fontSize': `${textStyles.size}px`,
-    '--fontWeight': textStyles.weight,
-  })
+  eventList
+    .addClass([
+      `text-edge-${textStyles.edge}`,
+      `text-color-${textStyles.textColorOption}`,
+      `username-color-${textStyles.usernameColorOption}`,
+    ])
+    .css({
+      '--fontName': `'${textStyles.font}'`,
+      '--fontSize': `${textStyles.size}px`,
+      '--fontWeight': textStyles.weight,
+      '--textColor': textStyles.textColor,
+      '--usernameColor': textStyles.usernameColor,
+      '--edgeColor': textStyles.edgeColor,
+      // 20% opacity of edgeColor
+      '--edgeColorLowOpacity': slime2.color
+        .mix('transparent', textStyles.edgeColor, 0.2, {
+          space: 'srgb',
+        })
+        .toString({ format: 'rgba' }),
+    })
 
   // badge settings
   if (!badges.display) eventList.addClass('hide-badges')
@@ -68,10 +85,6 @@ addEventListener('slime2:widget-data-update', () => {
 
   // pronouns settings
   eventList.addClass(`pronouns-${pronouns.display}`)
-
-  // sound effect settings
-  soundAudio = sound.audio
-  soundVolume = sound.volume
 })
 
 /****************
@@ -80,7 +93,7 @@ addEventListener('slime2:widget-data-update', () => {
 
 function onMessage(message) {
   if (!evaluateFilters(message)) return
-  const { animations } = slime2.widget.getData()
+  const { animations, sound } = slime2.widget.getData()
 
   // extract the necessary data from the message
   const { parts, user } = message
@@ -98,11 +111,11 @@ function onMessage(message) {
   messageClone.find('.message').addClass(`animation-enter-${animations.enter}`)
 
   // add user's name color
-  if (user.color) {
-    messageClone
-      .find('.user')
-      .css('--userColor', slime2.color.light(user.color))
-  }
+  messageClone.find('.message').css({
+    '--userColor': user.color,
+    '--userColorLight': slime2.color.light(user.color),
+    '--userColorDark': slime2.color.dark(user.color),
+  })
 
   // set emote size
   const emoteSize = calculateEmoteSize(parts)
@@ -112,10 +125,11 @@ function onMessage(message) {
   return {
     fragment: messageClone,
     callback: () => {
-      if (soundAudio) {
-        const sound = new Audio(soundAudio)
-        sound.volume = soundVolume / 100
-        sound.play()
+      // sound effect
+      if (sound.audio) {
+        const audio = new Audio(sound.audio)
+        audio.volume = sound.volume / 100
+        audio.play()
       }
     },
   }
@@ -178,24 +192,26 @@ function buildBadges(badges) {
 
 // insert in the emote image
 function buildEmote(part) {
+  const { emotes } = slime2.widget.getData()
   const { images } = part.emote
 
   const emoteClone = $(slime2.cloneTemplate('content-emote-template'))
   emoteClone
     .find('.emote')
-    .attr('src', staticEmotes ? images.static.x4 : images.default.x4)
+    .attr('src', emotes.static ? images.static.x4 : images.default.x4)
 
   return emoteClone
 }
 
 // insert in the cheermote image and cheer amount
 function buildCheer(part) {
+  const { emotes } = slime2.widget.getData()
   const { amount, color, images } = part.cheer
 
   const cheerClone = $(slime2.cloneTemplate('content-cheer-template'))
   cheerClone
     .find('.emote')
-    .attr('src', staticEmotes ? images.static.x4 : images.default.x4)
+    .attr('src', emotes.static ? images.static.x4 : images.default.x4)
   cheerClone
     .find('.cheer-amount')
     .text(amount)

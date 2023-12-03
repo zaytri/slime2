@@ -11,7 +11,7 @@
   --fontSize: 16px;
   --fontWeight: 800;
   --badgeSize: 24px;
-  font-family: var(--fontName), Helvetica, Arial, sans-serif;
+  font-family: var(--fontName), Nunito, Helvetica, Arial, sans-serif;
   font-weight: var(--fontWeight);
   font-size: var(--fontSize);
   display: flex;
@@ -43,6 +43,18 @@
 .user {
   padding: 5px;
   border-radius: 6px;
+  color: var(--usernameColor);
+}
+
+.username-color-user-light .user {
+  color: var(--userColorLight);
+}
+
+.username-color-user-dark .user {
+  color: var(--userColorDark);
+}
+
+.username-color-user .user {
   color: var(--userColor);
 }
 
@@ -106,8 +118,11 @@
   overflow-wrap: anywhere;
 }
 
-.emote,
-.cheer {
+.text {
+  color: var(--textColor);
+}
+
+.emote {
   height: 1.75em;
   max-height: 112px;
   display: inline-block;
@@ -121,13 +136,13 @@
  ***********************/
 
 .dynamic-emote-sizes .emote-2 .emote {
-  height: 3.5em;
+  height: var(--emoteMedium);
 }
 
 .dynamic-emote-sizes .emote-4 .emote {
   display: block;
   margin: 5px;
-  height: 112px;
+  height: var(--emoteLarge);
 }
 
 /*******************************************************
@@ -188,63 +203,59 @@
  * Text Edge Styles *
  ********************/
 
-.text-bottom-shadow-1 .message {
-  text-shadow: 0 1px black;
+.text-edge-bottom-shadow-1 .message {
+  text-shadow: 0 1px var(--edgeColor);
 }
 
-.text-bottom-shadow-2 .message {
-  text-shadow: 0 2px black;
+.text-edge-bottom-shadow-2 .message {
+  text-shadow: 0 2px var(--edgeColor);
 }
 
-.text-bottom-right-shadow-1 .message {
-  text-shadow: 1px 1px black;
+.text-edge-bottom-right-shadow-1 .message {
+  text-shadow: 1px 1px var(--edgeColor);
 }
 
-.text-bottom-right-shadow-2 .message {
-  text-shadow: 2px 2px black;
+.text-edge-bottom-right-shadow-2 .message {
+  text-shadow: 2px 2px var(--edgeColor);
 }
 
 /* Smooth 1px text outline */
-.text-outline-1 .message {
-  --outlineColor: rgb(0, 0, 0);
-  --outlineColorLowOpacity: rgba(0, 0, 0, 0.2);
+.text-edge-outline-1 .message {
   text-shadow:
     /* 1px offset top          */
-    0 -1px var(--outlineColor),
-    /* 1px offset bottom       */ 0 1px var(--outlineColor),
-    /* 1px offset left         */ -1px 0 var(--outlineColor),
-    /* 1px offset right        */ 1px 0 var(--outlineColor),
-    /* 1px offset top left     */ -1px -1px var(--outlineColorLowOpacity),
-    /* 1px offset top right    */ 1px -1px var(--outlineColorLowOpacity),
-    /* 1px offset bottom left  */ -1px 1px var(--outlineColorLowOpacity),
-    /* 1px offset bottom right */ 1px 1px var(--outlineColorLowOpacity),
-    /* 1px blur                */ 0 0 1px var(--outlineColor);
+    0 -1px var(--edgeColor),
+    /* 1px offset bottom       */ 0 1px var(--edgeColor),
+    /* 1px offset left         */ -1px 0 var(--edgeColor),
+    /* 1px offset right        */ 1px 0 var(--edgeColor),
+    /* 1px offset top left     */ -1px -1px var(--edgeColorLowOpacity),
+    /* 1px offset top right    */ 1px -1px var(--edgeColorLowOpacity),
+    /* 1px offset bottom left  */ -1px 1px var(--edgeColorLowOpacity),
+    /* 1px offset bottom right */ 1px 1px var(--edgeColorLowOpacity),
+    /* 1px blur                */ 0 0 1px var(--edgeColor);
 }
 
 /* Smooth 2px text outline */
-.text-outline-2 .message {
-  --outlineColor: rgb(0, 0, 0);
-  --outlineColorLowOpacity: rgba(0, 0, 0, 0.2);
+.text-edge-outline-2 .message {
   text-shadow:
     /* 1px offset top          */
-    0 -1px var(--outlineColor),
-    /* 1px offset bottom       */ 0 1px var(--outlineColor),
-    /* 1px offset left         */ -1px 0 var(--outlineColor),
-    /* 1px offset right        */ 1px 0 var(--outlineColor),
-    /* 2px offset top          */ 0 -2px var(--outlineColor),
-    /* 2px offset bottom       */ 0 2px var(--outlineColor),
-    /* 2px offset left         */ -2px 0 var(--outlineColor),
-    /* 2px offset right        */ 2px 0 var(--outlineColor),
-    /* 1px offset top left     */ -1px -1px var(--outlineColor),
-    /* 1px offset top right    */ 1px -1px var(--outlineColor),
-    /* 1px offset bottom left  */ -1px 1px var(--outlineColor),
-    /* 1px offset bottom right */ 1px 1px var(--outlineColor),
-    /* 2px offset top left     */ -2px -2px var(--outlineColorLowOpacity),
-    /* 2px offset top right    */ 2px -2px var(--outlineColorLowOpacity),
-    /* 2px offset bottom left  */ -2px 2px var(--outlineColorLowOpacity),
-    /* 2px offset bottom right */ 2px 2px var(--outlineColorLowOpacity),
-    /* 1px blur                */ 0 0 1px var(--outlineColor),
-    /* 2px blur                */ 0 0 2px var(--outlineColor);
+    0 -1px var(--edgeColor),
+    /* 1px offset bottom       */ 0 1px var(--edgeColor),
+    /* 1px offset left         */ -1px 0 var(--edgeColor),
+    /* 1px offset right        */ 1px 0 var(--edgeColor),
+    /* 2px offset top          */ 0 -2px var(--edgeColor),
+    /* 2px offset bottom       */ 0 2px var(--edgeColor),
+    /* 2px offset left         */ -2px 0 var(--edgeColor),
+    /* 2px offset right        */ 2px 0 var(--edgeColor),
+    /* 1px offset top left     */ -1px -1px var(--edgeColor),
+    /* 1px offset top right    */ 1px -1px var(--edgeColor),
+    /* 1px offset bottom left  */ -1px 1px var(--edgeColor),
+    /* 1px offset bottom right */ 1px 1px var(--edgeColor),
+    /* 2px offset top left     */ -2px -2px var(--edgeColorLowOpacity),
+    /* 2px offset top right    */ 2px -2px var(--edgeColorLowOpacity),
+    /* 2px offset bottom left  */ -2px 2px var(--edgeColorLowOpacity),
+    /* 2px offset bottom right */ 2px 2px var(--edgeColorLowOpacity),
+    /* 1px blur                */ 0 0 1px var(--edgeColor),
+    /* 2px blur                */ 0 0 2px var(--edgeColor);
 }
 
 /**************
