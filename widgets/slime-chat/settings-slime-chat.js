@@ -4,16 +4,17 @@ addEventListener('slime2:ready', () => {
   slime2.widget.loadSettings('data-slime-chat.js', [
     defineSetting(
       [
-        'Slime Chat v3.0.2 by Zaytri: https://zaytri.com/',
+        'Slime Chat v3.1.0 by Zaytri: https://zaytri.com/',
         '',
         'Questions and Support: https://forums.slime2.stream/threads/20/',
       ].join('\n'),
       'title',
       'text-display',
     ),
+    alignmentSettings,
     animationSettings,
     badgeSettings,
-    alignmentSettings,
+    delaySettings,
     disappearingSettings,
     emoteSettings,
     filterSettings,
@@ -24,37 +25,40 @@ addEventListener('slime2:ready', () => {
 })
 
 /************************
- * Settings Definitions *
+ * Setting Definitions *
  ************************/
 
 function defineSetting(label, id, type, options) {
   return { label, id, type, ...options }
 }
 
-const alignmentSettings = defineSetting(
-  'Chat Alignment',
-  'alignment',
-  'group',
-  {
-    settings: [
-      defineSetting('Direction', 'direction', 'select-input', {
-        defaultValue: 'vertical',
-        options: ['Vertical', 'Horizontal'].map(label => {
-          return { label, value: label.toLowerCase() }
-        }),
-      }),
-      defineSetting('Corner', 'corner', 'select-input', {
-        defaultValue: 'bottom-left',
-        placeholder: 'Command prefix',
-        options: ['Top Left', 'Top Right', 'Bottom Left', 'Bottom Right'].map(
-          label => {
-            return { label, value: label.replaceAll(' ', '-').toLowerCase() }
-          },
-        ),
-      }),
-    ],
-  },
-)
+function defineOptions(options) {
+  return options.map(option => {
+    const [label, value] = option
+    return { label, value }
+  })
+}
+
+const alignmentSettings = defineSetting('Alignment', 'alignment', 'group', {
+  settings: [
+    defineSetting('Direction', 'direction', 'select-input', {
+      defaultValue: 'vertical',
+      options: defineOptions(
+        ['Vertical', 'Horizontal'].map(label => [label, label.toLowerCase()]),
+      ),
+    }),
+    defineSetting('Corner', 'corner', 'select-input', {
+      defaultValue: 'bottom-left',
+      placeholder: 'Command prefix',
+      options: defineOptions(
+        ['Top Left', 'Top Right', 'Bottom Left', 'Bottom Right'].map(label => [
+          label,
+          label.replaceAll(' ', '-').toLowerCase(),
+        ]),
+      ),
+    }),
+  ],
+})
 
 const disappearingSettings = defineSetting(
   'Disappearing',
@@ -81,6 +85,17 @@ const disappearingSettings = defineSetting(
   },
 )
 
+const delaySettings = defineSetting('Delay', 'delay', 'group', {
+  settings: [
+    defineSetting('Message Delay (seconds)', 'amount', 'number-input', {
+      defaultValue: 0,
+      min: 0,
+      step: 1,
+      description: 'Adds a delay before chat messages appear.',
+    }),
+  ],
+})
+
 const emoteSettings = defineSetting('Emotes', 'emotes', 'group', {
   settings: [
     defineSetting('Static emotes', 'static', 'boolean-input', {
@@ -88,11 +103,37 @@ const emoteSettings = defineSetting('Emotes', 'emotes', 'group', {
       description:
         'When enabled, all emotes will be static instead of animated.',
     }),
-    defineSetting('Dynamic emote sizing', 'dynamic', 'boolean-input', {
+    defineSetting('Use dynamic emote sizing', 'dynamic', 'boolean-input', {
       defaultValue: true,
       description:
         'When enabled, emotes are larger when the chat message only contains emotes.',
     }),
+    defineSetting(
+      'Dynamic size for multiple emotes (px)',
+      'medium',
+      'number-input',
+      {
+        defaultValue: 56,
+        slider: true,
+        min: 28,
+        max: 112,
+        step: 1,
+        description: 'When a message only contains multiple emotes.',
+      },
+    ),
+    defineSetting(
+      'Dynamic size for single emote (px)',
+      'large',
+      'number-input',
+      {
+        defaultValue: 112,
+        slider: true,
+        min: 28,
+        max: 112,
+        step: 1,
+        description: 'When a message only contains a single emote.',
+      },
+    ),
     defineSetting(
       'Dynamic emote sizing example',
       'dynamicPreview',
@@ -102,7 +143,7 @@ const emoteSettings = defineSetting('Emotes', 'emotes', 'group', {
         alt: [
           'Three chat messages.',
           "The first one contains text and an emote, showing the emote at it's normal size.",
-          'The second one contains 2 emotes, showing the emotes at a larger size.',
+          'The second one contains 3 emotes, showing the emotes at a larger size.',
           "The third one contains a single emote, showing the emote at it's largest size.",
         ].join('\n'),
       },
@@ -132,9 +173,12 @@ const pronounsSettings = defineSetting('Pronouns', 'pronouns', 'group', {
     ),
     defineSetting('Pronouns Display', 'display', 'select-input', {
       defaultValue: 'lowercase',
-      options: ['Lowercase', 'Capitalize', 'Uppercase', 'Hidden'].map(label => {
-        return { label, value: label.toLowerCase() }
-      }),
+      options: defineOptions(
+        ['Lowercase', 'Capitalize', 'Uppercase', 'Hidden'].map(label => [
+          label,
+          label.toLowerCase(),
+        ]),
+      ),
       description: [
         'Examples:',
         '- Lowercase: she/her',
@@ -177,14 +221,14 @@ const userFilterSettings = defineSetting(
         {
           multiple: true,
           defaultValue: ['all', 'subs', 'mods', 'vips', 'followers', 'artists'],
-          options: [
-            { label: 'Everyone', value: 'all' },
-            { label: 'Followers', value: 'followers' },
-            { label: 'Subscribers', value: 'subs' },
-            { label: 'Moderators', value: 'mods' },
-            { label: 'VIPs', value: 'vips' },
-            { label: 'Artists', value: 'artists' },
-          ],
+          options: defineOptions([
+            ['Everyone', 'all'],
+            ['Followers', 'followers'],
+            ['Subscribers', 'subs'],
+            ['Moderators', 'mods'],
+            ['VIPs', 'vips'],
+            ['Artists', 'artists'],
+          ]),
         },
       ),
       defineSetting('Follow age (hours)', 'followHours', 'number-input', {
@@ -218,18 +262,18 @@ const messageFilterSettings = defineSetting(
       defineSetting('Hide these message types', 'types', 'select-input', {
         multiple: true,
         defaultValue: [],
-        options: [
-          { label: 'First-time chat', value: 'first' },
-          { label: '/me message', value: 'action' },
-          { label: 'Messages with text', value: 'text' },
-          { label: 'Messages with emotes', value: 'emote' },
-          { label: 'Message with bits', value: 'cheer' },
-          { label: 'Replies', value: 'reply' },
-          { label: 'Highlighted', value: 'highlight' },
-          { label: 'Channel point redemption message', value: 'redeem' },
-          { label: 'Resub message', value: 'resub' },
-          { label: 'Announcements', value: 'announcement' },
-        ],
+        options: defineOptions([
+          ['First-time chat', 'first'],
+          ['/me message', 'action'],
+          ['Messages with text', 'text'],
+          ['Messages with emotes', 'emote'],
+          ['Message with bits', 'cheer'],
+          ['Replies', 'reply'],
+          ['Highlighted', 'highlight'],
+          ['Channel point redemption message', 'redeem'],
+          ['Resub message', 'resub'],
+          ['Announcements', 'announcement'],
+        ]),
       }),
       defineSetting(
         'Hide messages containing these words',
@@ -266,9 +310,7 @@ const soundSettings = defineSetting('Sound Effect', 'sound', 'group', {
 
 const textSettings = defineSetting('Text Styles', 'textStyles', 'group', {
   settings: [
-    defineSetting('Font Name', 'font', 'font-input', {
-      defaultValue: 'Nunito',
-    }),
+    defineSetting('Custom Font Name', 'font', 'font-input'),
     defineSetting('Font Size (px)', 'size', 'number-input', {
       defaultValue: 16,
       min: 0,
@@ -276,29 +318,52 @@ const textSettings = defineSetting('Text Styles', 'textStyles', 'group', {
     }),
     defineSetting('Font Weight', 'weight', 'select-input', {
       defaultValue: 800,
-      options: ['Normal', 'Bold']
-        .map(label => {
-          return { label, value: label.toLowerCase() }
-        })
-        .concat(
-          [100, 200, 300, 400, 500, 600, 700, 800, 900].map(value => {
-            return { label: value.toString(), value }
-          }),
-        ),
+      options: defineOptions(
+        ['Normal', 'Bold']
+          .map(label => [label, label.toLowerCase()])
+          .concat(
+            [100, 200, 300, 400, 500, 600, 700, 800, 900].map(value => [
+              value.toString(),
+              value,
+            ]),
+          ),
+      ),
+    }),
+    defineSetting('Username Color', 'usernameColorOption', 'select-input', {
+      defaultValue: 'user-light',
+      options: defineOptions([
+        ['Twitch Light', 'user-light'],
+        ['Twitch Dark', 'user-dark'],
+        ['Twitch', 'user'],
+        ['Custom', 'custom'],
+      ]),
+      description:
+        'Twitch Light/Dark are lightened/darkened versions of the username colors people have chosen in chat.',
+    }),
+    defineSetting('Custom Username Color', 'usernameColor', 'color-input', {
+      defaultValue: 'white',
+      description: 'This will only be applied when you select "Custom" above.',
+    }),
+    defineSetting('Message Text Color', 'textColor', 'color-input', {
+      defaultValue: 'white',
+      description: 'This will only be applied when you select "Custom" above.',
     }),
     defineSetting('Edge Style', 'edge', 'select-input', {
       defaultValue: 'outline-2',
-      options: [
-        'Outline 1',
-        'Outline 2',
-        'Bottom Shadow 1',
-        'Bottom Shadow 2',
-        'Bottom Right Shadow 1',
-        'Bottom Right Shadow 2',
-        'None',
-      ].map(label => {
-        return { label, value: label.replaceAll(' ', '-').toLowerCase() }
-      }),
+      options: defineOptions(
+        [
+          'Outline 1',
+          'Outline 2',
+          'Bottom Shadow 1',
+          'Bottom Shadow 2',
+          'Bottom Right Shadow 1',
+          'Bottom Right Shadow 2',
+          'None',
+        ].map(label => [label, label.replaceAll(' ', '-').toLowerCase()]),
+      ),
+    }),
+    defineSetting('Edge Color', 'edgeColor', 'color-input', {
+      defaultValue: 'black',
     }),
   ],
 })
@@ -307,15 +372,21 @@ const animationSettings = defineSetting('Animations', 'animations', 'group', {
   settings: [
     defineSetting('Entrance Animation', 'enter', 'select-input', {
       defaultValue: 'none',
-      options: ['Fade', 'Fade Left', 'Fade Right', 'None'].map(label => {
-        return { label, value: label.replaceAll(' ', '-').toLowerCase() }
-      }),
+      options: defineOptions(
+        ['Fade', 'Fade Left', 'Fade Right', 'None'].map(label => [
+          label,
+          label.replaceAll(' ', '-').toLowerCase(),
+        ]),
+      ),
     }),
     defineSetting('Exit Animation', 'exit', 'select-input', {
       defaultValue: 'none',
-      options: ['Fade', 'Fade Left', 'Fade Right', 'None'].map(label => {
-        return { label, value: label.replaceAll(' ', '-').toLowerCase() }
-      }),
+      options: defineOptions(
+        ['Fade', 'Fade Left', 'Fade Right', 'None'].map(label => [
+          label,
+          label.replaceAll(' ', '-').toLowerCase(),
+        ]),
+      ),
     }),
   ],
 })

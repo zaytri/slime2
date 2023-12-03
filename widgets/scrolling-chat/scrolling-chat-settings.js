@@ -19,7 +19,7 @@ addEventListener('slime2:ready', () => {
 })
 
 /************************
- * Settings Definitions *
+ * Setting Definitions *
  ************************/
 
 function defineSetting(label, id, type, options) {
