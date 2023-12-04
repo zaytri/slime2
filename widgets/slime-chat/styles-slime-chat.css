@@ -41,7 +41,7 @@
 
 /* Container for all user details (name, badges, pronouns) */
 .user {
-  padding: 5px;
+  padding-right: 5px;
   border-radius: 6px;
   color: var(--usernameColor);
 }
