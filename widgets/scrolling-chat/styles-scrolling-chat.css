@@ -1,7 +1,3 @@
-.hide {
-  display: none;
-}
-
 /*********************
  * slime2 containers *
  *********************/
@@ -20,7 +16,7 @@
   white-space: nowrap;
   font-family:
     var(--font),
-    Avenir,
+    /* Same fonts as Nico Nico */ Avenir,
     Lato,
     -apple-system,
     BlinkMacSystemFont,
@@ -133,17 +129,12 @@
 }
 
 .emote {
-  content: var(--defaultEmoteImage);
   height: 1.75em;
   max-height: 112px;
   display: inline-block;
   vertical-align: middle;
   margin-top: -0.25em;
   margin-bottom: -0.2em;
-}
-
-.static-emotes .emote {
-  content: var(--staticEmoteImage);
 }
 
 .cheer-amount {
