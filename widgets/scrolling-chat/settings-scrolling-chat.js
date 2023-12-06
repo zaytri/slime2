@@ -1,5 +1,5 @@
 addEventListener('slime2:ready', () => {
-  slime2.widget.loadSettings('scrolling-chat-data.js', [
+  slime2.widget.loadSettings('data-scrolling-chat.js', [
     defineSetting(
       [
         'Scrolling Chat v2.0.0 by Zaytri: https://zaytri.com/',
