@@ -1,4 +1,4 @@
-Scrolling Chat v2.0.0
+Scrolling Chat v2.0.1
 
 You'll need to download a key to connect it to your Twitch account.
 Setup instructions can be found here: https://forums.slime2.stream/resources/setting-up-slime2-widgets.3/

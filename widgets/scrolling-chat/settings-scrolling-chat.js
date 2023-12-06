@@ -2,11 +2,9 @@ addEventListener('slime2:ready', () => {
   slime2.widget.loadSettings('data-scrolling-chat.js', [
     defineSetting(
       [
-        'Scrolling Chat v2.0.0 by Zaytri: https://zaytri.com/',
+        'Scrolling Chat v2.0.1 by Zaytri: https://zaytri.com/',
         '',
         'Questions and Support: https://forums.slime2.stream/threads/27/',
-        '',
-        'Rate and Review: https://forums.slime2.stream/resources/13/',
       ].join('\n'),
       'title',
       'text-display',

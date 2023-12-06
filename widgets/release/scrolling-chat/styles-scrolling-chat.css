@@ -1,17 +1,6 @@
-.hide {
-  display: none;
-}
-
 /*********************
  * slime2 containers *
  *********************/
-
-/* Container for the slime2 system */
-#slime2-root {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-}
 
 /* Container for the chat message list from slime2 */
 #slime2-event-list {
@@ -27,7 +16,7 @@
   white-space: nowrap;
   font-family:
     var(--font),
-    Avenir,
+    /* Same fonts as Nico Nico */ Avenir,
     Lato,
     -apple-system,
     BlinkMacSystemFont,
@@ -140,17 +129,12 @@
 }
 
 .emote {
-  content: var(--defaultEmoteImage);
   height: 1.75em;
   max-height: 112px;
   display: inline-block;
   vertical-align: middle;
   margin-top: -0.25em;
   margin-bottom: -0.2em;
-}
-
-.static-emotes .emote {
-  content: var(--staticEmoteImage);
 }
 
 .cheer-amount {

@@ -1,12 +1,10 @@
 addEventListener('slime2:ready', () => {
-  slime2.widget.loadSettings('scrolling-chat-data.js', [
+  slime2.widget.loadSettings('data-scrolling-chat.js', [
     defineSetting(
       [
-        'Scrolling Chat v2.0.0 by Zaytri: https://zaytri.com/',
+        'Scrolling Chat v2.0.1 by Zaytri: https://zaytri.com/',
         '',
         'Questions and Support: https://forums.slime2.stream/threads/27/',
-        '',
-        'Rate and Review: https://forums.slime2.stream/resources/13/',
       ].join('\n'),
       'title',
       'text-display',
@@ -19,7 +17,7 @@ addEventListener('slime2:ready', () => {
 })
 
 /************************
- * Settings Definitions *
+ * Setting Definitions *
  ************************/
 
 function defineSetting(label, id, type, options) {
@@ -66,7 +64,6 @@ const displaySettings = defineSetting('Display', 'display', 'group', {
       description:
         'When enabled, badges, username, and pronouns will be hidden.',
     }),
-
     defineSetting('Emotes Only', 'emoteOnly', 'boolean-input', {
       defaultValue: false,
       description:

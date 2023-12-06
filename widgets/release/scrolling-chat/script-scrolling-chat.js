@@ -27,7 +27,6 @@ addEventListener('slime2:widget-data-update', () => {
   if (display.hideBadges) eventList.addClass('hide-badges')
   if (display.hideUser) eventList.addClass('hide-user')
   if (display.emoteOnly) eventList.addClass('emote-only')
-  if (display.static) eventList.addClass('static-emotes')
 
   // pronouns settings
   eventList.addClass(`pronouns-${pronouns.display}`)
@@ -101,9 +100,9 @@ function onMessage(message) {
       /*******************
        * Scroll Handling *
        *******************/
-      const messageWidth = $(messageElement).outerWidth(true)
+      const messageWidth = $(messageElement).get(0).scrollWidth
       const windowWidth = $(window).width()
-      const extraScrollDistance = 150
+      const extraScrollDistance = 100
       const scrollAmount = windowWidth + messageWidth + extraScrollDistance
       const scrollTime = (scrollAmount / display.speed) * 1000
 
@@ -116,7 +115,7 @@ function onMessage(message) {
         .addClass('animate')
 
       setTimeout(() => {
-        $(messageElement).addClass('hide')
+        $(messageElement).css({ display: 'none' })
       }, scrollTime)
     },
   }
@@ -179,26 +178,26 @@ function buildBadges(badges) {
 
 // insert in the emote image
 function buildEmote(part) {
+  const { display } = slime2.widget.getData()
   const { images } = part.emote
 
   const emoteClone = $(slime2.cloneTemplate('content-emote-template'))
-  emoteClone.find('.emote').css({
-    '--defaultEmoteImage': `url(${images.default.x4})`,
-    '--staticEmoteImage': `url(${images.static.x4})`,
-  })
+  emoteClone
+    .find('.emote')
+    .attr('src', display.static ? images.static.x4 : images.default.x4)
 
   return emoteClone
 }
 
 // insert in the cheermote image and cheer amount
 function buildCheer(part) {
-  const { amount, color, images } = part.cheer
+  const { display } = slime2.widget.getData()
+  const { amount, images } = part.cheer
 
   const cheerClone = $(slime2.cloneTemplate('content-cheer-template'))
-  cheerClone.find('.emote').css({
-    '--defaultEmoteImage': `url(${images.default.x4})`,
-    '--staticEmoteImage': `url(${images.static.x4})`,
-  })
+  cheerClone
+    .find('.emote')
+    .attr('src', display.static ? images.static.x4 : images.default.x4)
   cheerClone.find('.cheer-amount').text(amount)
 
   return cheerClone
