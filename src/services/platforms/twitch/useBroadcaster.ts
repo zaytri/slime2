@@ -1,4 +1,4 @@
-import { auth } from '@/services/auth'
+import { auth } from '@/services/authSettings'
 import { infiniteCache } from '@/services/helpers'
 import useTwitchApi from '@/services/platforms/twitch/useApi'
 import useAccessToken from '@/services/useAccessToken'

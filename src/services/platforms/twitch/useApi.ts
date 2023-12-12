@@ -1,9 +1,9 @@
 import { useClient } from '@/contexts/client/useClient'
 import useAccessToken from '@/services/useAccessToken'
 import { ApiClient } from '@twurple/api'
-import { CustomAuthProvider } from './customAuthProvider'
+import { TwitchAuthentication } from './authentication'
 
-const authProvider = new CustomAuthProvider()
+const authProvider = new TwitchAuthentication()
 const apiClient = new ApiClient({ authProvider })
 
 export default function useTwitchApi() {

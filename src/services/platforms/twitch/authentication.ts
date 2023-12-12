@@ -1,4 +1,4 @@
-import { auth } from '@/services/auth'
+import { auth } from '@/services/authSettings'
 import { getAccessToken } from '@/services/useAccessToken'
 import type { UserIdResolvable } from '@twurple/api'
 import {
@@ -10,7 +10,7 @@ import {
 } from '@twurple/auth'
 import { rawDataSymbol } from '@twurple/common'
 
-export class CustomAuthProvider implements AuthProvider {
+export class TwitchAuthentication implements AuthProvider {
   private readonly _clientId: string = auth.twitch.clientId
   private readonly _scopes: string[] = auth.twitch.scopes
   private readonly _accessToken: AccessToken
