@@ -4,11 +4,10 @@ import {
   usePlatformReadyDispatch,
 } from '@/contexts/platform-ready/usePlatformReady'
 import { useEffect } from 'react'
-import Chat from './chat/Chat'
 import useYoutubeBroadcaster from './useBroadcaster'
 import useThirdPartyEmotes from './useThirdPartyEmotes'
 
-export default function YouTube() {
+export default function Youtube() {
   const { status: broadcasterStatus } = useYoutubeBroadcaster()
   const { status: thirdPartyEmotesStatus } = useThirdPartyEmotes()
   const { isPlatformReady } = usePlatformReady()
@@ -18,15 +17,11 @@ export default function YouTube() {
     status => status === 'pending',
   )
 
-  // keep LoadingBanner shown for 1.5 extra seconds
-  // also ensure that LoadingBanner isn't shown again after initial load
+  // ensure that LoadingBanner isn't shown again after initial load
   useEffect(() => {
-    if (!loading) {
-      setTimeout(() => {
-        setPlatformReady('youtube')
-      }, 1.5 * 1000)
-    }
-  }, [loading, setPlatformReady])
+    if (!loading) setPlatformReady('youtube')
+    /* eslint-disable-next-line react-hooks/exhaustive-deps */
+  }, [loading])
 
   if (!isPlatformReady('youtube')) {
     return (
@@ -44,5 +39,6 @@ export default function YouTube() {
     )
   }
 
-  return <Chat />
+  return null
+  // return <Chat />
 }

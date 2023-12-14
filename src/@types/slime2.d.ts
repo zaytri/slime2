@@ -9,7 +9,7 @@ namespace Slime2 {
     widgetDataFileName: string
     platforms: Slime2.Platform[]
     keys: {
-      [key in AuthProvider]?: string
+      [key in Auth.Provider]?: string
     }
   }
 

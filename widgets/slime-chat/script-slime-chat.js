@@ -1,7 +1,7 @@
 // the slime2:ready event is fired once
 // indicates that the slime2 global variable is ready to use
 addEventListener('slime2:ready', () => {
-  slime2.widget.loadPlatform('twitch')
+  slime2.widget.loadPlatform('youtube')
 
   slime2.onEvent(event => {
     switch (event.type) {

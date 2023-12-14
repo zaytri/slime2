@@ -5,18 +5,15 @@ import { useQuery } from '@tanstack/react-query'
 
 export default function useYoutubeBroadcaster() {
   const { data: accessToken } = useAccessToken('google')
-  const { data: api } = useYoutubeApi()
+  const api = useYoutubeApi()
 
   return useQuery<Slime2.User.Broadcaster>({
-    enabled: !!accessToken && !!api,
+    enabled: !!accessToken,
     queryKey: ['youtube', 'broadcaster', accessToken || null],
     queryFn: async () => {
-      const response = await api!.channels.list({
-        mine: true,
-        part: ['id', 'snippet'],
-      })
+      const data = await api.channel()
 
-      const { items } = response.result
+      const { items } = data
       if (!items || !items.length) throw new YouTubeChannelNotFoundError()
 
       const [channel] = items
@@ -30,11 +27,7 @@ export default function useYoutubeBroadcaster() {
         id,
         userName: customUrl || '',
         displayName: title,
-        image:
-          thumbnails?.medium?.url ||
-          thumbnails?.standard?.url ||
-          thumbnails?.default?.url ||
-          '',
+        image: thumbnails?.medium?.url || thumbnails?.default?.url || '',
         url: customUrl ? `https://www.youtube.com/${customUrl}` : '',
       }
     },

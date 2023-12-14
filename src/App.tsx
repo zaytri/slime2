@@ -10,6 +10,7 @@ import {
 import Slime2Color from './services/color'
 import { cloneTemplate } from './services/helpers'
 import Twitch from './services/platforms/twitch/Twitch'
+import Youtube from './services/platforms/youtube/YouTube'
 import Random from './services/random'
 import { widgetStorage } from './services/storage'
 import useAccessToken, {
@@ -19,6 +20,7 @@ import useAccessToken, {
 
 export default function App() {
   const { status: twitchStatus, error: twitchError } = useAccessToken('twitch')
+  const { status: googleStatus, error: googleError } = useAccessToken('google')
   const clientReady = useRef(false)
   const widgetValuesResolve = useRef<(() => void) | null>(null)
   const {
@@ -105,8 +107,19 @@ export default function App() {
     }
   }
 
+  if (platforms.includes('youtube')) {
+    if (googleError instanceof KeyNotFoundError) {
+      return <ErrorBanner message='YouTube key not found.' />
+    }
+
+    if (googleError instanceof KeyInvalidError) {
+      return <ErrorBanner message='YouTube key expired.' />
+    }
+  }
+
   const loading =
-    !!platforms.length && [twitchStatus].some(status => status === 'pending')
+    !!platforms.length &&
+    [twitchStatus, googleStatus].some(status => status === 'pending')
 
   if (loading) {
     return <LoadingBanner message='Verifying Key...' />
@@ -115,6 +128,7 @@ export default function App() {
   return (
     <div className='absolute inset-x-0'>
       {twitchStatus === 'success' && <Twitch />}
+      {googleStatus === 'success' && <Youtube />}
     </div>
   )
 }
