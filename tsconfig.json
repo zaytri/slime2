@@ -21,7 +21,7 @@
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
 
-    "types": ["jquery", "gapi", "gapi.client.youtube-v3", "google.accounts"],
+    "types": ["jquery"],
 
     "paths": {
       "@/*": ["./src/*"]
