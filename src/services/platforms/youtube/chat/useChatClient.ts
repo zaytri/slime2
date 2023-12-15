@@ -4,11 +4,11 @@ import useMessage from './transforms/useMessage'
 import useLiveChat from './useLiveChat'
 
 export default function useChatClient() {
-  const { data, fetchNextPage } = useLiveChat()
+  const { data, fetchNextPage, error } = useLiveChat()
   const { addEvent } = useEventListDispatch()
   const transformMessage = useMessage()
 
-  function addMessage(message?: YouTube.Event.Message) {
+  function addMessage(message?: Youtube.Event.Message) {
     if (!message) return
     debugLog(message)
     addEvent({
@@ -67,15 +67,17 @@ export default function useChatClient() {
       }
     })
 
-    setTimeout(() => {
-      fetchNextPage()
-    }, pollingInterval)
+    if (!error) {
+      setTimeout(() => {
+        fetchNextPage()
+      }, pollingInterval)
+    }
 
     /* eslint-disable-next-line react-hooks/exhaustive-deps */
-  }, [data, fetchNextPage])
+  }, [data, fetchNextPage, error])
 }
 
-function debugLog(message: YouTube.Event.Message) {
+function debugLog(message: Youtube.Event.Message) {
   if (import.meta.env.DEV && import.meta.env.MODE === 'debug') {
     console.debug(
       `%c[${message.type}] ${message.user.displayName}: ${message.text}`,

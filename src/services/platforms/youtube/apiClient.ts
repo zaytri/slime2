@@ -37,57 +37,46 @@ export class ApiClient {
     })
   }
 
-  async channel() {
-    const response = await this._get<ChannelResponse>('channels', {
-      params: {
-        mine: true,
-        part: ['id', 'snippet'],
+  async channel(): Promise<Youtube.API.ChannelListResponse> {
+    const response = await this._get<Youtube.API.ChannelListResponse>(
+      'channels',
+      {
+        params: {
+          mine: true,
+          part: ['id', 'snippet'],
+        },
       },
-    })
-
-    console.log(response)
+    )
 
     return response.data
   }
-}
 
-type ChannelResponse = {
-  kind: 'youtube#channelListResponse'
-  etag: string
-  nextPageToken: string
-  prevPageToken: string
-  pageInfo: {
-    totalResults: number
-    resultsPerPage: number
+  async broadcast(): Promise<Youtube.API.LiveBroadcastListResponse> {
+    const response = await this._get<Youtube.API.LiveBroadcastListResponse>(
+      'liveBroadcasts',
+      {
+        params: {
+          mine: true,
+          part: ['id', 'snippet', 'status'],
+          maxResults: 1,
+        },
+      },
+    )
+
+    return response.data
   }
-  items: ChannelResponseItem[]
-}
 
-type ChannelResponseItem = {
-  kind: 'youtube#channel'
-  etag: string
-  id: string
-  snippet: {
-    title: string
-    description: string
-    customUrl: string
-    publishedAt: string
-    thumbnails: {
-      default: Thumbnail
-      medium: Thumbnail
-      high: Thumbnail
-    }
-    defaultLanguage: string
-    localized: {
-      title: string
-      description: string
-    }
-    country: string
+  async chat(
+    liveChatId: string,
+    pageToken?: string,
+  ): Promise<Youtube.API.LiveChatMessageListResponse> {
+    const params = { liveChatId, part: ['id', 'snippet', 'authorDetails'] }
+
+    const response = await this._get<Youtube.API.LiveChatMessageListResponse>(
+      'liveChat/messages',
+      { params: pageToken ? { ...params, pageToken } : params },
+    )
+
+    return response.data
   }
-}
-
-type Thumbnail = {
-  url: string
-  width: number
-  height: number
 }

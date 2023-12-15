@@ -7,24 +7,20 @@ const MAX_POLLING_INTERVAL = 5 * 1000 // 5 seconds
 
 export default function useLiveChat() {
   const { data: liveChatId } = useLiveChatId()
-  const { data: api } = useYoutubeApi()
+  const api = useYoutubeApi()
   const [emptyMessageCount, setEmptyMessageCount] = useState(0)
 
   return useInfiniteQuery({
     enabled: !!api && !!liveChatId,
     queryKey: ['youtube', 'liveChat', liveChatId || null],
     queryFn: async ({ pageParam: pageToken }): Promise<LiveChatResponse> => {
-      const response = await api!.liveChatMessages.list({
-        liveChatId: liveChatId!,
-        part: ['id', 'snippet', 'authorDetails'],
-        pageToken,
-      })
+      const response = await api.chat(liveChatId!, pageToken)
 
       const {
         items: messages = [],
         pollingIntervalMillis = 0,
         nextPageToken,
-      } = response.result
+      } = response
 
       // reset empty message count if messages exist, otherwise increment it
       const newEmptyMessageCount = messages.length ? 0 : emptyMessageCount + 1
@@ -60,5 +56,5 @@ export default function useLiveChat() {
 type LiveChatResponse = {
   nextPageToken?: string
   pollingInterval: number
-  messages: gapi.client.youtube.LiveChatMessage[]
+  messages: Youtube.API.LiveChatMessage[]
 }

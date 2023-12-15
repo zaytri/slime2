@@ -41,9 +41,6 @@
   },
   "devDependencies": {
     "@d-fischer/typed-event-emitter": "^3.3.2",
-    "@types/gapi": "^0.0.46",
-    "@types/gapi.client.youtube-v3": "^0.0.3",
-    "@types/google.accounts": "^0.0.13",
     "@types/imagesloaded": "^4.1.4",
     "@types/jquery": "^3.5.25",
     "@types/node": "^20.8.9",

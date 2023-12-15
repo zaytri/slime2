@@ -11,9 +11,9 @@ export default function useYoutubeBroadcaster() {
     enabled: !!accessToken,
     queryKey: ['youtube', 'broadcaster', accessToken || null],
     queryFn: async () => {
-      const data = await api.channel()
+      const response = await api.channel()
 
-      const { items } = data
+      const { items } = response
       if (!items || !items.length) throw new YouTubeChannelNotFoundError()
 
       const [channel] = items

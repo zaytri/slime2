@@ -102,10 +102,10 @@ namespace Slime2 {
     remove: () => void
   }
 
-  type RenderableEvent = (Twitch.RenderableEvent | YouTube.RenderableEvent) &
+  type RenderableEvent = (Twitch.RenderableEvent | Youtube.RenderableEvent) &
     BasicRenderableEvent
 
-  type Event = Twitch.Event | YouTube.Event
+  type Event = Twitch.Event | Youtube.Event
 
   namespace Event {
     type BasicMessage = {

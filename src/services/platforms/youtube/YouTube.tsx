@@ -4,6 +4,7 @@ import {
   usePlatformReadyDispatch,
 } from '@/contexts/platform-ready/usePlatformReady'
 import { useEffect } from 'react'
+import Chat from './chat/Chat'
 import useYoutubeBroadcaster from './useBroadcaster'
 import useThirdPartyEmotes from './useThirdPartyEmotes'
 
@@ -39,6 +40,5 @@ export default function Youtube() {
     )
   }
 
-  return null
-  // return <Chat />
+  return <Chat />
 }

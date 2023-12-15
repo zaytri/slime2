@@ -5,8 +5,8 @@ import axios from 'axios'
 import { useEffect, useState } from 'react'
 
 const slime2Api = axios.create({
-  // baseURL: 'https://slime2.stream/api',
-  baseURL: 'http://localhost:3000/api',
+  baseURL: 'https://slime2.stream/api',
+  // baseURL: 'http://localhost:3000/api',
 })
 
 export default function useAccessToken(provider: Slime2.Auth.Provider) {

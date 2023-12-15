@@ -18,7 +18,7 @@ export function getGlobalEmotes(): Slime2.Event.Message.EmoteMap {
 }
 
 function buildEmoteUrls(
-  image: YouTube.Emoji['image'],
+  image: Youtube.Emoji['image'],
 ): Slime2.Event.Message.Emote.Urls {
   return {
     x1: image.thumbnails[0].url,
@@ -28,7 +28,7 @@ function buildEmoteUrls(
 }
 
 // last scraped 10/20/2023
-const scrapedGlobalEmojis: YouTube.Emoji[] = [
+const scrapedGlobalEmojis: Youtube.Emoji[] = [
   {
     emojiId: 'UCkszU2WH9gy1mb0dV-11UJg/flower-rainbow-heart-red',
     shortcuts: [':pride-flower-rainbow-heart:'],

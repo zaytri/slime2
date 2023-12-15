@@ -5,25 +5,22 @@ import useYoutubeBroadcaster from '../useBroadcaster'
 
 export default function useLiveChatId() {
   const { data: broadcaster } = useYoutubeBroadcaster()
-  const { data: api } = useYoutubeApi()
+  const api = useYoutubeApi()
   const [retryDate, setRetryDate] = useState<Date>()
 
   const liveChatIdQuery = useQuery<string>({
     enabled: !!api,
     queryKey: ['youtube', 'liveChatId', broadcaster?.id],
     queryFn: async () => {
-      const response = await api!.liveBroadcasts.list({
-        mine: true,
-        part: ['snippet', 'status'],
-        maxResults: 1,
-      })
+      const response = await api.broadcast()
 
-      const { items } = response.result
+      const { items } = response
       if (!items || !items.length) throw new YouTubeLiveBroadcastNotFoundError()
 
       const [broadcast] = items
-      const { snippet, status } = broadcast
-      if (!snippet || !status) throw new YouTubeLiveBroadcastNotFoundError()
+      const { id, snippet, status } = broadcast
+      if (!id || !snippet || !status)
+        throw new YouTubeLiveBroadcastNotFoundError()
 
       const { lifeCycleStatus } = status
       if (lifeCycleStatus !== 'live')
