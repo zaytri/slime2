@@ -16,9 +16,9 @@
   font-size: var(--fontSize);
   display: flex;
   overflow: hidden;
-  gap: 10px;
+  gap: var(--gap);
   position: absolute;
-  line-height: 30px;
+  line-height: var(--lineHeight);
   color: white;
   padding: 20px;
   width: 100%;
@@ -33,16 +33,32 @@
 /* Message container */
 .message {
   display: inline-block;
+  padding: var(--padding);
+  background-color: var(--backgroundColor);
+  border-color: var(--borderColor);
+  border-width: var(--borderWidth);
+  border-radius: var(--borderRadius);
+  border-style: var(--borderStyle);
+}
+
+[class^='vertical-'].full-width .slime2-event {
+  width: 100%;
+}
+
+[class^='vertical-'].full-width .message {
+  display: block;
+}
+
+[class^='horizontal-'] .message {
+  max-width: var(--maxWidth);
 }
 
 /***************
  * User Styles *
  ***************/
-
 /* Container for all user details (name, badges, pronouns) */
 .user {
-  padding-right: 5px;
-  border-radius: 6px;
+  padding-right: 0.33em;
   color: var(--usernameColor);
 }
 
@@ -58,7 +74,7 @@
   color: var(--userColor);
 }
 
-.user::after {
+.display-colon .user::after {
   content: ':';
 }
 
@@ -116,6 +132,10 @@
 /* Content container */
 .content {
   overflow-wrap: anywhere;
+}
+
+.display-under :is(.content, .user) {
+  display: block;
 }
 
 .text {

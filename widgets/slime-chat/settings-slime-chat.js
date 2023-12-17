@@ -11,15 +11,14 @@ addEventListener('slime2:ready', () => {
       'title',
       'text-display',
     ),
-    alignmentSettings,
     animationSettings,
     badgeSettings,
-    delaySettings,
-    disappearingSettings,
+    displaySettings,
     emoteSettings,
     filterSettings,
     pronounsSettings,
     soundSettings,
+    backgroundSettings,
     textSettings,
   ])
 })
@@ -39,13 +38,19 @@ function defineOptions(options) {
   })
 }
 
-const alignmentSettings = defineSetting('Alignment', 'alignment', 'group', {
+const displaySettings = defineSetting('Display', 'display', 'group', {
   settings: [
     defineSetting('Direction', 'direction', 'select-input', {
       defaultValue: 'vertical',
       options: defineOptions(
         ['Vertical', 'Horizontal'].map(label => [label, label.toLowerCase()]),
       ),
+    }),
+    defineSetting('Max Message Width (px)', 'maxWidth', 'number-input', {
+      defaultValue: 500,
+      min: 0,
+      step: 1,
+      description: '(Horizontal Only) Blank or 0 for infinity.',
     }),
     defineSetting('Corner', 'corner', 'select-input', {
       defaultValue: 'bottom-left',
@@ -57,41 +62,36 @@ const alignmentSettings = defineSetting('Alignment', 'alignment', 'group', {
         ]),
       ),
     }),
-  ],
-})
-
-const disappearingSettings = defineSetting(
-  'Disappearing',
-  'disappear',
-  'group',
-  {
-    settings: [
-      defineSetting('Expiration time (seconds)', 'expiration', 'number-input', {
-        min: 0,
-        step: 1,
-        placeholder: 'Seconds',
-        description:
-          'Each messages will be removed after the expiration time. If empty or set to 0, messages will never expire.',
-      }),
-      defineSetting('Maximum number of messages', 'max', 'number-input', {
-        defaultValue: 100,
-        min: 0,
-        max: 200,
-        step: 1,
-        description:
-          'When there are more messages than the max, the oldest messages will be removed.',
-      }),
-    ],
-  },
-)
-
-const delaySettings = defineSetting('Delay', 'delay', 'group', {
-  settings: [
-    defineSetting('Message Delay (seconds)', 'amount', 'number-input', {
+    defineSetting('Messages under usernames', 'under', 'boolean-input', {
+      defaultValue: false,
+      description:
+        'When enabled, chat messages will be displayed under usernames instead of inline.',
+    }),
+    defineSetting('Expiration time (seconds)', 'expiration', 'number-input', {
+      min: 0,
+      step: 1,
+      placeholder: 'Seconds',
+      description:
+        'Each messages will be removed after the expiration time. If empty or set to 0, messages will never expire.',
+    }),
+    defineSetting('Maximum number of messages', 'max', 'number-input', {
+      defaultValue: 100,
+      min: 0,
+      max: 200,
+      step: 1,
+      description:
+        'When there are more messages than the max, the oldest messages will be removed.',
+    }),
+    defineSetting('Message Delay (seconds)', 'delay', 'number-input', {
       defaultValue: 0,
       min: 0,
       step: 1,
       description: 'Adds a delay before chat messages appear.',
+    }),
+    defineSetting('Gap between messages (px)', 'gap', 'number-input', {
+      defaultValue: 10,
+      min: 0,
+      step: 1,
     }),
   ],
 })
@@ -308,11 +308,16 @@ const soundSettings = defineSetting('Sound Effect', 'sound', 'group', {
   ],
 })
 
-const textSettings = defineSetting('Text Styles', 'textStyles', 'group', {
+const textSettings = defineSetting('Style Text', 'textStyles', 'group', {
   settings: [
     defineSetting('Custom Font Name', 'font', 'font-input'),
     defineSetting('Font Size (px)', 'size', 'number-input', {
       defaultValue: 16,
+      min: 0,
+      step: 1,
+    }),
+    defineSetting('Line Height (px)', 'lineHeight', 'number-input', {
+      defaultValue: 30,
       min: 0,
       step: 1,
     }),
@@ -328,6 +333,11 @@ const textSettings = defineSetting('Text Styles', 'textStyles', 'group', {
             ]),
           ),
       ),
+    }),
+    defineSetting('Show colon : after username', 'colon', 'boolean-input', {
+      defaultValue: true,
+      description:
+        'When enabled, a colon : is displayed between username and message.',
     }),
     defineSetting('Username Color', 'usernameColorOption', 'select-input', {
       defaultValue: 'user-light',
@@ -346,7 +356,6 @@ const textSettings = defineSetting('Text Styles', 'textStyles', 'group', {
     }),
     defineSetting('Message Text Color', 'textColor', 'color-input', {
       defaultValue: 'white',
-      description: 'This will only be applied when you select "Custom" above.',
     }),
     defineSetting('Edge Style', 'edge', 'select-input', {
       defaultValue: 'outline-2',
@@ -367,6 +376,58 @@ const textSettings = defineSetting('Text Styles', 'textStyles', 'group', {
     }),
   ],
 })
+
+const backgroundSettings = defineSetting(
+  'Style Background',
+  'backgroundStyles',
+  'group',
+  {
+    settings: [
+      defineSetting('Background Color', 'color', 'color-input', {
+        defaultValue: 'transparent',
+      }),
+      defineSetting('Padding (px)', 'padding', 'number-input', {
+        defaultValue: 0,
+        description: 'Adds space between the background edge and the text.',
+      }),
+      defineSetting('Full Width', 'fullWidth', 'boolean-input', {
+        defaultValue: 'false',
+        description:
+          '(Vertical Display Only) When enabled, the background of every message will take up the boundary width.',
+      }),
+      defineSetting('Border Color', 'borderColor', 'color-input', {
+        defaultValue: 'transparent',
+      }),
+      defineSetting('Border Width (px)', 'borderWidth', 'number-input', {
+        defaultValue: 0,
+        min: 0,
+        step: 1,
+      }),
+      defineSetting('Border Radius (px)', 'borderRadius', 'number-input', {
+        defaultValue: 0,
+        min: 0,
+        step: 1,
+      }),
+      defineSetting('Border Style', 'borderStyle', 'select-input', {
+        defaultValue: 'solid',
+        options: defineOptions(
+          [
+            'Solid',
+            'Dashed',
+            'Dotted',
+            'Double',
+            'Groove',
+            'Ridge',
+            'Inset',
+            'Outset',
+          ].map(label => {
+            return [label, label.toLowerCase()]
+          }),
+        ),
+      }),
+    ],
+  },
+)
 
 const animationSettings = defineSetting('Animations', 'animations', 'group', {
   settings: [

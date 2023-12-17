@@ -18,25 +18,22 @@ addEventListener('slime2:widget-data-update', () => {
   const data = slime2.widget.getData()
 
   const {
-    alignment,
+    display,
     textStyles,
+    backgroundStyles,
     animations,
-    disappear,
     emotes,
     badges,
     pronouns,
-    delay,
   } = data
 
   const eventList = $('#slime2-event-list').removeClass()
 
-  // delay settings
-  slime2.setEventDelay(delay.amount * 1000)
-
-  // disappear settings
-  slime2.setMaxEvents(disappear.max)
+  // display settings
+  slime2.setEventDelay(display.delay * 1000)
+  slime2.setMaxEvents(display.max)
   slime2.setEventExpiration(
-    disappear.expiration ? disappear.expiration * 1000 : undefined,
+    display.expiration ? display.expiration * 1000 : undefined,
     animations.exit !== 'none'
       ? {
           animationTime: 500,
@@ -44,6 +41,12 @@ addEventListener('slime2:widget-data-update', () => {
         }
       : undefined,
   )
+  eventList.addClass(`${display.direction}-${display.corner}`).css({
+    '--maxWidth': `${display.maxWidth}px`,
+    '--gap': `${display.gap}px`,
+  })
+
+  if (display.under) eventList.addClass('display-under')
 
   // emote settings
   if (emotes.dynamic)
@@ -51,9 +54,6 @@ addEventListener('slime2:widget-data-update', () => {
       '--emoteMedium': `${emotes.medium}px`,
       '--emoteLarge': `${emotes.large}px`,
     })
-
-  // alignment settings
-  eventList.addClass(`${alignment.direction}-${alignment.corner}`)
 
   // text style settings
   eventList
@@ -69,6 +69,7 @@ addEventListener('slime2:widget-data-update', () => {
       '--textColor': textStyles.textColor,
       '--usernameColor': textStyles.usernameColor,
       '--edgeColor': textStyles.edgeColor,
+      '--lineHeight': `${textStyles.lineHeight}px`,
       // 20% opacity of edgeColor
       '--edgeColorLowOpacity': slime2.color
         .mix('transparent', textStyles.edgeColor, 0.2, {
@@ -76,6 +77,19 @@ addEventListener('slime2:widget-data-update', () => {
         })
         .toString({ format: 'rgba' }),
     })
+
+  if (textStyles.colon) eventList.addClass('display-colon')
+
+  // background style settings
+  eventList.css({
+    '--backgroundColor': backgroundStyles.color,
+    '--padding': `${backgroundStyles.padding}px`,
+    '--borderColor': backgroundStyles.borderColor,
+    '--borderWidth': `${backgroundStyles.borderWidth}px`,
+    '--borderRadius': `${backgroundStyles.borderRadius}px`,
+    '--borderStyle': backgroundStyles.borderStyle,
+  })
+  if (backgroundStyles.fullWidth) eventList.addClass('full-width')
 
   // badge settings
   if (!badges.display) eventList.addClass('hide-badges')
