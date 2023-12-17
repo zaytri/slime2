@@ -226,10 +226,7 @@ function buildCheer(part) {
   cheerClone
     .find('.emote')
     .attr('src', emotes.static ? images.static.x4 : images.default.x4)
-  cheerClone
-    .find('.cheer-amount')
-    .text(amount)
-    .css('color', slime2.color.light(color))
+  cheerClone.find('.cheer-amount').text(amount).css('color', color)
 
   return cheerClone
 }

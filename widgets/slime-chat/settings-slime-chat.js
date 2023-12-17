@@ -4,7 +4,7 @@ addEventListener('slime2:ready', () => {
   slime2.widget.loadSettings('data-slime-chat.js', [
     defineSetting(
       [
-        'Slime Chat v3.1.0 by Zaytri: https://zaytri.com/',
+        'Slime Chat v3.2.0 by Zaytri: https://zaytri.com/',
         '',
         'Questions and Support: https://forums.slime2.stream/threads/20/',
       ].join('\n'),
