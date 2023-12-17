@@ -47,7 +47,7 @@ export function useTextPart() {
  * ```
  * const regex = createEmoteRegex(['uwu'])
  *
- * 'hewwo? uwu hewwo??'.split(regex) === ['hewwo? ', 'uwu', 'hewwo??']
+ * 'hewwo? uwu hewwo??'.split(regex) === ['hewwo? ', 'uwu', ' hewwo??']
  *               'uwu!'.split(regex) === ['', 'uwu', '!']
  *         'uwuuwu uwu'.split(regex) === ['uwuuwu ', 'uwu', '']
  *                'uwu'.split(regex) === ['', 'uwu', '']

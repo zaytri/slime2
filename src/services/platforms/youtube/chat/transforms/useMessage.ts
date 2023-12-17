@@ -1,4 +1,8 @@
+import useText from './useText'
+
 export default function useMessage() {
+  const transformText = useText()
+
   function transform(
     message: Youtube.API.LiveChatMessage,
   ): Youtube.Event.Message {
@@ -18,7 +22,7 @@ export default function useMessage() {
         subscriptionDate: null,
       },
       text: message.snippet.displayMessage || '',
-      parts: [{ type: 'text', text: message.snippet.displayMessage || '' }],
+      parts: transformText(message.snippet.displayMessage || ''),
       date: new Date(message.snippet.publishedAt),
     }
   }
