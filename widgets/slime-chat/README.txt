@@ -1,4 +1,4 @@
-Slime Chat v3.2.0 by Zaytri
+Slime Chat v3.2.1 by Zaytri
 
 You'll need to download a key to connect it to your Twitch account.
 Setup instructions can be found here: https://forums.slime2.stream/resources/setting-up-slime2-widgets.3/
