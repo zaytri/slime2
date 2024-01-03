@@ -25,7 +25,26 @@ export default function useChatClient() {
     const chatClient = chatClientRef.current
     if (!chatClient.isConnected && !chatClient.isConnecting) {
       chatClient.connect()
+    }
+
+    // -------------------------
+    // Channel Maintenance Functions
+    // -------------------------
+
+    function watchChannel(channelId: string) {
+      chatClient.join(userName)
+    }
+
+    function watchBroadcasterChannel() {
       chatClient.join(broadcaster!.userName)
+    }
+
+    function stopWatchingChannel(channelId: string) {
+      chatClient.part(userName)
+    }
+
+    function stopWatchingBroadcasterChannel() {
+      chatClient.part(broadcaster!.username)
     }
 
     // -------------------------
@@ -40,6 +59,7 @@ export default function useChatClient() {
         id: message.id,
         userId: message.user.id,
         message: message,
+        channelId: message.channelId,
         source,
       })
     }
@@ -53,20 +73,22 @@ export default function useChatClient() {
       })
     }
 
-    function removeAllMessages() {
+    function removeAllMessages(channelId: string) {
       removeMessages()
       client.sendEvent({
         type: 'clear-messages',
+        channelId,
         source,
       })
     }
 
-    function removeUserMessages(userId: string | null) {
+    function removeUserMessages(channelId: string, userId: string | null) {
       if (!userId) return
       removeUser(userId)
       client.sendEvent({
         type: 'remove-user',
         userId,
+        channelId,
         source,
       })
     }
@@ -124,16 +146,16 @@ export default function useChatClient() {
       //  Events Removing Messages
       // --------------------------
 
-      chatClient.onChatClear(() => {
-        removeAllMessages()
+      chatClient.onChatClear((channelId) => {
+        removeAllMessages(channelId)
       }),
 
-      chatClient.onTimeout((_, __, ___, msg) => {
-        removeUserMessages(msg.targetUserId)
+      chatClient.onTimeout((channelId, __, ___, msg) => {
+        removeUserMessages(channelId, msg.targetUserId)
       }),
 
-      chatClient.onBan((_, __, msg) => {
-        removeUserMessages(msg.targetUserId)
+      chatClient.onBan((channelId, __, msg) => {
+        removeUserMessages(channelId, msg.targetUserId)
       }),
 
       chatClient.onMessageRemove((_, messageId) => {
