@@ -290,26 +290,26 @@
   animation: fade-in 0.5s;
 }
 
-.animation-exit-fade.message {
-  animation: fade-out 0.5s;
-}
-
 .animation-enter-fade-left.message {
   animation:
     fade-in 0.5s,
     move-in-left 0.5s;
 }
 
-.animation-exit-fade-left.message {
-  animation:
-    fade-out 0.5s,
-    move-out-left 0.5s;
-}
-
 .animation-enter-fade-right.message {
   animation:
     fade-in 0.5s,
     move-in-right 0.5s;
+}
+
+.animation-exit-fade.message {
+  animation: fade-out 0.5s;
+}
+
+.animation-exit-fade-left.message {
+  animation:
+    fade-out 0.5s,
+    move-out-left 0.5s;
 }
 
 .animation-exit-fade-right.message {
