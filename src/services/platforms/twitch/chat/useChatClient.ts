@@ -24,8 +24,10 @@ export default function useChatClient() {
 
     const chatClient = chatClientRef.current
     if (!chatClient.isConnected && !chatClient.isConnecting) {
+      chatClient.onConnect(() => {
+        chatClient.join(broadcaster!.userName)
+      })
       chatClient.connect()
-      chatClient.join(broadcaster!.userName)
     }
 
     // -------------------------
