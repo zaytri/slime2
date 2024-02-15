@@ -12,10 +12,15 @@ export default function usePronouns() {
     return await queryClient.fetchQuery({
       queryKey: ['twitch', 'pronouns', 'user', userName],
       queryFn: async () => {
-        const pronounsId = await getUserPronouns(userName)
-        if (!pronounsId) return null
+        const pronouns = await getUserPronouns(userName)
+        if (!pronouns) return null
 
-        return pronounsMap!.get(pronounsId)
+        const [primary, secondary] = pronouns
+
+        return displayPronouns(
+          pronounsMap[primary],
+          secondary ? pronounsMap[secondary] : null,
+        )
       },
       staleTime: 5 * 60 * 1000, // stale after 5 minutes
       gcTime: 1 * 60 * 60 * 1000, // garbage collected after 1 hour
@@ -27,7 +32,7 @@ export default function usePronouns() {
 }
 
 export function useAllPronouns() {
-  return useQuery<Map<string, string>>({
+  return useQuery<Pronouns.All | null>({
     queryKey: ['twitch', 'pronouns', 'all'],
     queryFn: async () => {
       return getAllPronouns()
@@ -37,38 +42,40 @@ export function useAllPronouns() {
 }
 
 const pronounsApi = axios.create({
-  baseURL: 'https://pronouns.alejo.io/api',
+  baseURL: 'https://api.pronouns.alejo.io/v1',
 })
 
 export async function getUserPronouns(
   userName: string,
-): Promise<string | null> {
-  const data = await pronounsApi
-    .get<Pronouns.User[]>(`/users/${userName}`)
+): Promise<[string, string | null] | null> {
+  const user = await pronounsApi
+    .get<Pronouns.User>(`/users/${userName}`)
     .then(response => response.data)
     .catch(() => null)
 
-  if (!data) return null // if Alejo's server is down
+  if (!user) return null // user hasn't set pronouns or server is down
 
-  // pronouns API returns either
-  // an array that contains a single User
-  // or an empty array if that user hasn't set pronouns
-  const [user] = data
-  if (!user) return null // no pronouns set
-
-  return user.pronoun_id
+  return [user.pronoun_id, user.alt_pronoun_id]
 }
 
-export async function getAllPronouns(): Promise<Map<string, string>> {
-  const pronounsMap = new Map<string, string>()
-
+export async function getAllPronouns(): Promise<Pronouns.All | null> {
   const allPronouns = await pronounsApi
-    .get<Pronouns.Data[]>('/pronouns')
+    .get<Pronouns.All>('/pronouns')
     .then(response => response.data)
+    .catch(() => null) // server is down
 
-  allPronouns.forEach(({ name, display }) => {
-    pronounsMap.set(name, display)
-  })
+  return allPronouns
+}
 
-  return pronounsMap
+export function displayPronouns(
+  primary: Pronouns.Data,
+  secondary: Pronouns.Data | null,
+): string {
+  if (!secondary) {
+    return primary.singular
+      ? primary.subject
+      : `${primary.subject}/${primary.object}`
+  }
+
+  return `${primary.subject}/${secondary.object}`
 }

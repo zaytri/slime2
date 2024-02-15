@@ -4,7 +4,7 @@ import Random from '@/services/random'
 import useBadges from '../useBadges'
 import useChannelEmotes from '../useChannelEmotes'
 import useCheermotes from '../useCheermotes'
-import { useAllPronouns } from '../usePronouns'
+import { displayPronouns, useAllPronouns } from '../usePronouns'
 import useThirdPartyEmotes from '../useThirdPartyEmotes'
 import useUserColor from './transforms/useUserColor'
 
@@ -21,7 +21,23 @@ export default function useEmulateTwitchMessage() {
   async function emulate() {
     if (!isPlatformReady('twitch')) return
 
-    const allPronouns = Array.from(pronounsMap!.values())
+    const allPronouns = Object.values(pronounsMap || {})
+    let pronouns = null
+
+    // 50% chance of showing pronouns
+    if (Random.boolean() && allPronouns.length) {
+      const primary = Random.item(allPronouns)
+
+      // 50% chance of having a secondary pronoun
+      const secondary = Random.boolean() ? Random.item(allPronouns) : null
+
+      pronouns = displayPronouns(
+        primary,
+        // ensure that primary and secondary don't match
+        secondary && primary.name === secondary.name ? null : secondary,
+      )
+    }
+
     const emotes = [
       ...channelEmotes!,
       ...Array.from(thirdPartyEmoteMap!.values()),
@@ -53,9 +69,7 @@ export default function useEmulateTwitchMessage() {
       id: `test-user-${date.getTime()}`,
       userName: 'testuser',
       displayName: 'testUser',
-      pronouns: Random.boolean() // 50% chance of showing pronouns
-        ? null
-        : Random.item(allPronouns),
+      pronouns,
       badges: [],
       color: await transformUserColor('testuser'),
       roles: {
