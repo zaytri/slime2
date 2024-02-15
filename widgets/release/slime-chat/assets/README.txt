@@ -1,1 +1,0 @@
-Any media you want to add into Widget Settings from your computer must go into this folder first!
