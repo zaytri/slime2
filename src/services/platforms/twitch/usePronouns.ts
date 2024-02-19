@@ -79,7 +79,7 @@ export function displayPronouns(
       : `${primary.subject}/${primary.object}`
   }
 
-  return `${primary.subject}/${secondary.object}`
+  return `${primary.subject}/${secondary.subject}`
 }
 
 // what the /pronouns endpoint currently returns as of 2/18/2024
