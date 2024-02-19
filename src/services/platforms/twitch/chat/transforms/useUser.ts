@@ -32,11 +32,21 @@ export default function useUser() {
       isSubscriber,
     } = user
 
+    // if pronouns API is slow, null will be returned after half a second
+    // otherwise if getPronouns resolves quicker than that, use that result
+    const pronounsPromise: Promise<string | null> = new Promise(resolve => {
+      setTimeout(() => {
+        resolve(null)
+      }, 500)
+
+      getPronouns(userName).then(resolve)
+    })
+
     return {
       id: userId,
       userName,
       displayName,
-      pronouns: await getPronouns(userName),
+      pronouns: await pronounsPromise,
       badges: badges!.transform(twurpleBadges),
       color: await transformUserColor(userId, color),
       roles: {
