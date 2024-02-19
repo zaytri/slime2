@@ -38,6 +38,8 @@ export function useAllPronouns() {
       return getAllPronouns()
     },
     ...infiniteCache,
+    staleTime: 0,
+    initialData: pronounsCache,
   })
 }
 
@@ -78,4 +80,26 @@ export function displayPronouns(
   }
 
   return `${primary.subject}/${secondary.object}`
+}
+
+// what the /pronouns endpoint currently returns as of 2/18/2024
+const pronounsCache: Pronouns.All = {
+  aeaer: { name: 'aeaer', subject: 'Ae', object: 'Aer', singular: false },
+  any: { name: 'any', subject: 'Any', object: 'Any', singular: true },
+  eem: { name: 'eem', subject: 'E', object: 'Em', singular: false },
+  faefaer: { name: 'faefaer', subject: 'Fae', object: 'Faer', singular: false },
+  hehim: { name: 'hehim', subject: 'He', object: 'Him', singular: false },
+  itits: { name: 'itits', subject: 'It', object: 'Its', singular: false },
+  other: { name: 'other', subject: 'Other', object: 'Other', singular: true },
+  perper: { name: 'perper', subject: 'Per', object: 'Per', singular: false },
+  sheher: { name: 'sheher', subject: 'She', object: 'Her', singular: false },
+  theythem: {
+    name: 'theythem',
+    subject: 'They',
+    object: 'Them',
+    singular: false,
+  },
+  vever: { name: 'vever', subject: 'Ve', object: 'Ver', singular: false },
+  xexem: { name: 'xexem', subject: 'Xe', object: 'Xem', singular: false },
+  ziehir: { name: 'ziehir', subject: 'Zie', object: 'Hir', singular: false },
 }

@@ -21,10 +21,10 @@ export default function Twitch() {
   const { status: channelEmotesStatus } = useChannelEmotes()
   const { status: channelPointRewardsStatus } = useChannelPointRewards()
   const { status: cheermotesStatus } = useCheermotes()
-  const { status: allPronounsStatus } = useAllPronouns()
   const { status: thirdPartyEmotesStatus } = useThirdPartyEmotes()
   const { isPlatformReady } = usePlatformReady()
   const { setPlatformReady } = usePlatformReadyDispatch()
+  useAllPronouns() // prefetch pronouns without waiting for result
   useChatClient()
 
   const loading = [
@@ -33,7 +33,6 @@ export default function Twitch() {
     channelEmotesStatus,
     channelPointRewardsStatus,
     cheermotesStatus,
-    allPronounsStatus,
     thirdPartyEmotesStatus,
   ].some(status => status === 'pending')
 
@@ -57,7 +56,6 @@ export default function Twitch() {
             status: channelPointRewardsStatus,
           },
           { message: 'Loading cheermotes...', status: cheermotesStatus },
-          { message: 'Loading pronouns...', status: allPronounsStatus },
           {
             message: 'Loading third party emotes...',
             status: thirdPartyEmotesStatus,
