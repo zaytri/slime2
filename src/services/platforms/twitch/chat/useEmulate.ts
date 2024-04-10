@@ -41,7 +41,7 @@ export default function useEmulateTwitchMessage() {
     const emotes = [
       ...channelEmotes!,
       ...Array.from(thirdPartyEmoteMap!.values()),
-    ]
+    ].filter(e => !e.isModifier)
 
     const date = new Date()
     const first = Random.chance(5) // 5% chance of being first time chat
