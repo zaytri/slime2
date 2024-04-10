@@ -56,9 +56,9 @@ export default function useText(enableEmoteModifiers: boolean = false) {
           if (
             i + 1 < parts.length &&
             parts[i + 1].type === 'text' &&
-            parts[i + 1].text === ' '
+            parts[i + 1].text.trim() === ''
           ) {
-            // drop space seperating modifier from following emote
+            // Drop whitespace seperating the modifier from the following emote
             parts.splice(i + 1, 1)
           }
         } else if (emoteModifiersQueued.length > 0) {
@@ -90,18 +90,18 @@ export default function useText(enableEmoteModifiers: boolean = false) {
                 break
               case 'w!': // Wide
                 part.modifier += 'transform: scaleX(3);'
-                // BTTV hardcodes emote size to make widened emote spacing work.
-                // Instead, we add blank emotes before and after this emote, for easy spacing no matter what widget
+                // We can't hardcod emote size to make widened emote spacing work.
+                // Instead, add blank emotes before and after this emote, for easy spacing no matter what widget
                 parts.splice(i + 1, 0, BLANK_EMOTE_PART)
                 parts.splice(i, 0, BLANK_EMOTE_PART)
                 i += 1
                 break
               case 'z!': // Zero Space
-                // Simply remove the space-only text part before this emote
+                // Simply remove the whitespace-only text part before this emote
                 if (
                   i - 1 < parts.length &&
                   parts[i - 1].type === 'text' &&
-                  parts[i - 1].text === ' '
+                  parts[i - 1].text.trim() === ''
                 ) {
                   parts.splice(i - 1, 1)
                 }
