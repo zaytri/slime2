@@ -23,6 +23,7 @@ export default function useChannelEmotes() {
             static: buildEmoteUrls(id, true),
           },
           source: 'twitch',
+          isModifier: false,
         }
       })
     },

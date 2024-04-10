@@ -12,6 +12,7 @@ namespace BetterTTV {
     code: string
     imageType: string
     animated: boolean
+    modifier: boolean
   }
 
   type ChannelEmote = Emote & {
