@@ -6,9 +6,9 @@ import useUser from './useUser'
 /**
  * Hook that returns the function {@link transform}
  */
-export default function useMessage() {
+export default function useMessage(enableEmoteModifiers: boolean = false) {
   const { data: channelPointRewards } = useChannelPointRewards()
-  const transformText = useText()
+  const transformText = useText(enableEmoteModifiers)
   const transformUser = useUser()
 
   /**
