@@ -9,6 +9,17 @@ import useMessage from './transforms/useMessage'
 
 const source = 'twitch'
 
+let awaitingMessages: string[] = []
+
+const deleteCheckMap = new Map<
+  string, // event id
+  {
+    eventId?: string
+    userId?: string
+    all?: true
+  }[]
+>()
+
 export default function useChatClient() {
   const { data: broadcaster } = useTwitchBroadcaster()
   const { isPlatformReady } = usePlatformReady()
@@ -73,6 +84,37 @@ export default function useChatClient() {
       })
     }
 
+    async function processMessage(
+      id: string,
+      promise: Promise<Twitch.Event.Message | undefined>,
+    ) {
+      // store id in processing message array while awaiting promise
+      awaitingMessages.push(id)
+      const message = await promise
+      awaitingMessages = awaitingMessages.filter(messageId => messageId !== id)
+
+      if (!message) return
+
+      // check if the message is flagged for deletion while processing
+      const deleteChecks = deleteCheckMap.get(id)
+      if (deleteChecks) {
+        for (const check of deleteChecks) {
+          // chat was cleared
+          if (check.all) return
+
+          // message was deleted
+          if (check.eventId === message.id) return
+
+          // user of this message was banned/timed out
+          if (check.userId === message.user.id) return
+        }
+
+        deleteCheckMap.delete(id)
+      }
+
+      addMessage(message)
+    }
+
     // -----------------
     //  Event Listeners
     // -----------------
@@ -89,13 +131,11 @@ export default function useChatClient() {
           ? { type: 'cheer', cheer: { amount: bits } }
           : { type: 'basic' }
 
-        const message = await transformMessage(typeData, msg, text)
-        addMessage(message)
+        processMessage(msg.id, transformMessage(typeData, msg, text))
       }),
 
       chatClient.onAction(async (_, __, text, msg) => {
-        const message = await transformMessage({ type: 'action' }, msg, text)
-        addMessage(message)
+        processMessage(msg.id, transformMessage({ type: 'action' }, msg, text))
       }),
 
       // -------------------------
@@ -108,8 +148,7 @@ export default function useChatClient() {
           resub: { months: info.months, tier: info.plan },
         }
 
-        const message = await transformMessage(typeData, msg)
-        addMessage(message)
+        processMessage(msg.id, transformMessage(typeData, msg))
       }),
 
       chatClient.onAnnouncement(async (_, __, info, msg) => {
@@ -118,8 +157,7 @@ export default function useChatClient() {
           announcement: { color: info.color },
         }
 
-        const message = await transformMessage(typeData, msg)
-        addMessage(message)
+        processMessage(msg.id, transformMessage(typeData, msg))
       }),
 
       // --------------------------
@@ -127,18 +165,43 @@ export default function useChatClient() {
       // --------------------------
 
       chatClient.onChatClear(() => {
+        awaitingMessages.forEach(id => {
+          const deleteChecks = deleteCheckMap.get(id) ?? []
+          deleteCheckMap.set(id, [...deleteChecks, { all: true }])
+        })
         removeAllMessages()
       }),
 
       chatClient.onTimeout((_, __, ___, msg) => {
-        removeUserMessages(msg.targetUserId)
+        const userId = msg.targetUserId
+        if (!userId) return
+
+        awaitingMessages.forEach(id => {
+          const deleteChecks = deleteCheckMap.get(id) ?? []
+          deleteCheckMap.set(id, [...deleteChecks, { userId }])
+        })
+
+        removeUserMessages(userId)
       }),
 
       chatClient.onBan((_, __, msg) => {
-        removeUserMessages(msg.targetUserId)
+        const userId = msg.targetUserId
+        if (!userId) return
+
+        awaitingMessages.forEach(id => {
+          const deleteChecks = deleteCheckMap.get(id) ?? []
+          deleteCheckMap.set(id, [...deleteChecks, { userId }])
+        })
+
+        removeUserMessages(userId)
       }),
 
       chatClient.onMessageRemove((_, messageId) => {
+        awaitingMessages.forEach(id => {
+          const deleteChecks = deleteCheckMap.get(id) ?? []
+          deleteCheckMap.set(id, [...deleteChecks, { eventId: messageId }])
+        })
+
         removeMessage(messageId)
       }),
     )
