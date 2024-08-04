@@ -120,6 +120,7 @@ namespace Slime2 {
         name: string
         images: Emote.Images
         source: Emote.Source
+        isModifier: boolean
       }
 
       type EmoteMap = Map<string, Emote>

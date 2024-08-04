@@ -11,6 +11,7 @@ export function getGlobalEmotes(): Slime2.Event.Message.EmoteMap {
         static: buildEmoteUrls(emoji.image),
       },
       source: 'youtube',
+      isModifier: false,
     })
   })
 

@@ -107,7 +107,7 @@ namespace Twitch {
         type Type =
           | { type: 'text' }
           | { type: 'cheer'; cheer: Cheermote }
-          | { type: 'emote'; emote: Slime2.Event.Message.Emote }
+          | { type: 'emote'; emote: Slime2.Event.Message.Emote; modifier?: string }
       }
 
       type Cheermote = {
