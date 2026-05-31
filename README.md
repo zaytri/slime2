@@ -1,4 +1,6 @@
-# slime2
+# Archived, this has been replaced by the Slime2 desktop app: https://github.com/zaytri/slime2-desktop
+
+## slime2 (legacy)
 
 Built with [Vite](https://vitejs.dev/) using [React](https://react.dev/)
 
