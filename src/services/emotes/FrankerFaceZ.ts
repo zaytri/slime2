@@ -33,6 +33,7 @@ export default async function getChannelEmotes(
           static: buildEmoteUrls(emote, true),
         },
         source: 'frankerfacez',
+        isModifier: false,
       })
     })
   })

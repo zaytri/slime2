@@ -129,3 +129,12 @@ html {
     opacity: 0;
   }
 }
+
+@keyframes slime2-emote-modifier-party {
+  from {
+    filter: sepia(0.5) hue-rotate(0deg) saturate(2.5);
+  }
+  to {
+    filter: sepia(0.5) hue-rotate(360deg) saturate(2.5);
+  }
+}

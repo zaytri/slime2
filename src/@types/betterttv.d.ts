@@ -18,6 +18,10 @@ namespace BetterTTV {
     userId: string
   }
 
+  type GlobalEmote = ChannelEmote & {
+    modifier: boolean
+  }
+
   type SharedEmote = Emote & {
     user: {
       id: string

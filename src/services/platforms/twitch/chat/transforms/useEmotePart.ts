@@ -41,6 +41,7 @@ export function useEmotePart() {
           static: buildEmoteUrls(id, true),
         },
         source: 'twitch',
+        isModifier: false,
       },
     }
   }
